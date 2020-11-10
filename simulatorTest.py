@@ -1,14 +1,10 @@
-from FG_commands import FG
 import time
+
+from FG_commands import FG
 
 if __name__ == '__main__':
 
     fgSimulator = FG('C:\Program Files\FlightGear 2018.3.4')
-
-    start = False
-
-    if start:
-        fgSimulator.start()
 
     fgSimulator.connect()
 
@@ -29,8 +25,6 @@ if __name__ == '__main__':
         fgSimulator.setHeading(0 + i * 20)
         # set roll
         fgSimulator.setRoll(0 + i * 20)
-        # set yaw*
-        # setManual(tnSET, "orientation/yaw-deg", 20)
 
         # set aileron
         fgSimulator.setAileron(0)

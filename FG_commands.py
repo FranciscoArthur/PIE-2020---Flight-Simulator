@@ -1,7 +1,6 @@
-from telnetlib import Telnet
-import time
 import re
 import subprocess
+from telnetlib import Telnet
 
 
 class FG:
@@ -14,8 +13,8 @@ class FG:
     def connect(self):
         # Two different telnet object must be
         # created. Otherwise it won't work.
-        self.tnGET = Telnet("localhost", 5555)
-        self.tnSET = Telnet("localhost", 5555)
+        self.tnGET = Telnet("localhost", self.port)
+        self.tnSET = Telnet("localhost", self.port)
 
     def start(self, aircraft='c172p', airport='PNHL', startAlt=2000):
         subprocess.Popen([self.path + '\\bin\\fgfs.exe',
