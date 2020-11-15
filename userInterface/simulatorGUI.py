@@ -8,6 +8,8 @@ from FG_commands import FG
 from userInterface.GUI import *
 
 
+# TODO add more airports, aircrafts, get params, start simulation, send data to FG
+
 class SimulatorGUI(QMainWindow, Ui_MainWindow):
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -16,8 +18,21 @@ class SimulatorGUI(QMainWindow, Ui_MainWindow):
         scriptDir = os.path.dirname(os.path.realpath(__file__))
         self.setWindowIcon(QIcon(scriptDir + os.path.sep + 'logoTest5.jpg'))
 
-        # self.btnConfig.clicked.connect(self.getFGdir)
+        self.btnFGDir.clicked.connect(self.getFGdir)
         self.btnStartFG.clicked.connect(self.startFG)
+        self.btnChoseParamDir.clicked.connect(self.getParamsFile)
+
+        self.tabWidget.setCurrentIndex(0)
+
+        self.logText = 'Software name V0.1\n' \
+                       'Created by __ \n' \
+                       'Last update: __\n' \
+                       '!!!Always remember to close any FlightGear instances before starting the simulation!!!\n'
+
+        self.FGdirFile = open('FGdir.txt', 'r')
+        self.inputFGDir.setText(self.FGdirFile.read())
+        self.FGdir = self.inputFGDir.text()
+        self.FGdirFile.close()
 
         self.airplaneImage = None
         self.aircraftFile = 'c172p'
@@ -25,13 +40,18 @@ class SimulatorGUI(QMainWindow, Ui_MainWindow):
         self.aircraftList = None
         self.airport = None  # TODO atualize with airport complete names
         self.airportFile = 'PNHL'
-        self.logText = 'Software name V0.1\n' \
-                       'Created by __ \n' \
-                       'Last update: __\n' \
-                       '!!!Always remeber to close any FlightGear instances before starting the simulation!!!\n'
-        self.FGdir = 'C:\Program Files\FlightGear 2018.3.4'  # None
         self.FGstarted = False
         self.FGconnected = False
+        self.paramsFile = None
+
+        self.simTime = 50  # seconds
+        self.simTimeStep = 1e-6  # seconds
+
+        self.inputSimTime.setText(str(self.simTime))
+        self.inputSimTimeStep.setText(str(self.simTimeStep))
+
+        self.inputSimTime.returnPressed.connect(self.simTimeChange)
+        self.inputSimTimeStep.returnPressed.connect(self.simTimeStepChange)
 
         self.setListAircraft()
         self.setListAirport()
@@ -41,7 +61,25 @@ class SimulatorGUI(QMainWindow, Ui_MainWindow):
         self.listAircraft.currentTextChanged.connect(self.selectAircraft)
 
     def getFGdir(self):
-        directory, _ = QFileDialog.getOpenFileName(self.centralwidget, 'Select FlightGear directory')
+        dialog = QFileDialog()
+        folder_path = dialog.getExistingDirectory(None, "Select FlightGear Folder")
+
+        self.FGdirFile = open('FGdir.txt', 'w')
+        self.FGdirFile.write(folder_path)
+        self.inputFGDir.setText(folder_path)
+        self.FGdir = self.inputFGDir.text()
+        self.FGdirFile.close()
+
+        self.logAdd('FlightGear path set to: ' + folder_path + '\n')
+        return folder_path
+
+    def getParamsFile(self):
+        dialog = QFileDialog()
+        folder_path, _ = dialog.getOpenFileName(self.centralwidget, "Select Parameters File")
+        self.inputParams.setText(folder_path)
+        self.paramsFile = folder_path
+
+        self.logAdd('Parameters file selected: ' + folder_path + '\n')
 
     def startFG(self):  # TODO add chose the dir and print log
         fgSimulator = FG(self.FGdir)
@@ -82,6 +120,12 @@ class SimulatorGUI(QMainWindow, Ui_MainWindow):
         self.airplaneImage = QPixmap(self.FGdir + '\\data\\Aircraft\\' + self.aircraftFile + '\\thumbnail.jpg')
         self.airplaneImage = self.airplaneImage.scaledToWidth(210)
         self.label.setPixmap(self.airplaneImage)
+
+    def simTimeChange(self):
+        self.simTime = float(self.inputSimTime.text())
+
+    def simTimeStepChange(self):
+        self.simTimeStep = float(self.inputSimTimeStep.text())
 
     def log(self):
         self.textBoxLog.setText(self.logText)

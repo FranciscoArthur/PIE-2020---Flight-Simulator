@@ -6,312 +6,436 @@
             <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>501</width>
-                <height>471</height>
+                <width>502</width>
+                <height>457</height>
             </rect>
+        </property>
+        <property name="sizePolicy">
+            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+            </sizepolicy>
+        </property>
+        <property name="minimumSize">
+            <size>
+                <width>502</width>
+                <height>457</height>
+            </size>
         </property>
         <property name="windowTitle">
             <string>Software name V0.1</string>
         </property>
         <widget class="QWidget" name="centralwidget">
-            <widget class="QTabWidget" name="tabWidget">
-                <property name="geometry">
-                    <rect>
-                        <x>9</x>
-                        <y>21</y>
-                        <width>241</width>
-                        <height>411</height>
-                    </rect>
-                </property>
-                <property name="currentIndex">
-                    <number>2</number>
-                </property>
-                <widget class="QWidget" name="tab_7">
-                    <attribute name="title">
-                        <string>Configuration</string>
-                    </attribute>
-                    <widget class="QLabel" name="label_9">
-                        <property name="geometry">
-                            <rect>
-                                <x>10</x>
-                                <y>10</y>
-                                <width>81</width>
-                                <height>16</height>
-                            </rect>
-                        </property>
-                        <property name="text">
-                            <string>FlightGear Path</string>
-                        </property>
-                    </widget>
-                    <widget class="QLineEdit" name="lineEdit_4">
-                        <property name="geometry">
-                            <rect>
-                                <x>10</x>
-                                <y>30</y>
-                                <width>181</width>
-                                <height>20</height>
-                            </rect>
-                        </property>
-                    </widget>
-                    <widget class="QToolButton" name="toolButton_2">
-                        <property name="geometry">
-                            <rect>
-                                <x>200</x>
-                                <y>30</y>
-                                <width>31</width>
-                                <height>21</height>
-                            </rect>
-                        </property>
-                        <property name="text">
-                            <string>...</string>
-                        </property>
-                    </widget>
-                </widget>
-                <widget class="QWidget" name="tab_6">
-                    <attribute name="title">
-                        <string>Parameters</string>
-                    </attribute>
-                    <widget class="QLabel" name="label_4">
-                        <property name="geometry">
-                            <rect>
-                                <x>10</x>
-                                <y>10</y>
-                                <width>121</width>
-                                <height>16</height>
-                            </rect>
-                        </property>
-                        <property name="text">
-                            <string>Select Parameters File</string>
-                        </property>
-                    </widget>
-                    <widget class="QLineEdit" name="lineEdit">
-                        <property name="geometry">
-                            <rect>
-                                <x>10</x>
-                                <y>30</y>
-                                <width>181</width>
-                                <height>20</height>
-                            </rect>
-                        </property>
-                    </widget>
-                    <widget class="QToolButton" name="toolButton">
-                        <property name="geometry">
-                            <rect>
-                                <x>200</x>
-                                <y>30</y>
-                                <width>31</width>
-                                <height>21</height>
-                            </rect>
-                        </property>
-                        <property name="text">
-                            <string>...</string>
-                        </property>
-                    </widget>
-                    <widget class="QLabel" name="label_5">
-                        <property name="geometry">
-                            <rect>
-                                <x>10</x>
-                                <y>60</y>
-                                <width>47</width>
-                                <height>13</height>
-                            </rect>
-                        </property>
-                        <property name="text">
-                            <string>Or</string>
-                        </property>
-                    </widget>
-                    <widget class="QScrollArea" name="scrollArea_2">
-                        <property name="geometry">
-                            <rect>
-                                <x>10</x>
-                                <y>100</y>
-                                <width>153</width>
-                                <height>78</height>
-                            </rect>
+            <layout class="QGridLayout" name="gridLayout_3">
+                <item row="0" column="1">
+                    <widget class="QScrollArea" name="scrollArea">
+                        <property name="minimumSize">
+                            <size>
+                                <width>213</width>
+                                <height>281</height>
+                            </size>
                         </property>
                         <property name="widgetResizable">
                             <bool>true</bool>
                         </property>
-                        <widget class="QWidget" name="scrollAreaWidgetContents_2">
+                        <widget class="QWidget" name="scrollAreaWidgetContents">
                             <property name="geometry">
                                 <rect>
                                     <x>0</x>
                                     <y>0</y>
-                                    <width>151</width>
-                                    <height>76</height>
+                                    <width>235</width>
+                                    <height>279</height>
                                 </rect>
                             </property>
-                            <layout class="QGridLayout" name="gridLayout">
+                            <layout class="QGridLayout" name="gridLayout_2">
                                 <item row="0" column="0">
-                                    <widget class="QLabel" name="label_7">
+                                    <widget class="QLabel" name="label">
                                         <property name="text">
-                                            <string>Cl:</string>
-                                        </property>
-                                    </widget>
-                                </item>
-                                <item row="0" column="1">
-                                    <widget class="QLineEdit" name="lineEdit_2"/>
-                                </item>
-                                <item row="1" column="1">
-                                    <widget class="QLineEdit" name="lineEdit_3"/>
-                                </item>
-                                <item row="1" column="0">
-                                    <widget class="QLabel" name="label_8">
-                                        <property name="text">
-                                            <string>Cd:</string>
+                                            <string>aircraft.png</string>
                                         </property>
                                     </widget>
                                 </item>
                             </layout>
                         </widget>
                     </widget>
-                    <widget class="QLabel" name="label_6">
-                        <property name="geometry">
-                            <rect>
-                                <x>10</x>
-                                <y>80</y>
-                                <width>71</width>
-                                <height>16</height>
-                            </rect>
-                        </property>
-                        <property name="text">
-                            <string>Set Manually</string>
+                </item>
+                <item row="1" column="1">
+                    <widget class="QTextBrowser" name="textBoxLog">
+                        <property name="minimumSize">
+                            <size>
+                                <width>231</width>
+                                <height>121</height>
+                            </size>
                         </property>
                     </widget>
-                </widget>
-                <widget class="QWidget" name="tab_5">
-                    <attribute name="title">
-                        <string>Simulation</string>
-                    </attribute>
-                    <widget class="QPushButton" name="btnStartFG">
-                        <property name="geometry">
-                            <rect>
-                                <x>10</x>
-                                <y>131</y>
-                                <width>221</width>
-                                <height>23</height>
-                            </rect>
+                </item>
+                <item row="0" column="0" rowspan="2">
+                    <widget class="QTabWidget" name="tabWidget">
+                        <property name="minimumSize">
+                            <size>
+                                <width>241</width>
+                                <height>411</height>
+                            </size>
                         </property>
-                        <property name="text">
-                            <string>Start FlightGear</string>
+                        <property name="currentIndex">
+                            <number>0</number>
                         </property>
-                    </widget>
-                    <widget class="QPushButton" name="btnConnect">
-                        <property name="geometry">
-                            <rect>
-                                <x>10</x>
-                                <y>160</y>
-                                <width>221</width>
-                                <height>23</height>
-                            </rect>
-                        </property>
-                        <property name="text">
-                            <string>Connect with FlightGear</string>
-                        </property>
-                    </widget>
-                    <widget class="QLabel" name="label_3">
-                        <property name="geometry">
-                            <rect>
-                                <x>10</x>
-                                <y>70</y>
-                                <width>221</width>
-                                <height>16</height>
-                            </rect>
-                        </property>
-                        <property name="text">
-                            <string>Airport:</string>
-                        </property>
-                    </widget>
-                    <widget class="QComboBox" name="listAircraft">
-                        <property name="geometry">
-                            <rect>
-                                <x>10</x>
-                                <y>30</y>
-                                <width>221</width>
-                                <height>20</height>
-                            </rect>
-                        </property>
-                    </widget>
-                    <widget class="QLabel" name="label_2">
-                        <property name="geometry">
-                            <rect>
-                                <x>10</x>
-                                <y>10</y>
-                                <width>40</width>
-                                <height>16</height>
-                            </rect>
-                        </property>
-                        <property name="text">
-                            <string>Aircraft:</string>
-                        </property>
-                    </widget>
-                    <widget class="QComboBox" name="listAirport">
-                        <property name="geometry">
-                            <rect>
-                                <x>10</x>
-                                <y>90</y>
-                                <width>221</width>
-                                <height>20</height>
-                            </rect>
-                        </property>
-                    </widget>
-                    <widget class="QPushButton" name="pushButton">
-                        <property name="geometry">
-                            <rect>
-                                <x>10</x>
-                                <y>300</y>
-                                <width>221</width>
-                                <height>23</height>
-                            </rect>
-                        </property>
-                        <property name="text">
-                            <string>Start Simulation</string>
-                        </property>
-                    </widget>
-                </widget>
-            </widget>
-            <widget class="QScrollArea" name="scrollArea">
-                <property name="geometry">
-                    <rect>
-                        <x>260</x>
-                        <y>20</y>
-                        <width>231</width>
-                        <height>281</height>
-                    </rect>
-                </property>
-                <property name="widgetResizable">
-                    <bool>true</bool>
-                </property>
-                <widget class="QWidget" name="scrollAreaWidgetContents">
-                    <property name="geometry">
-                        <rect>
-                            <x>0</x>
-                            <y>0</y>
-                            <width>229</width>
-                            <height>279</height>
-                        </rect>
-                    </property>
-                    <layout class="QGridLayout" name="gridLayout_2">
-                        <item row="0" column="0">
-                            <widget class="QLabel" name="label">
+                        <widget class="QWidget" name="tab_7">
+                            <attribute name="title">
+                                <string>Configuration</string>
+                            </attribute>
+                            <widget class="QLabel" name="label_9">
+                                <property name="geometry">
+                                    <rect>
+                                        <x>10</x>
+                                        <y>10</y>
+                                        <width>81</width>
+                                        <height>16</height>
+                                    </rect>
+                                </property>
                                 <property name="text">
-                                    <string>aircraft.png</string>
+                                    <string>FlightGear Path</string>
                                 </property>
                             </widget>
-                        </item>
-                    </layout>
-                </widget>
-            </widget>
-            <widget class="QTextBrowser" name="textBoxLog">
-                <property name="geometry">
-                    <rect>
-                        <x>260</x>
-                        <y>310</y>
-                        <width>231</width>
-                        <height>121</height>
-                    </rect>
-                </property>
-            </widget>
+                            <widget class="QLineEdit" name="inputFGDir">
+                                <property name="geometry">
+                                    <rect>
+                                        <x>10</x>
+                                        <y>30</y>
+                                        <width>181</width>
+                                        <height>20</height>
+                                    </rect>
+                                </property>
+                            </widget>
+                            <widget class="QToolButton" name="btnFGDir">
+                                <property name="geometry">
+                                    <rect>
+                                        <x>200</x>
+                                        <y>30</y>
+                                        <width>31</width>
+                                        <height>21</height>
+                                    </rect>
+                                </property>
+                                <property name="text">
+                                    <string>...</string>
+                                </property>
+                            </widget>
+                            <widget class="QLabel" name="label_10">
+                                <property name="geometry">
+                                    <rect>
+                                        <x>10</x>
+                                        <y>60</y>
+                                        <width>91</width>
+                                        <height>16</height>
+                                    </rect>
+                                </property>
+                                <property name="text">
+                                    <string>Time of Simulation</string>
+                                </property>
+                            </widget>
+                            <widget class="QLineEdit" name="inputSimTime">
+                                <property name="geometry">
+                                    <rect>
+                                        <x>10</x>
+                                        <y>80</y>
+                                        <width>181</width>
+                                        <height>20</height>
+                                    </rect>
+                                </property>
+                                <property name="layoutDirection">
+                                    <enum>Qt::RightToLeft</enum>
+                                </property>
+                                <property name="alignment">
+                                    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                                </property>
+                            </widget>
+                            <widget class="QLabel" name="label_11">
+                                <property name="geometry">
+                                    <rect>
+                                        <x>10</x>
+                                        <y>110</y>
+                                        <width>81</width>
+                                        <height>16</height>
+                                    </rect>
+                                </property>
+                                <property name="text">
+                                    <string>TimeStep</string>
+                                </property>
+                            </widget>
+                            <widget class="QLineEdit" name="inputSimTimeStep">
+                                <property name="geometry">
+                                    <rect>
+                                        <x>10</x>
+                                        <y>130</y>
+                                        <width>181</width>
+                                        <height>20</height>
+                                    </rect>
+                                </property>
+                                <property name="layoutDirection">
+                                    <enum>Qt::LeftToRight</enum>
+                                </property>
+                                <property name="alignment">
+                                    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                                </property>
+                            </widget>
+                            <widget class="QLabel" name="label_12">
+                                <property name="geometry">
+                                    <rect>
+                                        <x>0</x>
+                                        <y>350</y>
+                                        <width>231</width>
+                                        <height>21</height>
+                                    </rect>
+                                </property>
+                                <property name="text">
+                                    <string>Always remeber to press enter in the textbox</string>
+                                </property>
+                            </widget>
+                            <widget class="QLabel" name="label_13">
+                                <property name="geometry">
+                                    <rect>
+                                        <x>0</x>
+                                        <y>370</y>
+                                        <width>101</width>
+                                        <height>16</height>
+                                    </rect>
+                                </property>
+                                <property name="text">
+                                    <string>to save the settings</string>
+                                </property>
+                            </widget>
+                            <widget class="QLabel" name="label_14">
+                                <property name="geometry">
+                                    <rect>
+                                        <x>200</x>
+                                        <y>80</y>
+                                        <width>47</width>
+                                        <height>13</height>
+                                    </rect>
+                                </property>
+                                <property name="text">
+                                    <string>s</string>
+                                </property>
+                            </widget>
+                            <widget class="QLabel" name="label_15">
+                                <property name="geometry">
+                                    <rect>
+                                        <x>200</x>
+                                        <y>130</y>
+                                        <width>47</width>
+                                        <height>13</height>
+                                    </rect>
+                                </property>
+                                <property name="text">
+                                    <string>s</string>
+                                </property>
+                            </widget>
+                        </widget>
+                        <widget class="QWidget" name="tab_6">
+                            <attribute name="title">
+                                <string>Parameters</string>
+                            </attribute>
+                            <widget class="QLabel" name="label_4">
+                                <property name="geometry">
+                                    <rect>
+                                        <x>10</x>
+                                        <y>10</y>
+                                        <width>121</width>
+                                        <height>16</height>
+                                    </rect>
+                                </property>
+                                <property name="text">
+                                    <string>Select Parameters File</string>
+                                </property>
+                            </widget>
+                            <widget class="QLineEdit" name="inputParams">
+                                <property name="geometry">
+                                    <rect>
+                                        <x>10</x>
+                                        <y>30</y>
+                                        <width>181</width>
+                                        <height>20</height>
+                                    </rect>
+                                </property>
+                            </widget>
+                            <widget class="QToolButton" name="btnChoseParamDir">
+                                <property name="geometry">
+                                    <rect>
+                                        <x>200</x>
+                                        <y>30</y>
+                                        <width>31</width>
+                                        <height>21</height>
+                                    </rect>
+                                </property>
+                                <property name="text">
+                                    <string>...</string>
+                                </property>
+                            </widget>
+                            <widget class="QLabel" name="label_5">
+                                <property name="geometry">
+                                    <rect>
+                                        <x>10</x>
+                                        <y>60</y>
+                                        <width>47</width>
+                                        <height>13</height>
+                                    </rect>
+                                </property>
+                                <property name="text">
+                                    <string>Or</string>
+                                </property>
+                            </widget>
+                            <widget class="QScrollArea" name="scrollArea_2">
+                                <property name="geometry">
+                                    <rect>
+                                        <x>10</x>
+                                        <y>100</y>
+                                        <width>153</width>
+                                        <height>78</height>
+                                    </rect>
+                                </property>
+                                <property name="widgetResizable">
+                                    <bool>true</bool>
+                                </property>
+                                <widget class="QWidget" name="scrollAreaWidgetContents_2">
+                                    <property name="geometry">
+                                        <rect>
+                                            <x>0</x>
+                                            <y>0</y>
+                                            <width>151</width>
+                                            <height>76</height>
+                                        </rect>
+                                    </property>
+                                    <layout class="QGridLayout" name="gridLayout">
+                                        <item row="0" column="0">
+                                            <widget class="QLabel" name="label_7">
+                                                <property name="text">
+                                                    <string>Cl:</string>
+                                                </property>
+                                            </widget>
+                                        </item>
+                                        <item row="0" column="1">
+                                            <widget class="QLineEdit" name="lineEdit_2"/>
+                                        </item>
+                                        <item row="1" column="1">
+                                            <widget class="QLineEdit" name="lineEdit_3"/>
+                                        </item>
+                                        <item row="1" column="0">
+                                            <widget class="QLabel" name="label_8">
+                                                <property name="text">
+                                                    <string>Cd:</string>
+                                                </property>
+                                            </widget>
+                                        </item>
+                                    </layout>
+                                </widget>
+                            </widget>
+                            <widget class="QLabel" name="label_6">
+                                <property name="geometry">
+                                    <rect>
+                                        <x>10</x>
+                                        <y>80</y>
+                                        <width>71</width>
+                                        <height>16</height>
+                                    </rect>
+                                </property>
+                                <property name="text">
+                                    <string>Set Manually</string>
+                                </property>
+                            </widget>
+                        </widget>
+                        <widget class="QWidget" name="tab_5">
+                            <attribute name="title">
+                                <string>Simulation</string>
+                            </attribute>
+                            <widget class="QPushButton" name="btnStartFG">
+                                <property name="geometry">
+                                    <rect>
+                                        <x>10</x>
+                                        <y>131</y>
+                                        <width>221</width>
+                                        <height>23</height>
+                                    </rect>
+                                </property>
+                                <property name="text">
+                                    <string>Start FlightGear</string>
+                                </property>
+                            </widget>
+                            <widget class="QPushButton" name="btnConnect">
+                                <property name="geometry">
+                                    <rect>
+                                        <x>10</x>
+                                        <y>160</y>
+                                        <width>221</width>
+                                        <height>23</height>
+                                    </rect>
+                                </property>
+                                <property name="text">
+                                    <string>Connect with FlightGear</string>
+                                </property>
+                            </widget>
+                            <widget class="QLabel" name="label_3">
+                                <property name="geometry">
+                                    <rect>
+                                        <x>10</x>
+                                        <y>70</y>
+                                        <width>221</width>
+                                        <height>16</height>
+                                    </rect>
+                                </property>
+                                <property name="text">
+                                    <string>Airport:</string>
+                                </property>
+                            </widget>
+                            <widget class="QComboBox" name="listAircraft">
+                                <property name="geometry">
+                                    <rect>
+                                        <x>10</x>
+                                        <y>30</y>
+                                        <width>221</width>
+                                        <height>20</height>
+                                    </rect>
+                                </property>
+                            </widget>
+                            <widget class="QLabel" name="label_2">
+                                <property name="geometry">
+                                    <rect>
+                                        <x>10</x>
+                                        <y>10</y>
+                                        <width>40</width>
+                                        <height>16</height>
+                                    </rect>
+                                </property>
+                                <property name="text">
+                                    <string>Aircraft:</string>
+                                </property>
+                            </widget>
+                            <widget class="QComboBox" name="listAirport">
+                                <property name="geometry">
+                                    <rect>
+                                        <x>10</x>
+                                        <y>90</y>
+                                        <width>221</width>
+                                        <height>20</height>
+                                    </rect>
+                                </property>
+                            </widget>
+                            <widget class="QPushButton" name="btnStart">
+                                <property name="geometry">
+                                    <rect>
+                                        <x>10</x>
+                                        <y>300</y>
+                                        <width>221</width>
+                                        <height>23</height>
+                                    </rect>
+                                </property>
+                                <property name="text">
+                                    <string>Start Simulation</string>
+                                </property>
+                            </widget>
+                        </widget>
+                    </widget>
+                </item>
+            </layout>
         </widget>
         <widget class="QStatusBar" name="statusbar"/>
     </widget>
