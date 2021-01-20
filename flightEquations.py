@@ -3,8 +3,23 @@ from math import sin, cos, tan
 import numpy as np
 
 
-def flightEquations(time, X, forces, parameters):
-    ''' Small function explanation'''
+def flightEquations(time, X, forces, moments, parameters):
+    """
+       The function flightEquations estabilish the
+       nonlinear ode of the airplane 6dof equations.
+       It uses the state vector as input with forces
+       forces and moments to generate de derived
+       state vector to be solved with a iterative
+       ODE solving method, as runge-kutta.
+
+       Inputs: Time, State vector, airplane forces,
+             airplane moments, airplane parameters.
+       Outputs: Derived state vector
+
+       Author: Francisco Arthur Bonfim Azevedo
+       Date: 20/01/2021
+
+    """
 
     p_n = X[0]
     p_e = X[1]
@@ -15,38 +30,40 @@ def flightEquations(time, X, forces, parameters):
     u = X[6]
     v = X[7]
     w = X[8]
-    P = X[9]
-    Q = X[10]
-    R = X[11]
+    p = X[9]
+    q = X[10]
+    r = X[11]
 
-    F_x = forces[0]
-    F_y = forces[1]
-    F_z = forces[2]
+    f_x = forces[0]
+    f_y = forces[1]
+    f_z = forces[2]
+
+    roll = moments[0]  # aerodynamic moment around x
+    pitch = moments[1]  # aerodynamic moment around y
+    yaw = moments[2]  # aerodynamic moment around z
 
     m = parameters.mass
-    J_x = parameters.J_x
-    J_y = parameters.J_y
-    J_z = parameters.J_z
-    J_xz = parameters.J_xz
-    Gama = J_x * J_z - J_xz ** 2
+    j_x = parameters.J_x
+    j_y = parameters.J_y
+    j_z = parameters.J_z
+    j_xz = parameters.J_xz
+    gamma = j_x * j_z - j_xz ** 2
     g_d = parameters.g
-    l = parameters.l
-    n = parameters.n
 
     # Force Equation
-    u_dot = R * v - Q * w - g_d * sin(theta) + F_x / m
-    v_dot = -R * u + P * w + g_d + sin(phi) * cos(theta) + F_y / m
-    w_dot = Q * u - P * v + g_d * cos(phi) * cos(theta) + F_z / m
+    u_dot = r * v - q * w - g_d * sin(theta) + f_x / m
+    v_dot = -r * u + p * w + g_d + sin(phi) * cos(theta) + f_y / m
+    w_dot = q * u - p * v + g_d * cos(phi) * cos(theta) + f_z / m
 
     # Kinematic Equations
-    phi_dot = P + tan(theta) * (Q * sin(phi) + R * cos(phi))
-    theta_dot = Q * cos(phi) - R * sin(phi)
-    psi_dot = (Q * sin(phi) + R * cos(phi)) / cos(theta)
+    phi_dot = p + tan(theta) * (q * sin(phi) + r * cos(phi))
+    theta_dot = q * cos(phi) - r * sin(phi)
+    psi_dot = (q * sin(phi) + r * cos(phi)) / cos(theta)
 
     # Moment Equations
-    P_dot = J_xz * (J_x - J_y + J_z) * P * Q - (J_z * (J_z - J_y) + J_xz ** 2) * Q * R + J_z * l + J_xz * n / Gama
-    Q_dot = ((J_z - J_x) * P * R - J_xz * (P ** 2 - R ** 2) + m) / J_y
-    R_dot = ((J_x - J_y) * J_x + J_xz ** 2) * P * Q - J_xz * (J_x - J_y + J_z) * Q * R + J_xz * l + J_x * n
+    p_dot = j_xz * (j_x - j_y + j_z) * p * q - (j_z * (j_z - j_y) + j_xz ** 2) * q * r + j_z * roll + j_xz * yaw / gamma
+    q_dot = ((j_z - j_x) * p * r - j_xz * (p ** 2 - r ** 2) + pitch) / j_y
+    r_dot = ((j_x - j_y) * j_x + j_xz ** 2) * p * q - j_xz * (j_x - j_y + j_z) * q * r + j_xz * roll + j_x * yaw / gamma
 
     # Navigation Equations
     p_n_dot = u * cos(theta) * cos(psi) + v * (-cos(phi) * sin(psi) + sin(phi) * sin(theta) * cos(psi)) + w * (
@@ -56,6 +73,6 @@ def flightEquations(time, X, forces, parameters):
     h_dot = u * sin(theta) - v * sin(phi) * cos(theta) - w * cos(phi) * cos(theta)
 
     # Derived state vector
-    X_dot = np.array([p_n_dot, p_e_dot, h_dot, phi_dot, theta_dot, psi_dot, u_dot, v_dot, w_dot, P_dot, Q_dot, R_dot])
+    x_dot = np.array([p_n_dot, p_e_dot, h_dot, phi_dot, theta_dot, psi_dot, u_dot, v_dot, w_dot, p_dot, q_dot, r_dot])
 
-    return X_dot
+    return x_dot
