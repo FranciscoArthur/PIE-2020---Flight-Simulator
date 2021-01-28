@@ -36,7 +36,7 @@ main_path = os.getcwd()
 # zw axis - perpendicular to the xw axis, in the plane of symmetry of the aircraft, positive above the aircraft
 # yw axis - perpendicular to the xw,zw-plane, positive determined by the right hand rule (generally, positive to the left)
 
-# To transforms the vector coordinates in a frame of reference to an toher frame, use the script coordinates[fromPyFME].py
+# To transforms the vector coordinates in a frame of reference to an toher frame, use the script coordinates_transform.py
 
 
 
@@ -250,7 +250,7 @@ def Flight_Simulator_fct(plane, initial_conditions, weather, integration_paramet
     [8] : Air kinematic viscosity (m2/s)
     [9] : Air thermal conductivity (W/m/K)
         """
-        from planeDatas import planeDatas_fct
+        from plane_data import planeDatas_fct
         current_aerodynamic_coeff = planeDatas_fct(plane_position_before_update, 
                                                    plane_orientation_before_update, 
                                                    plane_speed_before_update, 

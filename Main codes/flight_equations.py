@@ -3,10 +3,10 @@ from math import sin, cos, tan
 import numpy as np
 
 
-def flightEquations(time, state_vector, forces, moments, parameters):
+def flight_equations(time, state_vector, forces, moments, parameters):
     """
-       The function flightEquations establish the
-       nonlinear ode of the airplane 6dof equations.
+       The function flight_equations establish the
+       nonlinear ODE of the airplane 6dof equations.
        It uses the state vector as input with forces
        forces and moments to generate de derived
        state vector to be solved with a iterative
