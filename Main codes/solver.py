@@ -1,4 +1,4 @@
-def rk4(state_var_derivatives, parameters, forces, tspan, state_var0):
+def rk4(plane_position_before_update, plane_orientation_before_update, plane_speed_before_update, plane_angular_speed_before_update, plane_intrinsic_data, dt, t0, atmospheric_parameters_before_update, plane_current_forces, plane_current_moments, wind):
     """rk4 approximates the solution to an ODE using the RK4 method.
 
       Licensing:
@@ -14,43 +14,64 @@ def rk4(state_var_derivatives, parameters, forces, tspan, state_var0):
           John Burkardt
 
       Input:
+        
+        Position = [North_position, East_position, Altitude]                        #Initial conditions
+        
+        Orientation = [Yaw angle, Roll angle, Pitch angle]                          #Initial conditions
+        
+        Speed = [Velocity at x-axis, Velocity at y-axis, Velocity at z-axis ]       #Initial conditions
+        
+        Angular_Speed = [Yaw rate, Roll rate, Pitch rate]                           #Initial conditions
+        
+        plane_intrinsic_data = Dictionary containing plane mass and inertia
+        
+        dt = 
+        
+        t0 = time before update
+        
+        plane_current_forces = [f_x, f_y, f_z]
+        
+        plane_current_moments = [pitch_m, roll_m, yaw_m]
 
-        function state_var_derivatives: points to a function that computes the state varaible derivatives.
-
-        parameters: input for derivatives computation function
-
-        forces: input for derivatives computation function
-
-        real tspan[2]: contains the initial and final times.
-
-        real state_var0[m]: an array containing the initial condition.
 
 
       Output:
 
-          real t, state_var[m]: the times and solution values in the new step."""
+         X_current: solution values (state vector) in the new step."""
 
     import numpy as np
+    from flight_equations import flight_equations  
+    
+    
+    X_before_update = np.zeros(12)
+    X_before_update[0] = plane_position_before_update[0]
+    X_before_update[1] = plane_position_before_update[1]
+    X_before_update[2] = plane_position_before_update[2]
+    X_before_update[3] = plane_orientation_before_update[0]
+    X_before_update[4] = plane_orientation_before_update[1]
+    X_before_update[5] = plane_orientation_before_update[2]
+    X_before_update[6] = plane_speed_before_update[0]
+    X_before_update[7] = plane_speed_before_update[1]
+    X_before_update[8] = plane_speed_before_update[2]
+    X_before_update[9] = plane_angular_speed_before_update[0]
+    X_before_update[10] = plane_angular_speed_before_update[1]
+    X_before_update[11] = plane_angular_speed_before_update[2]
+    
+    forces = plane_current_forces
+    moments = plane_current_moments
+    
+    
+    mass = plane_intrinsic_data["mass"]
+    inertia = plane_intrinsic_data["inertia"]
+    
+    parameters = np.array([mass, inertia[0], inertia[1], inertia[2])
+    
 
-    if np.ndim(state_var0) == 0:
-        m = 1
-    else:
-        m = len(state_var0)
+    k1 = flight_equations(t0, X_before_update, forces, moments, parameters)
+    k2 = flight_equations(t0 + dt / 2.0, X_before_update + dt * k1 / 2.0, forces, moments, parameters)
+    k3 = flight_equations(t0 + dt / 2.0, X_before_update + dt * k2 / 2.0, forces, moments, parameters)
+    k4 = flight_equations(t0 + dt, X_before_update + dt * k3, forces, moments, parameters)
 
-    tfirst = tspan[0]
-    tlast = tspan[1]
-    dt = (tlast - tfirst)
-    t = np.zeros(2)
-    state_var = np.zeros([2, m])
-    t[0] = tspan[0]
-    state_var[0, :] = state_var0
+    X_current = X_before_update + dt * (k1 + 2.0 * k2 + 2.0 * k3 + k4) / 6.0
 
-    k1 = state_var_derivatives(t[0], state_var[0, :], parameters, forces)
-    k2 = state_var_derivatives(t[0] + dt / 2.0, state_var[0, :] + dt * k1 / 2.0, parameters, forces)
-    k3 = state_var_derivatives(t[0] + dt / 2.0, state_var[0, :] + dt * k2 / 2.0, parameters, forces)
-    k4 = state_var_derivatives(t[0] + dt, state_var[0, :] + dt * k3, parameters, forces)
-
-    t[1] = t[0] + dt
-    state_var[1, :] = state_var[0, :] + dt * (k1 + 2.0 * k2 + 2.0 * k3 + k4) / 6.0
-
-    return t[1], state_var[1, :]
+    return X_current
