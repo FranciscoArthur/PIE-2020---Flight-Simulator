@@ -1,4 +1,4 @@
-def rk4(plane_position_before_update, plane_orientation_before_update, plane_speed_before_update, plane_angular_speed_before_update, plane_intrinsic_data, dt, t0, atmospheric_parameters_before_update, plane_current_forces, plane_current_moments, wind):
+def rk4(plane_position_before_update, plane_orientation_before_update, plane_speed_before_update, plane_angular_speed_before_update, plane_intrinsic_data, dt, atmospheric_parameters_before_update, plane_current_forces, plane_current_moments, wind):
     """rk4 approximates the solution to an ODE using the RK4 method.
 
       Licensing:
@@ -25,9 +25,7 @@ def rk4(plane_position_before_update, plane_orientation_before_update, plane_spe
         
         plane_intrinsic_data = Dictionary containing plane mass and inertia
         
-        dt = 
-        
-        t0 = time before update
+        dt = time pitch
         
         plane_current_forces = [f_x, f_y, f_z]
         
@@ -66,14 +64,15 @@ def rk4(plane_position_before_update, plane_orientation_before_update, plane_spe
     
     parameters = np.array([mass, inertia[0], inertia[1], inertia[2])
     
+    t0 = 0 # time before update, could have been an input but since flght_equations is not time dependant, a 0 value is used.
 
     k1 = flight_equations(t0, X_before_update, forces, moments, parameters)
-    #k2 = flight_equations(t0 + dt / 2.0, X_before_update + dt * k1 / 2.0, forces, moments, parameters)
-    #k3 = flight_equations(t0 + dt / 2.0, X_before_update + dt * k2 / 2.0, forces, moments, parameters)
-    #k4 = flight_equations(t0 + dt, X_before_update + dt * k3, forces, moments, parameters)
+    k2 = flight_equations(t0 + dt / 2.0, X_before_update + dt * k1 / 2.0, forces, moments, parameters)
+    k3 = flight_equations(t0 + dt / 2.0, X_before_update + dt * k2 / 2.0, forces, moments, parameters)
+    k4 = flight_equations(t0 + dt, X_before_update + dt * k3, forces, moments, parameters)
 
-    #X_current = X_before_update + dt * (k1 + 2.0 * k2 + 2.0 * k3 + k4) / 6.0
-    X_current = X_before_update + dt * k1                 
+    X_current = X_before_update + dt * (k1 + 2.0 * k2 + 2.0 * k3 + k4) / 6.0
+    
 
 
     return X_current
