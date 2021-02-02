@@ -18,6 +18,7 @@ def forces_and_moments(coeffs_aero, plane_data, plane_speed, atmosphere_data, pl
     c = plane_data[2]  # c = mean aerodynamic chord
     l = plane_data[3]  # l = mean aerodynamic chord of VTP
     m = plane_data[4]
+    mf = plane_data[5] # mf = fuel mass
 
     v = math.sqrt(plane_speed[0] ** 2 + plane_speed[1] ** 2 + plane_speed[2] ** 2)
 
