@@ -8,7 +8,6 @@ import numpy as np
 # import os
 # main_path = 'C:\\Users\\Clément Gardies\\Desktop\\Projet 4A\\Avancée projet\\code_v1_gardies'
 # os.chdir(main_path)
-main_path = os.getcwd()
 
 
 ### Test : import atmospheric parameters 
@@ -50,9 +49,9 @@ main_path = os.getcwd()
 
 
 
-
-### USER INPUTS ###
-plane = ['cessna_172']                # Other possibilities : ? Next step
+##############################################################################
+### USER INPUTS - TEST ###
+plane = ['c172']                   # Other possibility : b747
 
 # Plane coordinates in ground frame
 initial_position = [0, 0, 100]     # [m]
@@ -83,9 +82,6 @@ command_hygh_lift_devices = [0 for i in range(number_of_time_steps)]
 command_landing_gear = [0 for i in range(number_of_time_steps)]
 
 
-
-
-
 ### Gathering the user's inputs
 initial_conditions=[]
 initial_conditions.append(initial_position)
@@ -101,9 +97,12 @@ integration_parameters.append(delta_t)
 
 pilot_inputs = [command_throttle_position, command_rudder_position, command_ailerons_position, command_elevators_position, command_air_brakes, command_hygh_lift_devices, command_landing_gear]
 
-
-
+### End of the TEST specification ###
+##############################################################################
  
+
+
+
 
 
 
@@ -140,13 +139,13 @@ def Flight_Simulator_fct(plane, initial_conditions, weather, integration_paramet
     command_landing_gear = pilot_inputs[6]          # 0 or 1
 
 
-
     ### Step 0_bis : Collecting the static plane data as a function of the plane version
+    main_path = os.getcwd()
     plane_path = main_path + '\\' + 'Aircrafts'
     os.chdir(plane_path)
     os.getcwd()
     plane_module = importlib.import_module(plane_version)
-    plane_data = plane_module.plane_data_dict
+    plane_intrinsic_data = plane_module.plane_data_dict
     os.chdir(main_path)
     # os.getcwd()
     
@@ -160,7 +159,7 @@ def Flight_Simulator_fct(plane, initial_conditions, weather, integration_paramet
     plane_angular_speed = [initial_angular_speed] * number_of_time_steps    
     plane_fuel_load = [initial_fuel_load] * number_of_time_steps
     plane_mass = [0] * number_of_time_steps
-    plane_initial_mass = payload + initial_fuel_load + plane_data['mass']
+    plane_initial_mass = payload + initial_fuel_load + plane_intrinsic_data['mass']
     plane_mass[0] = plane_initial_mass
     
     # Resulting forces and moments, null at the initial time step.
@@ -168,7 +167,7 @@ def Flight_Simulator_fct(plane, initial_conditions, weather, integration_paramet
     plane_forces = [[0, 0, 0]] * number_of_time_steps
     plane_moments = [[0, 0, 0]] * number_of_time_steps
     
-    # True AirSpeed calculation
+    # True AirSpeed
     plane_TAS = [0] * number_of_time_steps
     plane_initial_TAS =  np.sqrt((initial_speed[0]-wind[0])**2 + (initial_speed[1]-wind[1])**2 + (initial_speed[2]-wind[2])**2)    # Check
     plane_TAS[0] = plane_initial_TAS
@@ -249,6 +248,19 @@ def Flight_Simulator_fct(plane, initial_conditions, weather, integration_paramet
     [7] : Air dynamic viscosity (kg/m/s)
     [8] : Air kinematic viscosity (m2/s)
     [9] : Air thermal conductivity (W/m/K)
+    
+    current_pilot_controls :
+    [0] : throttle_position        # From 0 to 10
+    [1] : rudder_position          # From -10 to 10
+    [2] : ailerons_position        # From -10 to 10
+    [3] : elevators_position       # From -10 to 10
+    [4] : air_brakes               # 0 or 1
+    [5] : hygh_lift_devices        # 0 or 1
+    [6] : landing_gear             # 0 or 1
+    
+    OUTPUTS : current_aerodynamic_coeff :
+    [CL, CD, CY, Cl, Cm, Cn]
+    
         """
         from plane_data import planeDatas_fct
         current_aerodynamic_coeff = planeDatas_fct(plane_position_before_update, 
@@ -256,7 +268,7 @@ def Flight_Simulator_fct(plane, initial_conditions, weather, integration_paramet
                                                    plane_speed_before_update, 
                                                    plane_angular_speed_before_update, 
                                                    atmospheric_parameters_before_update, 
-                                                   plane_data,
+                                                   plane_intrinsic_data,
                                                    wind,
                                                    current_pilot_controls)
         
@@ -300,22 +312,22 @@ def Flight_Simulator_fct(plane, initial_conditions, weather, integration_paramet
         plane_current_forces = forces_calculation_fct(current_aerodynamic_coeff, 
                                                       current_pilot_controls, 
                                                       atmospheric_parameters_before_update,
-                                                      plane_data)
+                                                      plane_intrinsic_data)
         
         plane_current_moments = moments_calculation_fct(current_aerodynamic_coeff, 
                                                         current_pilot_controls, 
                                                         atmospheric_parameters_before_update,
-                                                        plane_data)
+                                                        plane_intrinsic_data)
         
         plane_current_load_factor = loadfactor_calculation_fct(current_aerodynamic_coeff, 
                                                                current_pilot_controls, 
                                                                atmospheric_parameters_before_update,
-                                                               plane_data)
+                                                               plane_intrinsic_data)
         
         plane_current_fuel_consumption = fuel_consumption_calculation_fct(current_aerodynamic_coeff, 
                                                                           current_pilot_controls, 
                                                                           atmospheric_parameters_before_update,
-                                                                          plane_data)
+                                                                          plane_intrinsic_data)
         
         
         plane_forces[i] = plane_current_forces
@@ -336,7 +348,7 @@ def Flight_Simulator_fct(plane, initial_conditions, weather, integration_paramet
                                           plane_orientation_before_update, 
                                           plane_speed_before_update, 
                                           plane_angular_speed_before_update, 
-                                          plane_data, 
+                                          plane_intrinsic_data, 
                                           delta_t, 
                                           atmospheric_parameters_before_update, 
                                           plane_current_forces, 
@@ -392,7 +404,7 @@ def Flight_Simulator_fct(plane, initial_conditions, weather, integration_paramet
     result['time'] = time   
     result['pilot_commands'] = pilot_inputs
     result['plane_load_factor'] = plane_load_factor
-    result['plane_data'] = plane_data
+    result['plane_intrinsic_data'] = plane_intrinsic_data
     result['plane_atmospheric_parameters'] = plane_atmospheric_parameters
     
      
@@ -401,7 +413,7 @@ def Flight_Simulator_fct(plane, initial_conditions, weather, integration_paramet
     from display import display_fct
     display_fct(result)
 
-    # return plane_data
+    # return plane_intrinsic_data
     return result
 
 

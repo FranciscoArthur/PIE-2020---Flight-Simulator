@@ -8,8 +8,8 @@ FS_user_inputs
 """
 from flight_simulator import Flight_Simulator_fct
 
-### Considered plane (default value : 'cessna_172')
-plane = ['cessna_172']       
+### Considered plane
+plane = ['c172']       
 
 ### Initial conditions : position, speed, orientation, angular speed, payload, fuelload
 
@@ -37,7 +37,7 @@ weather = [wind]                   # Next : add humidity/rain ?
 ### Integration parameters
 time_of_study = 1
 delta_t = 0.1
-number_of_time_steps = int(time_of_study/delta_t) + 1    # Do not modify
+number_of_time_steps = int(time_of_study/delta_t) + 1    # DO NOT MODIFY PLZ
 
 ### Pilot commands, time-dependant
 command_throttle_position = [0 for i in range(number_of_time_steps)]
@@ -51,6 +51,10 @@ command_landing_gear = [0 for i in range(number_of_time_steps)]
 
 
 
+
+
+
+###############################################################################
 # DO NOT MODIFY WHAT IS BELOW
 ### Gathering the user's inputs
 initial_conditions=[]
