@@ -11,7 +11,7 @@ def rk4(plane_position_before_update, plane_orientation_before_update, plane_spe
 
       Author:
 
-          John Burkardt
+          Nicolas Juarez
 
       Input:
         
