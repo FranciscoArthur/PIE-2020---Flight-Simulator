@@ -1,8 +1,9 @@
-import math
-import numpy as np
+import math;
+import numpy as np;
+import json;
 
 #Forces calculation
-def forces_calculation_fct(geometry, plane_speed_before_update, plane_orientation, atmospheric_parameters_before_update, plane_data):
+def forces_calculation_fct(plane_mass, plane_speed_before_update, plane_orientation, atmospheric_parameters_before_update, plane_data):
     
     #collection of aerodynamic coefficients
     cz = plane_data[0];
@@ -17,12 +18,12 @@ def forces_calculation_fct(geometry, plane_speed_before_update, plane_orientatio
     rho = atmospheric_parameters_before_update[4];
     g = atmospheric_parameters_before_update[6];
     
-    #plane geometry (indexes are not correct)
-    S =geometry[0];   # S = wing surface
-    b = geometry[1];  # b = wingspan
-    c = geometry[2];  # c = mean aerodynamic chord
-    l = geometry[3];  # l = mean aerodynamic chord of VTP
-    m = geometry[4];  # m = mass
+    #plane geometry
+    with open('../Aircrafts/c172.json) as json_file:
+              data = json.load(json_file)
+              
+    S = data[plane]['geometry'][Sw];   # S = wing surface
+    m = plane_mass;
     
     #state vector
     v = plane_speed_before_update;
@@ -48,7 +49,7 @@ def forces_calculation_fct(geometry, plane_speed_before_update, plane_orientatio
 
 
 #Moments calculation
-def moments_calculation_fct(geometry, plane_speed_before_update, plane_orientation, atmospheric_parameters_before_update, plane_data):
+def moments_calculation_fct(plane_mass, plane_speed_before_update, plane_orientation, atmospheric_parameters_before_update, plane_data):
     
     #collection of aerodynamic coefficients
     cl = plane_data[3];
@@ -58,11 +59,14 @@ def moments_calculation_fct(geometry, plane_speed_before_update, plane_orientati
     #atmosphere data
     rho = atmospheric_parameters_before_update[4];
     
-    #plane geometry (indexes are not correct)
-    S =geometry[0];   # S = wing surface
-    b = geometry[1];  # b = wingspan
-    c = geometry[2];  # c = mean aerodynamic chord
-    l = geometry[3];  # l = mean aerodynamic chord of VTP
+    #plane geometry
+    with open('../Aircrafts/c172.json) as json_file:
+              data = json.load(json_file)
+              
+    S = data[plane]['geometry'][Sw];   # S = wing surface
+    b = data[plane]['geometry'][bw];  # b = wingspan
+    c = data[plane]['geometry'][cBar];  # c = mean aerodynamic chord
+    m = plane_mass;
     
     #state vector
     v = plane_speed_before_update;
@@ -73,7 +77,7 @@ def moments_calculation_fct(geometry, plane_speed_before_update, plane_orientati
 
     pitch_m = 0.5 * rho * S * c * cm * (v ** 2);
 
-    yaw_m = 0.5 * rho * S * l * cn * (v ** 2);
+    yaw_m = 0.5 * rho * S * c * cn * (v ** 2);
     
     return [pitch_m, roll_m, yaw_m];
 
@@ -87,10 +91,10 @@ def fuel_consumption_calculation_fct(engine_data, current_pilot_controls, atmosp
 
 
 #Load factor calculation
-def loadfactor_calculation_fct(plane_current_forces, atmospheric_parameters_before_update, plane_orientation):
+def loadfactor_calculation_fct(plane_mass, plane_current_forces, atmospheric_parameters_before_update, plane_orientation):
     
     #environment data
-    m = geometry[4];  # m = mass /!\ WRONG INDEX !!!!
+    m = plane_mass;
     g = atmospheric_parameters_before_update[6];
     
     #plane orientation
