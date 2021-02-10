@@ -2,7 +2,7 @@ import numpy as np
 import json
 
 
-def plane_data(plane_position, plane_orientation,
+def plane_data_fct(plane_position, plane_orientation,
                plane_speed, plane_angular_speed,atmospheric_parameters,plane_intrinsic_data
                wind, pilot_data):
     """
