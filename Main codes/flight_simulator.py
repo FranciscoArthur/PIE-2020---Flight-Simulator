@@ -94,6 +94,8 @@ initial_conditions.append(initial_fuel_load)
 integration_parameters =[]
 integration_parameters.append(time_of_study)
 integration_parameters.append(delta_t)
+integration_parameters.append(number_of_time_steps)
+
 
 pilot_inputs = [command_throttle_position, command_rudder_position, command_ailerons_position, command_elevators_position, command_air_brakes, command_hygh_lift_devices, command_landing_gear]
 
@@ -126,7 +128,7 @@ def Flight_Simulator_fct(plane, initial_conditions, weather, integration_paramet
     # Integration parameters
     time_of_study = integration_parameters[0]
     delta_t = integration_parameters[1]
-    number_of_time_steps = 1+int(time_of_study/delta_t)
+    number_of_time_steps = integration_parameters[2]
 
     # Pilot inputs - each command is a list of number_of_time_steps elements
     ### NEED CHECHING WITH THOMAS AND CHRISTOPHE
@@ -164,8 +166,8 @@ def Flight_Simulator_fct(plane, initial_conditions, weather, integration_paramet
     
     # Resulting forces and moments, null at the initial time step.
     # Those elements are a list of list.
-    plane_forces = [[0, 0, 0]] * number_of_time_steps
-    plane_moments = [[0, 0, 0]] * number_of_time_steps
+    plane_resulting_force = [[0, 0, 0]] * number_of_time_steps
+    plane_resulting_moment = [[0, 0, 0]] * number_of_time_steps
     
     # True AirSpeed
     plane_TAS = [0] * number_of_time_steps
@@ -174,6 +176,7 @@ def Flight_Simulator_fct(plane, initial_conditions, weather, integration_paramet
     
     # Plane load factor - initial horizontal flight 
     plane_load_factor = [1] * number_of_time_steps
+    plane_load_factor_vector = [[0, 0, 0]] * number_of_time_steps
     
     # Atmospheric parameters at the initial altitude
     initial_altitude = initial_position[2]
@@ -230,12 +233,11 @@ def Flight_Simulator_fct(plane, initial_conditions, weather, integration_paramet
         plane_qinf_before_update = plane_qinf[i-1]  
         
         # Atmospheric parameters at the plane altitude before update
-        atmospheric_parameters_before_update = initial_atmospheric_parameters[i-1]
+        atmospheric_parameters_before_update = plane_atmospheric_parameters[i-1]
         
         
         
         ### Step 2 - calculation of the aerodynamic coefficients at the current position
-        # CHECK NOMENCLATURE WITH LOUIS
         """
     atmospheric_parameters_before_update :
     [0] : Altitude (m)
@@ -259,83 +261,87 @@ def Flight_Simulator_fct(plane, initial_conditions, weather, integration_paramet
     [6] : landing_gear             # 0 or 1
     
     OUTPUTS : current_aerodynamic_coeff :
-    [CL, CD, CY, Cl, Cm, Cn]
+    [CL, CD, CY, Cl, Cm, Cn, thrust]
     
         """
-        from plane_data import planeDatas_fct
-        current_aerodynamic_coeff = planeDatas_fct(plane_position_before_update, 
-                                                   plane_orientation_before_update, 
-                                                   plane_speed_before_update, 
-                                                   plane_angular_speed_before_update, 
-                                                   atmospheric_parameters_before_update, 
-                                                   plane_intrinsic_data,
-                                                   wind,
-                                                   current_pilot_controls)
-        
-              
-        ### Step 3 - calculation of forces and moments
-        """
-    atmospheric_parameters_before_update :
-    [0] : Altitude (m)
-    [1] : Air temperature (Celsius)
-    [2] : Air temperature (Kelvin)
-    [3] : Air pressure (Pa)
-    [4] : Air density (kg/m3)
-    [5] : Air speed of sound (m/s)
-    [6] : Local gravitational acceleration (m/s2)
-    [7] : Air dynamic viscosity (kg/m/s)
-    [8] : Air kinematic viscosity (m2/s)
-    [9] : Air thermal conductivity (W/m/K)
-    
-    current_pilot_controls :
-    [0] : throttle_position        # From 0 to 10
-    [1] : rudder_position          # From -10 to 10
-    [2] : ailerons_position        # From -10 to 10
-    [3] : elevators_position       # From -10 to 10
-    [4] : air_brakes               # 0 or 1
-    [5] : hygh_lift_devices        # 0 or 1
-    [6] : landing_gear             # 0 or 1
-    
-    current_aerodynamic_coeff :
-    [CL, CD, CY, Cl, Cm, Cn]
+        from plane_data import plane_data # rename planedata function as plane_data_fct
+        current_aerodynamic_coeff = plane_data(plane_position_before_update, 
+                                               plane_orientation_before_update, 
+                                               plane_speed_before_update, 
+                                               plane_angular_speed_before_update,  
+                                               plane_intrinsic_data,
+                                               wind,
+                                               current_pilot_controls,
+                                               atmospheric_parameters_before_update)
 
-    """
-    
-        # CHECK NOMENCLATURE WITH THOMAS AND CHRISTOPHE
-    
+       
+              
+        ### Step 3 - calculation of forces and moments    
         from forces_moments_calculation import forces_calculation_fct
         from forces_moments_calculation import moments_calculation_fct
         from forces_moments_calculation import fuel_consumption_calculation_fct
         from forces_moments_calculation import loadfactor_calculation_fct
+
         
         # Check if there is still some fuel 
-        plane_current_forces = forces_calculation_fct(current_aerodynamic_coeff, 
+        plane_current_forces = forces_calculation_fct(plane_mass_before_update,
+                                                      plane_position_before_update,
+                                                      plane_orientation_before_update,
+                                                      plane_speed_before_update,
+                                                      plane_angular_speed_before_update,
+                                                      current_aerodynamic_coeff, 
                                                       current_pilot_controls, 
                                                       atmospheric_parameters_before_update,
-                                                      plane_intrinsic_data)
+                                                      plane_intrinsic_data,
+                                                      plane_TAS_before_update)
         
-        plane_current_moments = moments_calculation_fct(current_aerodynamic_coeff, 
+        plane_current_moments = moments_calculation_fct(plane_mass_before_update,
+                                                        plane_position_before_update,
+                                                        plane_orientation_before_update,
+                                                        plane_speed_before_update,
+                                                        plane_angular_speed_before_update,
+                                                        current_aerodynamic_coeff, 
                                                         current_pilot_controls, 
                                                         atmospheric_parameters_before_update,
-                                                        plane_intrinsic_data)
+                                                        plane_intrinsic_data,
+                                                        plane_TAS_before_update)
         
-        plane_current_load_factor = loadfactor_calculation_fct(current_aerodynamic_coeff, 
+        plane_current_load_factor_both = loadfactor_calculation_fct(plane_mass_before_update,
+                                                               plane_position_before_update,
+                                                               plane_orientation_before_update,
+                                                               plane_speed_before_update,
+                                                               plane_angular_speed_before_update,
+                                                               current_aerodynamic_coeff, 
                                                                current_pilot_controls, 
                                                                atmospheric_parameters_before_update,
-                                                               plane_intrinsic_data)
+                                                               plane_intrinsic_data,
+                                                               plane_current_forces,
+                                                               plane_TAS_before_update)
         
-        plane_current_fuel_consumption = fuel_consumption_calculation_fct(current_aerodynamic_coeff, 
+        plane_current_fuel_consumption = fuel_consumption_calculation_fct(plane_mass_before_update,
+                                                                          plane_position_before_update,
+                                                                          plane_orientation_before_update,
+                                                                          plane_speed_before_update,
+                                                                          plane_angular_speed_before_update,
+                                                                          current_aerodynamic_coeff, 
                                                                           current_pilot_controls, 
                                                                           atmospheric_parameters_before_update,
-                                                                          plane_intrinsic_data)
+                                                                          plane_intrinsic_data,
+                                                                          plane_TAS_before_update)
         
         
-        plane_forces[i] = plane_current_forces
-        plane_moments[i] = plane_current_moments
-        plane_load_factor[i] = plane_current_load_factor
+        
+        
+        
+        
+        plane_resulting_force[i] = plane_current_forces
+        plane_resulting_moment[i] = plane_current_moments
+        plane_load_factor_vector[i] = plane_current_load_factor_both[0]
+        plane_load_factor[i] = plane_current_load_factor_both[1]
         fuel_load_variation = plane_current_fuel_consumption * delta_t
         plane_fuel_load[i] = plane_fuel_load[i-1] - fuel_load_variation
-        plane_mass[i] = plane_mass[i-1] - fuel_load_variation   
+        plane_current_mass = plane_mass[i-1] - fuel_load_variation
+        plane_mass[i] = plane_current_mass
         
         
         
@@ -353,7 +359,9 @@ def Flight_Simulator_fct(plane, initial_conditions, weather, integration_paramet
                                           atmospheric_parameters_before_update, 
                                           plane_current_forces, 
                                           plane_current_moments,
-                                          wind)
+                                          wind,
+                                          plane_current_mass)
+
 
         # CHECK NOMENCLATURE WITH ARTHUR - CHECK ORDER OF OUTPUTS
         plane_position[i] = [current_state_vector[0], current_state_vector[1], current_state_vector[2]]
@@ -397,13 +405,14 @@ def Flight_Simulator_fct(plane, initial_conditions, weather, integration_paramet
     result['plane_angular_speed'] =   plane_angular_speed
     result['plane_fuel_load'] = plane_fuel_load
     result['plane_mass'] = plane_mass
-    result['plane_forces'] = plane_forces
-    result['plane_moments'] = plane_moments
+    result['plane_resulting_force'] = plane_resulting_force
+    result['plane_resulting_moment'] = plane_resulting_moment
     result['plane_Mach'] = plane_Mach
     result['plane_qinf'] = plane_qinf
     result['time'] = time   
     result['pilot_commands'] = pilot_inputs
     result['plane_load_factor'] = plane_load_factor
+    result['plane_load_factor_vector'] = plane_load_factor_vector 
     result['plane_intrinsic_data'] = plane_intrinsic_data
     result['plane_atmospheric_parameters'] = plane_atmospheric_parameters
     

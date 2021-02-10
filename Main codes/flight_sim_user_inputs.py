@@ -37,7 +37,7 @@ weather = [wind]                   # Next : add humidity/rain ?
 ### Integration parameters
 time_of_study = 1
 delta_t = 0.1
-number_of_time_steps = int(time_of_study/delta_t) + 1    # DO NOT MODIFY PLZ
+number_of_time_steps = int(time_of_study/delta_t) + 1    # DO NOT MODIFY
 
 ### Pilot commands, time-dependant
 command_throttle_position = [0 for i in range(number_of_time_steps)]
@@ -68,6 +68,7 @@ initial_conditions.append(initial_fuel_load)
 integration_parameters =[]
 integration_parameters.append(time_of_study)
 integration_parameters.append(delta_t)
+integration_parameters.append(number_of_time_steps)
 
 pilot_inputs = [command_throttle_position, command_rudder_position, command_ailerons_position, command_elevators_position, command_air_brakes, command_hygh_lift_devices, command_landing_gear]
 
