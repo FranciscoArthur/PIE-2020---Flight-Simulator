@@ -22,32 +22,31 @@ def flight_equations(time, state_vector, forces, moments, parameters):
     """
     x = state_vector[0]  # North position of center of mass wrt earth in m
     y = state_vector[1]  # East position of center of mass wrt earth in m
-    z = state_vector[2]  # Negative of center of mass altitude wrt earth ( z = - h ) in m
-    phi = state_vector[3]    # Roll angle of body wrt earth in rad
-    theta = state_vector[4]  # Roll angle of body wrt earth in rad
-    psi = state_vector[5]    # Roll angle of body wrt earth in rad
-    u = state_vector[6]       # Body axis x inertial velocity in m/s
-    v = state_vector[7]       # Body axis y inertial velocity in m/s
-    w = state_vector[8]       # Body axis z inertial velocity in m/s
-    p = state_vector[9]       # Body-axis roll rate in rad/s
-    q = state_vector[10]       # Body-axis pitch rate in rad/s
-    r = state_vector[11]       # Body-axis yaw rate in rad/s
+    z = state_vector[2]  # Altitude wrt earth in m
+    psi = state_vector[3]  # Yaw angle of body wrt earth in rad
+    phi = state_vector[4]  # Roll angle of body wrt earth in rad
+    theta = state_vector[5]  # Pitch angle of body wrt earth in rad
+    u = state_vector[6]  # Body axis x inertial velocity in m/s
+    v = state_vector[7]  # Body axis y inertial velocity in m/s
+    w = state_vector[8]  # Body axis z inertial velocity in m/s
+    r = state_vector[9]  # Body-axis yaw rate in rad/s
+    p = state_vector[10]  # Body-axis roll rate in rad/s
+    q = state_vector[11]  # Body-axis pitch rate in rad/s
 
+    f_x = forces[0]  # Forces acting on the airplane on the x axis (body axis)
+    f_y = forces[1]  # Forces acting on the airplane on the y axis (body axis)
+    f_z = forces[2]  # Forces acting on the airplane on the z axis (body axis)
 
-    f_x = forces[0]           # Forces acting on the airplane on the x axis (body axis)
-    f_y = forces[1]           # Forces acting on the airplane on the y axis (body axis)
-    f_z = forces[2]           # Forces acting on the airplane on the z axis (body axis)
+    roll = moments[0]  # Moments acting on the airplane on the x axis (body axis)
+    pitch = moments[1]  # Moments acting on the airplane on the y axis (body axis)
+    yaw = moments[2]  # Moments acting on the airplane on the z axis (body axis)
 
-    roll = moments[0]         # Moments acting on the airplane on the x axis (body axis)
-    pitch = moments[1]        # Moments acting on the airplane on the y axis (body axis)
-    yaw = moments[2]          # Moments acting on the airplane on the z axis (body axis)
-
-    m = parameters.mass       # Airplane's mass
-    j_x = parameters.J_x      # Airplane's moment of inertia along x (body axis)
-    j_y = parameters.J_y      # Airplane's moment of inertia along y (body axis)
-    j_z = parameters.J_z      # Airplane's moment of inertia along z (body axis)
-    j_xz = parameters.J_xz    # Airplane's crossed moment of inertia of x and z (body axis)
-    g_d = parameters.g        # Earth's gravity (Earth's axis)
+    m = parameters.mass  # Airplane's mass
+    j_x = parameters.J_x  # Airplane's moment of inertia along x (body axis)
+    j_y = parameters.J_y  # Airplane's moment of inertia along y (body axis)
+    j_z = parameters.J_z  # Airplane's moment of inertia along z (body axis)
+    j_xz = parameters.J_xz  # Airplane's crossed moment of inertia of x and z (body axis)
+    g_d = parameters.g  # Earth's gravity (Earth's axis)
 
     gamma = j_x * j_z - j_xz ** 2
 
@@ -74,6 +73,6 @@ def flight_equations(time, state_vector, forces, moments, parameters):
     ze_dot = u * sin(theta) - v * sin(phi) * cos(theta) - w * cos(phi) * cos(theta)
 
     # Derived state vector
-    x_dot = np.array([u_dot, v_dot, w_dot, xe_dot, ye_dot, ze_dot,  p_dot, q_dot, r_dot, phi_dot, theta_dot, psi_dot])
+    x_dot = np.array([u_dot, v_dot, w_dot, xe_dot, ye_dot, ze_dot, p_dot, q_dot, r_dot, phi_dot, theta_dot, psi_dot])
 
     return x_dot
