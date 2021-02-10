@@ -1,9 +1,8 @@
 import math;
 import numpy as np;
-import json;
 
 #Forces calculation
-def forces_calculation_fct(plane_mass, plane_speed_before_update, plane_orientation, atmospheric_parameters_before_update, plane_data):
+def forces_calculation_fct(plane_mass, plane_TAS, plane_orientation, atmospheric_parameters_before_update, plane_data, plane_intrinsic_data):
     
     #collection of aerodynamic coefficients
     cz = plane_data[0];
@@ -18,15 +17,12 @@ def forces_calculation_fct(plane_mass, plane_speed_before_update, plane_orientat
     rho = atmospheric_parameters_before_update[4];
     g = atmospheric_parameters_before_update[6];
     
-    #plane geometry
-    with open('../Aircrafts/c172.json) as json_file:
-              data = json.load(json_file)
-              
-    S = data[plane]['geometry'][Sw];   # S = wing surface
+    #plane geometry              
+    S = plane_intrinsic_data[Sw];   # S = wing surface
     m = plane_mass;
     
     #state vector
-    v = plane_speed_before_update;
+    v = plane_TAS;
     theta = plane_orientation[0];
     phi = plane_orientation[1];
         
@@ -49,7 +45,7 @@ def forces_calculation_fct(plane_mass, plane_speed_before_update, plane_orientat
 
 
 #Moments calculation
-def moments_calculation_fct(plane_mass, plane_speed_before_update, plane_orientation, atmospheric_parameters_before_update, plane_data):
+def moments_calculation_fct(plane_mass, plane_TAS, plane_orientation, atmospheric_parameters_before_update, plane_data, plane_intrinsic_data):
     
     #collection of aerodynamic coefficients
     cl = plane_data[3];
@@ -63,13 +59,13 @@ def moments_calculation_fct(plane_mass, plane_speed_before_update, plane_orienta
     with open('../Aircrafts/c172.json) as json_file:
               data = json.load(json_file)
               
-    S = data[plane]['geometry'][Sw];   # S = wing surface
-    b = data[plane]['geometry'][bw];  # b = wingspan
-    c = data[plane]['geometry'][cBar];  # c = mean aerodynamic chord
+    S = plane_intrinsic_data[Sw];   # S = wing surface
+    b = plane_intrinsic_data[span];  # b = wingspan
+    c = plane_intrinsic_data[chord];  # c = mean aerodynamic chord
     m = plane_mass;
     
     #state vector
-    v = plane_speed_before_update;
+    v = plane_TAS;
         
     #Calculation
     
