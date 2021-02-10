@@ -1,4 +1,4 @@
-def rk4(plane_position_before_update, plane_orientation_before_update, plane_speed_before_update, plane_angular_speed_before_update, plane_intrinsic_data, dt, atmospheric_parameters_before_update, plane_current_forces, plane_current_moments, wind):
+def rk4(plane_position_before_update, plane_orientation_before_update, plane_speed_before_update, plane_angular_speed_before_update, plane_intrinsic_data, dt, atmospheric_parameters_before_update, plane_current_forces, plane_current_moments, wind, plane_current_mass):
     """rk4 approximates the solution to an ODE using the RK4 method.
 
       Licensing:
@@ -7,7 +7,7 @@ def rk4(plane_position_before_update, plane_orientation_before_update, plane_spe
 
       Modified:
 
-          22 April 2020
+          Feburary 2021
 
       Author:
 
@@ -30,6 +30,8 @@ def rk4(plane_position_before_update, plane_orientation_before_update, plane_spe
         plane_current_forces = [f_x, f_y, f_z]
         
         plane_current_moments = [pitch_m, roll_m, yaw_m]
+        
+        plane_current_mass
 
 
 
@@ -59,7 +61,7 @@ def rk4(plane_position_before_update, plane_orientation_before_update, plane_spe
     moments = plane_current_moments
     
     
-    mass = plane_intrinsic_data["mass"]
+    mass = plane_current_mass
     inertia = plane_intrinsic_data["inertia"]
     
     parameters = np.array([mass, inertia[0], inertia[1], inertia[2])
