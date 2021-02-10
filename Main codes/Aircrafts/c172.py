@@ -39,39 +39,39 @@ plane_data_dict = { # Inertia
                     
                     # forces_moments_coefficients
         			# Lift
-				    'CL_0':0.31,
-    				'CL_a':5.143,                                             
-    				'CL_q':3.9,
-    				'CL_de':0.43,
+				    'CL_0':0.31,			#Zero angle of attack lift
+    				'CL_a':5.143,                           #Effect of angle of attack
+    				'CL_q':3.9,				#Effect of roll rate
+    				'CL_de':0.43,				#Effect of elevator
     			    # Drag
-    				'CD_0':0.031,
-    				'induced_drag_factor':0.054,
-    				'CD_de':0.43,
+    				'CD_0':0.031,				#Initial drag
+    				'induced_drag_factor':0.054, 		#For the lift-drag polar
+    				'CD_de':0.43,				#Effect of elevator
     			    # Side_force
-    				'CY_0':0,
-    				'CY_beta':-0.31,
-    				'CY_p':-0.037,
-    				'CY_r':0.21,
-    				'CY_dr':0.187,
+    				'CY_0':0, 				#Initial side force coefficient
+    				'CY_beta':-0.31, 			#Effect of slide angle of aircraft
+    				'CY_p':-0.037, 				#Effect of pitch rate
+    				'CY_r':0.21, 				#Effect of yaw rate
+    				'CY_dr':0.187, 				#Effect of rudder
     			    # Pitch
-    				'Cm_0':-0.015,
-    				'Cm_da':-0.89,
-    				'Cm_q':-12.4,
-    				'Cm_de':-1.28,
+    				'Cm_0':-0.015, 				#Initial pitching moment
+    				'Cm_da':-0.89,				#Effect of aileron
+    				'Cm_q':-12.4, 				#Effect of roll rate
+    				'Cm_de':-1.28, 				#Effect of elevator
     			    # Roll
-    				'Cl_0':0,
-    				'Cl_beta':-0.089,
-    				'Cl_p':-0.47,
-    				'Cl_r':0.096,
-    				'Cl_da':-0.178,
-    				'Cl_dr':0.0147,
+    				'Cl_0':0, 				#Initial roll coefficient
+    				'Cl_beta':-0.089, 			#Effect of slide angle of aircraft
+    				'Cl_p':-0.47,				#Effect of pitch rate
+    				'Cl_r':0.096, 				#Effect of yaw rate
+    				'Cl_da':-0.178,				#Effect of aileron
+    				'Cl_dr':0.0147,				#Effect of rudder
     			    # Yaw
-    				'Cn_0':0,
-    				'Cn_beta':0.065,
-    				'Cn_p':-0.03,
-    				'Cn_r':-0.099,
-    				'Cn_da':-0.053,
-    				'Cn_dr':-0.0657,
+    				'Cn_0':0, 				#Initial yaw coefficient
+    				'Cn_beta':0.065, 			#Effect of slide angle of aircraft
+    				'Cn_p':-0.03, 				#Effect of pitch rate
+    				'Cn_r':-0.099, 				#Effect of yaw rate
+    				'Cn_da':-0.053, 			#Effect of aileron
+    				'Cn_dr':-0.0657, 			#Effect of rudder 
                     }
 			
                     
