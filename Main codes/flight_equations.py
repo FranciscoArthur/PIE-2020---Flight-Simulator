@@ -20,18 +20,18 @@ def flight_equations(time, state_vector, forces, moments, parameters):
        Date: 20/01/2021
 
     """
-    u = state_vector[1]       # Body axis x inertial velocity in m/s
-    v = state_vector[2]       # Body axis y inertial velocity in m/s
-    w = state_vector[3]       # Body axis z inertial velocity in m/s
-    x = state_vector[4]       # North position of center of mass wrt earth in m
-    y = state_vector[5]       # East position of center of mass wrt earth in m
-    z = state_vector[6]       # Negative of center of mass altitude wrt earth ( z = - h ) in m
-    p = state_vector[7]       # Body-axis roll rate in rad/s
-    q = state_vector[8]       # Body-axis pitch rate in rad/s
-    r = state_vector[9]       # Body-axis yaw rate in rad/s
-    phi = state_vector[10]    # Roll angle of body wrt earth in rad
-    theta = state_vector[11]  # Roll angle of body wrt earth in rad
-    psi = state_vector[12]    # Roll angle of body wrt earth in rad
+    u = state_vector[0]       # Body axis x inertial velocity in m/s
+    v = state_vector[1]       # Body axis y inertial velocity in m/s
+    w = state_vector[2]       # Body axis z inertial velocity in m/s
+    x = state_vector[3]       # North position of center of mass wrt earth in m
+    y = state_vector[4]       # East position of center of mass wrt earth in m
+    z = state_vector[5]       # Negative of center of mass altitude wrt earth ( z = - h ) in m
+    p = state_vector[6]       # Body-axis roll rate in rad/s
+    q = state_vector[7]       # Body-axis pitch rate in rad/s
+    r = state_vector[8]       # Body-axis yaw rate in rad/s
+    phi = state_vector[9]    # Roll angle of body wrt earth in rad
+    theta = state_vector[10]  # Roll angle of body wrt earth in rad
+    psi = state_vector[11]    # Roll angle of body wrt earth in rad
 
     f_x = forces[0]           # Forces acting on the airplane on the x axis (body axis)
     f_y = forces[1]           # Forces acting on the airplane on the y axis (body axis)
