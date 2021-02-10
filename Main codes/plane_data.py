@@ -10,6 +10,7 @@ def plane_data(plane_position, plane_orientation,
                 -plane_orientation: vector 3*1 
                 -plane_speed: vector 3*1 [vx, vy, vz]'
                 -plane_angular_speed: vector 3*1 
+                -plane_intrinsic_data: vectors babsed on aircraft file
                 -wind: vector 3*1 [vx, vy, vz]'
                 -pilot_data: vector 4*1 [Throttle, elevator, aileron, rudder]'
         Outputs:
