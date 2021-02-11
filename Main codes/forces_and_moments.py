@@ -1,4 +1,4 @@
-import math;
+import math; 
 import numpy as np;
 
 #Forces calculation
@@ -18,7 +18,7 @@ def forces_calculation_fct(plane_mass, plane_TAS, plane_orientation, atmospheric
     g = atmospheric_parameters_before_update[6];
     
     #plane geometry              
-    S = plane_intrinsic_data[Sw];   # S = wing surface
+    S = plane_intrinsic_data['Sw'];   # S = wing surface
     m = plane_mass;
     
     #state vector
@@ -56,12 +56,10 @@ def moments_calculation_fct(plane_mass, plane_TAS, plane_orientation, atmospheri
     rho = atmospheric_parameters_before_update[4];
     
     #plane geometry
-    with open('../Aircrafts/c172.json) as json_file:
-              data = json.load(json_file)
               
-    S = plane_intrinsic_data[Sw];   # S = wing surface
-    b = plane_intrinsic_data[span];  # b = wingspan
-    c = plane_intrinsic_data[chord];  # c = mean aerodynamic chord
+    S = plane_intrinsic_data['Sw'];   # S = wing surface
+    b = plane_intrinsic_data['span'];  # b = wingspan
+    c = plane_intrinsic_data['chord'];  # c = mean aerodynamic chord
     m = plane_mass;
     
     #state vector
@@ -83,7 +81,8 @@ def fuel_consumption_calculation_fct(engine_data, current_pilot_controls, atmosp
     
     
     
-    return plane_current_fuel_consumption;
+    # return plane_current_fuel_consumption;
+    return 1
 
 
 #Load factor calculation
@@ -105,9 +104,9 @@ def loadfactor_calculation_fct(plane_mass, plane_current_forces, atmospheric_par
     weight = [0, 0, -m*g];
     
     #Conversion to terrestrial referential
-    f_x_ext = f_x_a * cos(theta) * cos(psi) + f_y_a * sin(psi) + f_z_a * sin(theta);
-    f_y_ext = f_x_a * sin(psi) + f_y_a * cos(psi) * cos(phi) + f_z_a * sin(phi);
-    f_z_ext = f_x_a * sin(theta) + f_y_a * sin(phi) + f_z_a * cos(theta) * cos(phi);
+    f_x_ext = f_x_a * math.cos(theta) * math.cos(psi) + f_y_a * math.sin(psi) + f_z_a * math.sin(theta);
+    f_y_ext = f_x_a * math.sin(psi) + f_y_a * math.cos(psi) * math.cos(phi) + f_z_a * math.sin(phi);
+    f_z_ext = f_x_a * math.sin(theta) + f_y_a * math.sin(phi) + f_z_a * math.cos(theta) * math.cos(phi);
     F_ext = [f_x_ext, f_y_ext, f_z_ext];
     
     #calculation
@@ -115,7 +114,7 @@ def loadfactor_calculation_fct(plane_mass, plane_current_forces, atmospheric_par
     for i in range(3):
         n[i] = (weight[i] - F_ext[i]) / (-weight[3]);
     
-    load_factor = sqrt(n[0]**2 + n[1]**2 + n[2]**2);
+    load_factor = math.sqrt(n[0]**2 + n[1]**2 + n[2]**2);
     
     return [n, load_factor];
     

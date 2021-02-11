@@ -1,9 +1,8 @@
 import numpy as np
-import json
 
 
 def plane_data_fct(plane_position, plane_orientation,
-               plane_speed, plane_angular_speed,atmospheric_parameters,plane_intrinsic_data
+               plane_speed, plane_angular_speed,atmospheric_parameters,plane_intrinsic_data,
                wind, pilot_data):
     """
         Inputs: -plane_position: vector 3*1 [x, y, z]'
@@ -50,11 +49,11 @@ def plane_data_fct(plane_position, plane_orientation,
 
 
     # Lift coefficient
-    cl = plane_intrinsic_data['CL_0'] + plane_intrinsic_data['CL_a'] * alpha + plane_intrinsic_data['CL_q'] * q * c_bar2v + plane_intrinsic_data[
+    cL = plane_intrinsic_data['CL_0'] + plane_intrinsic_data['CL_a'] * alpha + plane_intrinsic_data['CL_q'] * q * c_bar2v + plane_intrinsic_data[
         'CL_de'] * de
 
     # Drag coefficient
-    cd = plane_intrinsic_data['CD_0'] + plane_intrinsic_data['induced_drag_factor'] * cl ** 2 + plane_intrinsic_data['CD_de'] * de
+    cd = plane_intrinsic_data['CD_0'] + plane_intrinsic_data['induced_drag_factor'] * cL ** 2 + plane_intrinsic_data['CD_de'] * de
 
     # Side force coefficient
     cy = plane_intrinsic_data['CY_0'] + plane_intrinsic_data['CY_beta'] * beta + (plane_intrinsic_data['CY_p'] * p + plane_intrinsic_data['CY_r'] * r) * b2v + \
@@ -76,8 +75,7 @@ def plane_data_fct(plane_position, plane_orientation,
 
 
     #Thrust
-    atm_params=atmospheric_parameters.atmospheric_parameters_fct(plane_position[2])
-    air_density=atm_params[4]
+    air_density=atmospheric_parameters[4]
     thrust=dthrust*plane_intrinsic_data['static_thrust']*(air_density/1.225)#*(1-np.exp((plane_position[2]-18000)/2000))    
 
-    return [cl, cd, cy, cl, cm, cn, thrust]
+    return [cL, cd, cy, cl, cm, cn, thrust]

@@ -264,23 +264,25 @@ def Flight_Simulator_fct(plane, initial_conditions, weather, integration_paramet
     [CL, CD, CY, Cl, Cm, Cn, thrust]
     
         """
-        from plane_data import plane_data # rename planedata function as plane_data_fct
-        current_aerodynamic_coeff = plane_data(plane_position_before_update, 
+        from plane_data import plane_data_fct # rename planedata function as plane_data_fct
+        current_aerodynamic_coeff = plane_data_fct(plane_position_before_update, 
                                                plane_orientation_before_update, 
                                                plane_speed_before_update, 
                                                plane_angular_speed_before_update,  
+                                               atmospheric_parameters_before_update,
                                                plane_intrinsic_data,
                                                wind,
-                                               current_pilot_controls,
-                                               atmospheric_parameters_before_update)
+                                               current_pilot_controls)
 
        
+        
+        
               
         ### Step 3 - calculation of forces and moments    
-        from forces_moments_calculation import forces_calculation_fct
-        from forces_moments_calculation import moments_calculation_fct
-        from forces_moments_calculation import fuel_consumption_calculation_fct
-        from forces_moments_calculation import loadfactor_calculation_fct
+        from forces_and_moments import forces_calculation_fct
+        from forces_and_moments import moments_calculation_fct
+        from forces_and_moments import fuel_consumption_calculation_fct
+        from forces_and_moments import loadfactor_calculation_fct
 
         
         # Check if there is still some fuel 
