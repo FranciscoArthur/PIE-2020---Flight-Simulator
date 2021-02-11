@@ -112,7 +112,7 @@ def loadfactor_calculation_fct(plane_mass, plane_current_forces, atmospheric_par
     #calculation
     n = [0, 0, 0];
     for i in range(3):
-        n[i] = (weight[i] - F_ext[i]) / (-weight[3]);
+        n[i] = (weight[i] - F_ext[i]) / (-weight[2]);
     
     load_factor = math.sqrt(n[0]**2 + n[1]**2 + n[2]**2);
     

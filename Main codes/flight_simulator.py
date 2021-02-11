@@ -287,38 +287,23 @@ def Flight_Simulator_fct(plane, initial_conditions, weather, integration_paramet
         
         # Check if there is still some fuel 
         plane_current_forces = forces_calculation_fct(plane_mass_before_update,
-                                                      plane_position_before_update,
+                                                      plane_TAS_before_update,
                                                       plane_orientation_before_update,
-                                                      plane_speed_before_update,
-                                                      plane_angular_speed_before_update,
-                                                      current_aerodynamic_coeff, 
-                                                      current_pilot_controls, 
                                                       atmospheric_parameters_before_update,
-                                                      plane_intrinsic_data,
-                                                      plane_TAS_before_update)
+                                                      current_aerodynamic_coeff,
+                                                      plane_intrinsic_data)                                                     
         
         plane_current_moments = moments_calculation_fct(plane_mass_before_update,
-                                                        plane_position_before_update,
+                                                        plane_TAS_before_update,
                                                         plane_orientation_before_update,
-                                                        plane_speed_before_update,
-                                                        plane_angular_speed_before_update,
-                                                        current_aerodynamic_coeff, 
-                                                        current_pilot_controls, 
                                                         atmospheric_parameters_before_update,
-                                                        plane_intrinsic_data,
-                                                        plane_TAS_before_update)
+                                                        current_aerodynamic_coeff,
+                                                        plane_intrinsic_data)    
         
         plane_current_load_factor_both = loadfactor_calculation_fct(plane_mass_before_update,
-                                                               plane_position_before_update,
-                                                               plane_orientation_before_update,
-                                                               plane_speed_before_update,
-                                                               plane_angular_speed_before_update,
-                                                               current_aerodynamic_coeff, 
-                                                               current_pilot_controls, 
-                                                               atmospheric_parameters_before_update,
-                                                               plane_intrinsic_data,
-                                                               plane_current_forces,
-                                                               plane_TAS_before_update)
+                                                                    plane_current_forces,
+                                                                    atmospheric_parameters_before_update,
+                                                                    plane_orientation_before_update)
         
         plane_current_fuel_consumption = fuel_consumption_calculation_fct(plane_mass_before_update,
                                                                           plane_position_before_update,
@@ -331,7 +316,7 @@ def Flight_Simulator_fct(plane, initial_conditions, weather, integration_paramet
                                                                           plane_intrinsic_data,
                                                                           plane_TAS_before_update)
         
-        
+        plane_current_fuel_consumption=1
         
         
         
@@ -351,8 +336,8 @@ def Flight_Simulator_fct(plane, initial_conditions, weather, integration_paramet
         ### Step 4 - calculation of the Derivated Plane Vector + solving the current state vector with Sover
         # CHECK NOMENCLATURE WITH ARTHUR
         
-        from solver import solver_fct
-        current_state_vector = solver_fct(plane_position_before_update, 
+        from solver import rk4
+        current_state_vector = rk4(plane_position_before_update, 
                                           plane_orientation_before_update, 
                                           plane_speed_before_update, 
                                           plane_angular_speed_before_update, 

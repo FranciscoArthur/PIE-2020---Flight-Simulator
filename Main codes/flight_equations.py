@@ -41,7 +41,7 @@ def flight_equations(time, state_vector, forces, moments, parameters):
     pitch = moments[1]  # Moments acting on the airplane on the y axis (body axis)
     yaw = moments[2]  # Moments acting on the airplane on the z axis (body axis)
 
-    m = parameters.mass  # Airplane's mass
+    m = parameters[0]  # Airplane's mass
     j_x = parameters.J_x  # Airplane's moment of inertia along x (body axis)
     j_y = parameters.J_y  # Airplane's moment of inertia along y (body axis)
     j_z = parameters.J_z  # Airplane's moment of inertia along z (body axis)
