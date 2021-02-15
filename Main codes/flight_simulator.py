@@ -316,7 +316,7 @@ def Flight_Simulator_fct(plane, initial_conditions, weather, integration_paramet
                                                                           plane_intrinsic_data,
                                                                           plane_TAS_before_update)
         
-        plane_current_fuel_consumption=1
+        # plane_current_fuel_consumption=1
         
         
         
@@ -338,16 +338,16 @@ def Flight_Simulator_fct(plane, initial_conditions, weather, integration_paramet
         
         from solver import rk4
         current_state_vector = rk4(plane_position_before_update, 
-                                          plane_orientation_before_update, 
-                                          plane_speed_before_update, 
-                                          plane_angular_speed_before_update, 
-                                          plane_intrinsic_data, 
-                                          delta_t, 
-                                          atmospheric_parameters_before_update, 
-                                          plane_current_forces, 
-                                          plane_current_moments,
-                                          wind,
-                                          plane_current_mass)
+                                   plane_orientation_before_update, 
+                                   plane_speed_before_update, 
+                                   plane_angular_speed_before_update, 
+                                   plane_intrinsic_data, 
+                                   delta_t, 
+                                   atmospheric_parameters_before_update, 
+                                   plane_current_forces, 
+                                   plane_current_moments,
+                                   wind,
+                                   plane_current_mass)
 
 
         # CHECK NOMENCLATURE WITH ARTHUR - CHECK ORDER OF OUTPUTS
@@ -387,8 +387,8 @@ def Flight_Simulator_fct(plane, initial_conditions, weather, integration_paramet
     result = {}
     result['plane_position'] = plane_position
     result['plane_orientation'] = plane_orientation
-    result['plane_speed'] = plane_speed                    # Ground speed
-    result['plane_TAS'] = plane_TAS                        # True AirSpeed
+    result['plane_speed'] = plane_speed                    # Ground speed - vector
+    result['plane_TAS'] = plane_TAS                        # True AirSpeed - scalar
     result['plane_angular_speed'] =   plane_angular_speed
     result['plane_fuel_load'] = plane_fuel_load
     result['plane_mass'] = plane_mass
