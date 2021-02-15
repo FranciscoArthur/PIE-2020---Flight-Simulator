@@ -305,16 +305,7 @@ def Flight_Simulator_fct(plane, initial_conditions, weather, integration_paramet
                                                                     atmospheric_parameters_before_update,
                                                                     plane_orientation_before_update)
         
-        plane_current_fuel_consumption = fuel_consumption_calculation_fct(plane_mass_before_update,
-                                                                          plane_position_before_update,
-                                                                          plane_orientation_before_update,
-                                                                          plane_speed_before_update,
-                                                                          plane_angular_speed_before_update,
-                                                                          current_aerodynamic_coeff, 
-                                                                          current_pilot_controls, 
-                                                                          atmospheric_parameters_before_update,
-                                                                          plane_intrinsic_data,
-                                                                          plane_TAS_before_update)
+        plane_current_fuel_consumption = fuel_consumption_calculation_fct(current_pilot_controls[0])
         
         # plane_current_fuel_consumption=1
         

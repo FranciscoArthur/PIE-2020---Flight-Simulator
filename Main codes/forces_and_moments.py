@@ -77,12 +77,12 @@ def moments_calculation_fct(plane_mass, plane_TAS, plane_orientation, atmospheri
 
 
 #Fuel consumption calculation
-def fuel_consumption_calculation_fct(engine_data, current_pilot_controls, atmospheric_parameters_before_update):
+def fuel_consumption_calculation_fct(current_throttle):
+    #modele simple pour le moment, adapte au cesna 172, return le fuel flow en kg/s
     
+    ff = 6.4 + 1.85*current_throttle
     
-    
-    # return plane_current_fuel_consumption;
-    return 1
+    return ff
 
 
 #Load factor calculation
