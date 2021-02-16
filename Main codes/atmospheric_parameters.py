@@ -276,6 +276,6 @@ def thermal_conductivity(T):
     return 2.648151e-3 * T ** 1.5 / (T + (245.4 * 10 ** (-12 / T)))
 
 
-# Test
-altitude = 10000
-print(atmospheric_parameters_fct(altitude))
+# # Test
+# altitude = 10000
+# print(atmospheric_parameters_fct(altitude))

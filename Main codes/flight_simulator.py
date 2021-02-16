@@ -205,8 +205,9 @@ def Flight_Simulator_fct(plane, initial_conditions, weather, integration_paramet
     
     ### Entering the main loop on time - calculation of state vectors at each time step     
     i = 1
+    
     while i < number_of_time_steps:
-        
+        np.disp('i=' + str(i))
                 
         ### Step 1 : gathering all the values that will be needed for this i-th time step calculations
         # Real time calculation of the selected time step 
@@ -348,7 +349,12 @@ def Flight_Simulator_fct(plane, initial_conditions, weather, integration_paramet
         
         
         plane_current_TAS =  np.sqrt((plane_speed[i][0]-wind[0])**2 + (plane_speed[i][1]-wind[1])**2 + (plane_speed[i][2]-wind[2])**2) 
-        current_atmospheric_parameters = atmospheric_parameters_fct(int(plane_position[i][2]))
+        new_altitude = plane_position[i][2]
+        np.disp('new_altitude=' + str(new_altitude))
+        new_altitude_int = int(new_altitude)
+        np.disp('new_altitude_int=' + str(new_altitude_int))        
+        
+        current_atmospheric_parameters = atmospheric_parameters_fct(new_altitude_int)
         plane_atmospheric_parameters[i] = current_atmospheric_parameters
         current_air_density = current_atmospheric_parameters[4]
         current_sound_velocity = current_atmospheric_parameters[5]
@@ -358,14 +364,14 @@ def Flight_Simulator_fct(plane, initial_conditions, weather, integration_paramet
 
 
 
-        ### End of a time step : Check the flight failures (ex : negative altitude)
-        if (plane_position[i][2] < 0) and (current_landing_gear == 0) :
-            raise ValueError ("The aircraft crashed - negative altitude")
+        # ### End of a time step : Check the flight failures (ex : negative altitude)
+        # if (plane_position[i][2] < 0) and (current_landing_gear == 0) :
+        #     raise ValueError ("The aircraft crashed - negative altitude")
         
-        if plane_load_factor[i] > 3:    # arbitrary max load factor
-            raise ValueError ("The aircraft crashed - unsustainable load factor")
+        # if plane_load_factor[i] > 3:    # arbitrary max load factor
+        #     raise ValueError ("The aircraft crashed - unsustainable load factor")
         
-        # Other errors ?
+        # # Other errors ?
         
         
         
