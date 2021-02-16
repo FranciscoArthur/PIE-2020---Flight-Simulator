@@ -155,17 +155,22 @@ def Flight_Simulator_fct(plane, initial_conditions, weather, integration_paramet
     
     ### Step 0_ter : Creating the output vectors + initializing the values
     # State vector, which initial values are given by the user inputs
-    plane_position = [initial_position] * number_of_time_steps
-    plane_orientation = [initial_orientation] * number_of_time_steps
-    plane_speed = [initial_speed] * number_of_time_steps                   
-    plane_angular_speed = [initial_angular_speed] * number_of_time_steps    
-    plane_fuel_load = [initial_fuel_load] * number_of_time_steps
+    plane_position = [[]] * number_of_time_steps
+    plane_orientation = [[]] * number_of_time_steps
+    plane_speed = [[]] * number_of_time_steps                   
+    plane_angular_speed = [[]] * number_of_time_steps    
+    plane_fuel_load = [0] * number_of_time_steps
+    plane_position[0] = initial_position
+    plane_orientation[0] = initial_orientation
+    plane_speed[0] = initial_speed                   
+    plane_angular_speed[0] = initial_angular_speed    
+    plane_fuel_load[0] = initial_fuel_load    
+    
     plane_mass = [0] * number_of_time_steps
     plane_initial_mass = payload + initial_fuel_load + plane_intrinsic_data['mass']
     plane_mass[0] = plane_initial_mass
     
     # Resulting forces and moments, null at the initial time step.
-    # Those elements are a list of list.
     plane_resulting_force = [[0, 0, 0]] * number_of_time_steps
     plane_resulting_moment = [[0, 0, 0]] * number_of_time_steps
     
@@ -195,9 +200,6 @@ def Flight_Simulator_fct(plane, initial_conditions, weather, integration_paramet
     
     # Time evolution
     time = [0] * number_of_time_steps
-    
-    
-    
     
     
     
@@ -264,7 +266,7 @@ def Flight_Simulator_fct(plane, initial_conditions, weather, integration_paramet
     [CL, CD, CY, Cl, Cm, Cn, thrust]
     
         """
-        from plane_data import plane_data_fct # rename planedata function as plane_data_fct
+        from plane_data import plane_data_fct
         current_aerodynamic_coeff = plane_data_fct(plane_position_before_update, 
                                                plane_orientation_before_update, 
                                                plane_speed_before_update, 
