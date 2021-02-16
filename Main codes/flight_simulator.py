@@ -306,10 +306,7 @@ def Flight_Simulator_fct(plane, initial_conditions, weather, integration_paramet
                                                                     plane_orientation_before_update)
         
         plane_current_fuel_consumption = fuel_consumption_calculation_fct(current_pilot_controls[0])
-        
-        plane_current_fuel_consumption=1
-        
-        
+                
         
         
         plane_resulting_force[i] = plane_current_forces
@@ -349,7 +346,7 @@ def Flight_Simulator_fct(plane, initial_conditions, weather, integration_paramet
         
         
         plane_current_TAS =  np.sqrt((plane_speed[i][0]-wind[0])**2 + (plane_speed[i][1]-wind[1])**2 + (plane_speed[i][2]-wind[2])**2) 
-        current_atmospheric_parameters = atmospheric_parameters_fct(plane_position[i][2])
+        current_atmospheric_parameters = atmospheric_parameters_fct(int(plane_position[i][2]))
         plane_atmospheric_parameters[i] = current_atmospheric_parameters
         current_air_density = current_atmospheric_parameters[4]
         current_sound_velocity = current_atmospheric_parameters[5]

@@ -64,7 +64,7 @@ def rk4(plane_position_before_update, plane_orientation_before_update, plane_spe
     mass = plane_current_mass
     inertia = plane_intrinsic_data["inertia"]
     
-    parameters = np.array([mass, inertia[0], inertia[1], inertia[2], inertia[3]])
+    parameters = [mass, inertia[0, 0], inertia[1, 1], inertia[2, 2], inertia[0, 2], atmospheric_parameters_before_update[6]]
     
     t0 = 0 # time before update, could have been an input but since flght_equations is not time dependant, a 0 value is used.
 

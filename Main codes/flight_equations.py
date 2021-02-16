@@ -42,11 +42,11 @@ def flight_equations(time, state_vector, forces, moments, parameters):
     yaw = moments[2]  # Moments acting on the airplane on the z axis (body axis)
 
     m = parameters[0]  # Airplane's mass
-    j_x = parameters.J_x  # Airplane's moment of inertia along x (body axis)
-    j_y = parameters.J_y  # Airplane's moment of inertia along y (body axis)
-    j_z = parameters.J_z  # Airplane's moment of inertia along z (body axis)
-    j_xz = parameters.J_xz  # Airplane's crossed moment of inertia of x and z (body axis)
-    g_d = parameters.g  # Earth's gravity (Earth's axis)
+    j_x = parameters[1]  # Airplane's moment of inertia along x (body axis)
+    j_y = parameters[2]  # Airplane's moment of inertia along y (body axis)
+    j_z = parameters[3]  # Airplane's moment of inertia along z (body axis)
+    j_xz = parameters[4]  # Airplane's crossed moment of inertia of x and z (body axis)
+    g_d = parameters[5]  # Earth's gravity (Earth's axis)
 
     gamma = j_x * j_z - j_xz ** 2
 
@@ -66,10 +66,8 @@ def flight_equations(time, state_vector, forces, moments, parameters):
     r_dot = ((j_x - j_y) * j_x + j_xz ** 2) * p * q - j_xz * (j_x - j_y + j_z) * q * r + j_xz * roll + j_x * yaw / gamma
 
     # Navigation Equations
-    xe_dot = u * cos(theta) * cos(psi) + v * (-cos(phi) * sin(psi) + sin(phi) * sin(theta) * cos(psi)) + w * (
-            sin(phi) * sin(psi) + cos(phi) * sin(theta) * cos(psi))
-    ye_dot = u * cos(theta) * sin(psi) + v * (cos(phi) * cos(psi) + sin(phi) * sin(theta) * sin(phi)) + w(
-        -sin(phi) * cos(psi) + cos(phi) * sin(theta) * sin(psi))
+    xe_dot = u * cos(theta) * cos(psi) + v * (-cos(phi) * sin(psi) + sin(phi) * sin(theta) * cos(psi)) + w * (sin(phi) * sin(psi) + cos(phi) * sin(theta) * cos(psi))
+    ye_dot = u * cos(theta) * sin(psi) + v * (cos(phi) * cos(psi) + sin(phi) * sin(theta) * sin(phi)) + w * (-sin(phi) * cos(psi) + cos(phi) * sin(theta) * sin(psi))
     ze_dot = u * sin(theta) - v * sin(phi) * cos(theta) - w * cos(phi) * cos(theta)
 
     # Derived state vector
