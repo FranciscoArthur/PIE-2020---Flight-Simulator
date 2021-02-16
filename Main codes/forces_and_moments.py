@@ -73,7 +73,7 @@ def moments_calculation_fct(plane_mass, plane_TAS, plane_orientation, atmospheri
 
     yaw_m = 0.5 * rho * S * c * cn * (v ** 2);
     
-    return [pitch_m, roll_m, yaw_m];
+    return [yaw_m, roll_m, pitch_m];
 
 
 #Fuel consumption calculation
