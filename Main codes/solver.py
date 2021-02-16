@@ -69,11 +69,12 @@ def rk4(plane_position_before_update, plane_orientation_before_update, plane_spe
     t0 = 0 # time before update, could have been an input but since flght_equations is not time dependant, a 0 value is used.
 
     k1 = flight_equations(t0, X_before_update, forces, moments, parameters)
-    k2 = flight_equations(t0 + dt / 2.0, X_before_update + dt * k1 / 2.0, forces, moments, parameters)
-    k3 = flight_equations(t0 + dt / 2.0, X_before_update + dt * k2 / 2.0, forces, moments, parameters)
-    k4 = flight_equations(t0 + dt, X_before_update + dt * k3, forces, moments, parameters)
+    #k2 = flight_equations(t0 + dt / 2.0, X_before_update + dt * k1 / 2.0, forces, moments, parameters)
+    #k3 = flight_equations(t0 + dt / 2.0, X_before_update + dt * k2 / 2.0, forces, moments, parameters)
+    #k4 = flight_equations(t0 + dt, X_before_update + dt * k3, forces, moments, parameters)
 
-    X_current = X_before_update + dt * (k1 + 2.0 * k2 + 2.0 * k3 + k4) / 6.0
+    #X_current = X_before_update + dt * (k1 + 2.0 * k2 + 2.0 * k3 + k4) / 6.0
+    X_current = X_before_update + dt * k1
     
 
 
