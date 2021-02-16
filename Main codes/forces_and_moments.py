@@ -80,7 +80,7 @@ def moments_calculation_fct(plane_mass, plane_TAS, plane_orientation, atmospheri
 def fuel_consumption_calculation_fct(current_throttle):
     #modele simple pour le moment, adapte au cesna 172, return le fuel flow en kg/s
     
-    ff = 6.4 + 1.85*current_throttle
+    ff = (6.4 + 1.85*current_throttle)/3600
     
     return ff
 
