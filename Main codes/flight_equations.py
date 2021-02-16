@@ -71,6 +71,6 @@ def flight_equations(time, state_vector, forces, moments, parameters):
     ze_dot = u * sin(theta) - v * sin(phi) * cos(theta) - w * cos(phi) * cos(theta)
 
     # Derived state vector
-    x_dot = np.array([u_dot, v_dot, w_dot, xe_dot, ye_dot, ze_dot, p_dot, q_dot, r_dot, phi_dot, theta_dot, psi_dot])
+    x_dot = np.array([xe_dot, ye_dot, ze_dot, psi_dot, phi_dot, theta_dot, u_dot, v_dot, w_dot, r_dot, p_dot, q_dot])
 
     return x_dot
