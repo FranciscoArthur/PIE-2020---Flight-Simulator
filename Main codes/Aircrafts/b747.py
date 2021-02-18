@@ -3,7 +3,7 @@
 Created on Tue Feb  2 17:37:32 2021
 
 ----------
-Boeing 747
+Boeing 747-100
 ----------
 
 Source : JSBSim.
@@ -21,7 +21,9 @@ slugft2_2_kgm2 = 1.35581795  # Slug*feet^2 to kilograms*meters^2 (kg*m^2)
 
 
 plane_data_dict = { # Inertia
-                    'mass': 183500,                                           # Aircraft mass [kg] 
+                    'empty_mass': 162390,                                     # Aircraft mass [kg] 
+                    'MTOW': 340200,                                           # Aircraft max take-off weight [kg] 
+                    'MFL': 148540,                                            # Aircraft max kerosene capacity [kg] 
                     'inertia' : (np.diag([18200000, 33100000, 49700000]) + 
                                  [[0, 0, 970000],[0, 0, 0], [970000, 0, 0]])
                                  * slugft2_2_kgm2,                            # Aircraft inertia tensor [kg·m²]

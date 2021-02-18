@@ -56,12 +56,12 @@ plane = ['c172']                   # Other possibility : b747
 # Plane coordinates in ground frame
 initial_position = [0, 0, 100]     # [m]
 initial_orientation = [0, 0, 0]       
-initial_speed = [100, 0, 0]        # [m/s]      
+initial_speed = [50, 0, 0]        # [m/s]      
 initial_angular_speed = [0, 0, 0]  
 
 # Plane loading   
-payload = 1000                     # [kg]
-initial_fuel_load = 1000           # [kg]
+payload = 100                     # [kg]
+initial_fuel_load = 100           # [kg]
  
 # Weather conditions
 wind = [0, 0, 0]                   # wind expected to remain constant [m/s]
@@ -167,7 +167,7 @@ def Flight_Simulator_fct(plane, initial_conditions, weather, integration_paramet
     plane_fuel_load[0] = initial_fuel_load    
     
     plane_mass = [0] * number_of_time_steps
-    plane_initial_mass = payload + initial_fuel_load + plane_intrinsic_data['mass']
+    plane_initial_mass = payload + initial_fuel_load + plane_intrinsic_data['empty_mass']
     plane_mass[0] = plane_initial_mass
     
     # Resulting forces and moments, null at the initial time step.
@@ -200,6 +200,12 @@ def Flight_Simulator_fct(plane, initial_conditions, weather, integration_paramet
     
     # Time evolution
     time = [0] * number_of_time_steps
+    
+    
+    
+    
+    # Test conditions max payload and fuel load
+    
     
     
     

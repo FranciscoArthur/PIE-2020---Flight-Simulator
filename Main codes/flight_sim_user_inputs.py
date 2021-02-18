@@ -21,12 +21,12 @@ plane = ['c172']
 
 initial_position = [0, 0, 100]     # [m]
 initial_orientation = [0, 0, 0]
-initial_speed = [100, 0, 0]        # [m/s]
+initial_speed = [50, 0, 0]        # [m/s]
 initial_angular_speed = [0, 0, 0]
 
 # Plane loading 
-payload = 1000                     # [kg]
-initial_fuel_load = 1000           # [kg]
+payload = 100                     # [kg]
+initial_fuel_load = 100           # [kg]
 
 
 ### Weather conditions

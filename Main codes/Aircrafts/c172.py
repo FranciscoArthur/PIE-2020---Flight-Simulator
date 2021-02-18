@@ -21,7 +21,9 @@ slugft2_2_kgm2 = 1.35581795  # Slug*feet^2 to kilograms*meters^2 (kg*m^2)
 
 
 plane_data_dict = { # Inertia
-                    'mass': 1150,                                             # Aircraft mass [kg] 
+                    'empty_mass': 780,                                        # Aircraft mass [kg] 
+                    'MTOW': 1160,                                             # Aircraft max take-off weight [kg] 
+                    'MFL': 163,                                               # Aircraft max kerosene capacity [kg]                     
                     'inertia' : np.diag([948, 1346, 1967]) * slugft2_2_kgm2,  # Aircraft inertia tensor [kg·m²]
  
                     # Thrust
