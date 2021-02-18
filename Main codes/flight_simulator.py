@@ -170,7 +170,7 @@ def Flight_Simulator_fct(plane, initial_conditions, weather, integration_paramet
     plane_initial_mass = payload + initial_fuel_load + plane_intrinsic_data['empty_mass']
     plane_mass[0] = plane_initial_mass
     
-    # Resulting forces and moments, null at the initial time step.
+    # Resulting force and moment, null at the initial time step.
     plane_resulting_force = [[0, 0, 0]] * number_of_time_steps
     plane_resulting_moment = [[0, 0, 0]] * number_of_time_steps
     
@@ -178,6 +178,10 @@ def Flight_Simulator_fct(plane, initial_conditions, weather, integration_paramet
     plane_TAS = [0] * number_of_time_steps
     plane_initial_TAS =  np.sqrt((initial_speed[0]-wind[0])**2 + (initial_speed[1]-wind[1])**2 + (initial_speed[2]-wind[2])**2)    # Check
     plane_TAS[0] = plane_initial_TAS
+    
+    plane_TAS_vector = [[0, 0, 0]] * number_of_time_steps
+    plane_initial_TAS_vector = [initial_speed[0]-wind[0], initial_speed[1]-wind[1], initial_speed[2]-wind[2]]
+    plane_TAS_vector[0] = plane_initial_TAS_vector
     
     # Plane load factor - initial horizontal flight 
     plane_load_factor = [1] * number_of_time_steps
@@ -238,6 +242,7 @@ def Flight_Simulator_fct(plane, initial_conditions, weather, integration_paramet
         plane_fuel_load_before_update = plane_fuel_load[i-1]
         plane_mass_before_update = plane_mass[i-1]
         plane_TAS_before_update = plane_TAS[i-1]
+        plane_TAS_vector_before_update = plane_TAS_vector[i-1]
         plane_Mach_before_update = plane_Mach[i-1]
         plane_qinf_before_update = plane_qinf[i-1]  
         
@@ -275,13 +280,15 @@ def Flight_Simulator_fct(plane, initial_conditions, weather, integration_paramet
         """
         from plane_data import plane_data_fct
         current_aerodynamic_coeff = plane_data_fct(plane_position_before_update, 
-                                               plane_orientation_before_update, 
-                                               plane_speed_before_update, 
-                                               plane_angular_speed_before_update,  
-                                               atmospheric_parameters_before_update,
-                                               plane_intrinsic_data,
-                                               wind,
-                                               current_pilot_controls)
+                                                   plane_orientation_before_update, 
+                                                   plane_speed_before_update, 
+                                                   plane_angular_speed_before_update,  
+                                                   atmospheric_parameters_before_update,
+                                                   plane_intrinsic_data,
+                                                   wind,
+                                                   current_pilot_controls,
+                                                   plane_TAS_before_update,
+                                                   plane_TAS_vector_before_update)
 
        
         
@@ -314,7 +321,7 @@ def Flight_Simulator_fct(plane, initial_conditions, weather, integration_paramet
                                                                     atmospheric_parameters_before_update,
                                                                     plane_orientation_before_update)
         
-        plane_current_fuel_consumption = fuel_consumption_calculation_fct(current_pilot_controls[0])
+        plane_current_fuel_consumption = fuel_consumption_calculation_fct(current_pilot_controls[0], plane_intrinsic_data)
                 
         
         
@@ -347,23 +354,23 @@ def Flight_Simulator_fct(plane, initial_conditions, weather, integration_paramet
                                           plane_current_mass)
 
 
-        # CHECK NOMENCLATURE WITH ARTHUR - CHECK ORDER OF OUTPUTS
         plane_position[i] = [current_state_vector[0], current_state_vector[1], current_state_vector[2]]
         plane_orientation[i] = [current_state_vector[3], current_state_vector[4], current_state_vector[5]]
         plane_speed[i] = [current_state_vector[6], current_state_vector[7], current_state_vector[8]]
         plane_angular_speed[i] = [current_state_vector[9], current_state_vector[10], current_state_vector[11]]
         
-        
+        plane_current_TAS_vector = [plane_speed[i][0]-wind[0], plane_speed[i][1]-wind[1], plane_speed[i][2]-wind[2]]
         plane_current_TAS =  np.sqrt((plane_speed[i][0]-wind[0])**2 + (plane_speed[i][1]-wind[1])**2 + (plane_speed[i][2]-wind[2])**2) 
         new_altitude = plane_position[i][2]
         np.disp('new_altitude=' + str(new_altitude))
         new_altitude_int = int(new_altitude)
-        np.disp('new_altitude_int=' + str(new_altitude_int))        
+        # np.disp('new_altitude_int=' + str(new_altitude_int))        
         
         current_atmospheric_parameters = atmospheric_parameters_fct(new_altitude_int)
         plane_atmospheric_parameters[i] = current_atmospheric_parameters
         current_air_density = current_atmospheric_parameters[4]
         current_sound_velocity = current_atmospheric_parameters[5]
+        plane_TAS_vector[i] = plane_current_TAS_vector        
         plane_TAS[i] = plane_current_TAS
         plane_Mach[i] = plane_current_TAS / current_sound_velocity
         plane_qinf[i] = 0.5*current_air_density*(plane_current_TAS**2)
@@ -390,7 +397,8 @@ def Flight_Simulator_fct(plane, initial_conditions, weather, integration_paramet
     result['plane_position'] = plane_position
     result['plane_orientation'] = plane_orientation
     result['plane_speed'] = plane_speed                    # Ground speed
-    result['plane_TAS'] = plane_TAS                        # True AirSpeed
+    result['plane_TAS_vector'] = plane_TAS_vector          # Plane speed in the relative air - vector
+    result['plane_TAS'] = plane_TAS                        # True AirSpeed - module
     result['plane_angular_speed'] =   plane_angular_speed
     result['plane_fuel_load'] = plane_fuel_load
     result['plane_mass'] = plane_mass

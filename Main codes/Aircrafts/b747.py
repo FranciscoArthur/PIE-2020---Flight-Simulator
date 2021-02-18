@@ -30,6 +30,12 @@ plane_data_dict = { # Inertia
  
                     # Thrust
                     'static_thrust':240000,                                   # [N] 
+                    # 'min_static_thrust':,                                     # [N] 
+                    # 'max_static_thrust':240000,                                     # [N] 
+                    
+                    # Fuel consumption
+                    'min_consumption_zero_throttle': 0,                       # [kg/h]
+                    'max_additional_consumption_full_throttle': 0,            # [kg/h] 
                     
                     # Amplitudes
                     'de_max':20,                                              # delta_elevator_max  [deg]

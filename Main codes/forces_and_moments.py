@@ -6,7 +6,7 @@ def forces_calculation_fct(plane_mass, plane_TAS, plane_orientation, atmospheric
     
     #collection of aerodynamic coefficients
     cz = plane_data[0];
-    cx = plane_data[1];
+    cd = plane_data[1];
     cy = plane_data[2];
     cl = plane_data[3];
     cm = plane_data[4];
@@ -27,7 +27,7 @@ def forces_calculation_fct(plane_mass, plane_TAS, plane_orientation, atmospheric
     phi = plane_orientation[1];
         
     #Calculation
-    drag = 0.5 * rho * S * cx * (v ** 2);
+    drag = 0.5 * rho * S * cd * (v ** 2);
 
     lat_force = 0.5 * rho * S * cy * (v ** 2);
 
@@ -77,10 +77,11 @@ def moments_calculation_fct(plane_mass, plane_TAS, plane_orientation, atmospheri
 
 
 #Fuel consumption calculation
-def fuel_consumption_calculation_fct(current_throttle):
-    #modele simple pour le moment, adapte au cesna 172, return le fuel flow en kg/s
+def fuel_consumption_calculation_fct(current_throttle, plane_intrinsic_data):
+    min_consum = plane_intrinsic_data['min_consumption_zero_throttle']
+    max_add_consum = plane_intrinsic_data['max_additional_consumption_full_throttle']
     
-    ff = (6.4 + 1.85*current_throttle)/3600
+    ff = (min_consum + max_add_consum*current_throttle/10)/3600         # [kg/s]
     
     return ff
 

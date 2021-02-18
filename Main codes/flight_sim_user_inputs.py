@@ -54,6 +54,11 @@ command_landing_gear = [0 for i in range(number_of_time_steps)]
 
 
 
+
+
+
+
+
 ###############################################################################
 # DO NOT MODIFY WHAT IS BELOW
 ### Gathering the user's inputs

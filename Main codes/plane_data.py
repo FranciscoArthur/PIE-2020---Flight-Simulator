@@ -3,7 +3,7 @@ import numpy as np
 
 def plane_data_fct(plane_position, plane_orientation,
                plane_speed, plane_angular_speed,atmospheric_parameters,plane_intrinsic_data,
-               wind, pilot_data):
+               wind, pilot_data, plane_TAS_before_update, plane_TAS_vector_before_update):
     """
         Inputs: -plane_position: vector 3*1 [x, y, z]'
                 -plane_orientation: vector 3*1 
@@ -24,19 +24,19 @@ def plane_data_fct(plane_position, plane_orientation,
     d2r = np.pi / 180
     r2d = 1 / d2r
 
-    # Speed of the airplane
-    global_speed = plane_speed + wind
-    v = np.sqrt(global_speed[0] ** 2 + global_speed[1] ** 2 + global_speed[2] ** 2)
+    # Speed of the airplane in the air
+    v_air_mod = plane_TAS_before_update
+    v_air_vec = plane_TAS_vector_before_update
 
     # alpha
-    alpha = np.arctan(global_speed[2] / abs(global_speed[0]))
+    alpha = np.arctan(v_air_vec[2] / abs(v_air_vec[0]))
 
     # beta
-    beta = np.arcsin(global_speed[1] / v)
+    beta = np.arcsin(v_air_vec[1] / v_air_mod)
 
     # Define coefficients of multiplication for contribution of rotations
-    b2v = plane_intrinsic_data['span'] / (2 * v)
-    c_bar2v = plane_intrinsic_data['chord'] / (2 * v)
+    b2v = plane_intrinsic_data['span'] / (2 * v_air_mod)
+    c_bar2v = plane_intrinsic_data['chord'] / (2 * v_air_mod)
 
     # Define control parameters angle
     q = plane_angular_speed[0]
