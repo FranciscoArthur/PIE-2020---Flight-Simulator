@@ -40,7 +40,7 @@ delta_t = 0.1
 number_of_time_steps = int(time_of_study/delta_t) + 1    # DO NOT MODIFY
 
 ### Pilot commands, time-dependant
-command_throttle_position = [0 for i in range(number_of_time_steps)]
+command_throttle_position = [10 for i in range(number_of_time_steps)]
 command_rudder_position = [0 for i in range(number_of_time_steps)]
 command_ailerons_position = [0 for i in range(number_of_time_steps)]
 command_elevators_position = [0 for i in range(number_of_time_steps)]

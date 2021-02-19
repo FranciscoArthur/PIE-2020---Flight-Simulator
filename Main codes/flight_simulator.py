@@ -174,6 +174,9 @@ def Flight_Simulator_fct(plane, initial_conditions, weather, integration_paramet
     plane_resulting_force = [[0, 0, 0]] * number_of_time_steps
     plane_resulting_moment = [[0, 0, 0]] * number_of_time_steps
     
+    # Aerodynamic coefficients
+    plane_aerodynamic_coefficients = [[0, 0, 0, 0, 0, 0, 0]] * number_of_time_steps
+    
     # True AirSpeed
     plane_TAS = [0] * number_of_time_steps
     plane_initial_TAS =  np.sqrt((initial_speed[0]-wind[0])**2 + (initial_speed[1]-wind[1])**2 + (initial_speed[2]-wind[2])**2)    # Check
@@ -290,7 +293,8 @@ def Flight_Simulator_fct(plane, initial_conditions, weather, integration_paramet
                                                    plane_TAS_before_update,
                                                    plane_TAS_vector_before_update)
 
-       
+        plane_aerodynamic_coefficients[i] = current_aerodynamic_coeff
+        np.disp('aero_coeff=' + str(current_aerodynamic_coeff))
         
         
               
@@ -375,6 +379,7 @@ def Flight_Simulator_fct(plane, initial_conditions, weather, integration_paramet
         plane_Mach[i] = plane_current_TAS / current_sound_velocity
         plane_qinf[i] = 0.5*current_air_density*(plane_current_TAS**2)
 
+        np.disp('TAS=' + str(plane_current_TAS))
 
 
         # ### End of a time step : Check the flight failures (ex : negative altitude)
@@ -412,6 +417,7 @@ def Flight_Simulator_fct(plane, initial_conditions, weather, integration_paramet
     result['plane_load_factor_vector'] = plane_load_factor_vector 
     result['plane_intrinsic_data'] = plane_intrinsic_data
     result['plane_atmospheric_parameters'] = plane_atmospheric_parameters
+    result['plane_aerodynamic_coefficients'] = plane_aerodynamic_coefficients
     
      
     ### Final step - display of the results

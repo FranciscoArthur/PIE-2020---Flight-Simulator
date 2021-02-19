@@ -39,9 +39,14 @@ def plane_data_fct(plane_position, plane_orientation,
     c_bar2v = plane_intrinsic_data['chord'] / (2 * v_air_mod)
 
     # Define control parameters angle
-    q = plane_angular_speed[0]
-    p = plane_angular_speed[1]
-    r = plane_angular_speed[2]
+    # q = plane_angular_speed[0]               # pitch angle
+    # p = plane_angular_speed[1]               # roll angle
+    # r = plane_angular_speed[2]               # yaw angle
+
+    q = plane_angular_speed[2]               # pitch angle
+    p = plane_angular_speed[1]               # roll angle
+    r = plane_angular_speed[0]               # yaw angle    
+    
     de = pilot_data[1] / 20 * plane_intrinsic_data['de_max'] * d2r
     da = pilot_data[2] / 20 * plane_intrinsic_data['da_max'] * d2r
     dr = pilot_data[3] / 20 * plane_intrinsic_data['dr_max'] * d2r
@@ -49,15 +54,13 @@ def plane_data_fct(plane_position, plane_orientation,
 
 
     # Lift coefficient
-    cL = plane_intrinsic_data['CL_0'] + plane_intrinsic_data['CL_a'] * alpha + plane_intrinsic_data['CL_q'] * q * c_bar2v + plane_intrinsic_data[
-        'CL_de'] * de
+    cL = plane_intrinsic_data['CL_0'] + plane_intrinsic_data['CL_a'] * alpha + plane_intrinsic_data['CL_q'] * q * c_bar2v + plane_intrinsic_data['CL_de'] * de
 
     # Drag coefficient
     cd = plane_intrinsic_data['CD_0'] + plane_intrinsic_data['induced_drag_factor'] * cL ** 2 + plane_intrinsic_data['CD_de'] * de
 
     # Side force coefficient
-    cy = plane_intrinsic_data['CY_0'] + plane_intrinsic_data['CY_beta'] * beta + (plane_intrinsic_data['CY_p'] * p + plane_intrinsic_data['CY_r'] * r) * b2v + \
-         plane_intrinsic_data['CY_dr'] * dr
+    cy = plane_intrinsic_data['CY_0'] + plane_intrinsic_data['CY_beta'] * beta + (plane_intrinsic_data['CY_p'] * p + plane_intrinsic_data['CY_r'] * r) * b2v + plane_intrinsic_data['CY_dr'] * dr
 
     # Moment characteristics
 
