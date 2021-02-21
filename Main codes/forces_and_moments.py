@@ -35,11 +35,11 @@ def forces_calculation_fct(plane_mass, plane_TAS, plane_orientation, atmospheric
 
     lift = 0.5 * rho * S * cz * (v ** 2);
     
-    f_x = thrust - drag - weight * math.sin(theta);
+    f_x = thrust - drag #- weight * math.sin(theta); # weight is already considered in "flight_equations"
 
-    f_y = lat_force + weight * math.sin(phi) * np.sign(phi);
+    f_y = lat_force #+ weight * math.sin(phi) * np.sign(phi);
 
-    f_z = lift - weight * math.cos(theta);
+    f_z = lift #- weight * math.cos(theta);
     
     return [f_x, f_y, f_z];
 
@@ -67,7 +67,7 @@ def moments_calculation_fct(plane_mass, plane_TAS, plane_orientation, atmospheri
         
     #Calculation
     
-    roll_m = 0.5 * rho * S * b * cl * (v ** 2);
+    roll_m =  0.5 * rho * S * b * cl * (v ** 2);
 
     pitch_m = 0.5 * rho * S * c * cm * (v ** 2);
 

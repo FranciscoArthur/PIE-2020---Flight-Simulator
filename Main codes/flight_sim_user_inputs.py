@@ -7,6 +7,7 @@ Created on Wed Dec  2 12:03:00 2020
 FS_user_inputs
 """
 from flight_simulator import Flight_Simulator_fct
+import numpy as np
 
 ### Considered plane
 plane = ['c172']       
@@ -19,14 +20,14 @@ plane = ['c172']
 # Speed = [Velocity at x-axis, Velocity at y-axis, Velocity at z-axis ]
 # Angular_Speed = [Yaw rate, Roll rate, Pitch rate]
 
-initial_position = [0, 0, 100]     # [m]
+initial_position = [0, 0, 1800]     # [m]
 initial_orientation = [0, 0, 0]
-initial_speed = [50, 0, 0]        # [m/s]
+initial_speed = [60, 0, 0]          # [m/s]
 initial_angular_speed = [0, 0, 0]
 
 # Plane loading 
-payload = 100                     # [kg]
-initial_fuel_load = 100           # [kg]
+payload = 100                       # [kg]
+initial_fuel_load = 77              # [kg]
 
 
 ### Weather conditions
@@ -36,17 +37,17 @@ weather = [wind]                   # Next : add humidity/rain ?
 
 ### Integration parameters
 time_of_study = 1
-delta_t = 0.1
+delta_t = 0.01
 number_of_time_steps = int(time_of_study/delta_t) + 1    # DO NOT MODIFY
 
 ### Pilot commands, time-dependant
-command_throttle_position = [10 for i in range(number_of_time_steps)]
-command_rudder_position = [0 for i in range(number_of_time_steps)]
-command_ailerons_position = [0 for i in range(number_of_time_steps)]
-command_elevators_position = [0 for i in range(number_of_time_steps)]
-command_air_brakes = [0 for i in range(number_of_time_steps)]
-command_hygh_lift_devices = [0 for i in range(number_of_time_steps)]
-command_landing_gear = [0 for i in range(number_of_time_steps)]
+command_throttle_position = np.array([0 for i in range(number_of_time_steps)])
+command_rudder_position = np.array([0 for i in range(number_of_time_steps)])
+command_ailerons_position = np.array([0 for i in range(number_of_time_steps)])
+command_elevators_position = np.array([0 for i in range(number_of_time_steps)])
+command_air_brakes = np.array([0 for i in range(number_of_time_steps)])
+command_hygh_lift_devices = np.array([0 for i in range(number_of_time_steps)])
+command_landing_gear = np.array([0 for i in range(number_of_time_steps)])
 
 
 
@@ -76,7 +77,7 @@ integration_parameters.append(delta_t)
 integration_parameters.append(number_of_time_steps)
 
 pilot_inputs = [command_throttle_position, command_rudder_position, command_ailerons_position, command_elevators_position, command_air_brakes, command_hygh_lift_devices, command_landing_gear]
-
+print(pilot_inputs)
 
 
 ### Call the main function Flight_Simulator_fct in order to compute the results and display them

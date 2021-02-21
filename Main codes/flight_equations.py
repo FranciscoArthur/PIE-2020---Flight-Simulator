@@ -52,7 +52,7 @@ def flight_equations(time, state_vector, forces, moments, parameters):
 
     # Force Equation
     u_dot = r * v - q * w - g_d * sin(theta) + f_x / m
-    v_dot = -r * u + p * w + g_d + sin(phi) * cos(theta) + f_y / m
+    v_dot = -r * u + p * w + g_d * sin(phi) * cos(theta) + f_y / m
     w_dot = q * u - p * v + g_d * cos(phi) * cos(theta) + f_z / m
 
     # Kinematic Equations

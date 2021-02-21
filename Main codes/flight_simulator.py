@@ -73,13 +73,13 @@ delta_t = 0.1
 number_of_time_steps = int(time_of_study/delta_t) + 1
 
 # Pilot commands
-command_throttle_position = [0 for i in range(number_of_time_steps)]
-command_rudder_position = [0 for i in range(number_of_time_steps)]
-command_ailerons_position = [0 for i in range(number_of_time_steps)]
-command_elevators_position = [0 for i in range(number_of_time_steps)]
-command_air_brakes = [0 for i in range(number_of_time_steps)]
-command_hygh_lift_devices = [0 for i in range(number_of_time_steps)]
-command_landing_gear = [0 for i in range(number_of_time_steps)]
+command_throttle_position = np.array([0 for i in range(number_of_time_steps)])
+command_rudder_position = np.array([0 for i in range(number_of_time_steps)])
+command_ailerons_position = np.array([0 for i in range(number_of_time_steps)])
+command_elevators_position = np.array([0 for i in range(number_of_time_steps)])
+command_air_brakes = np.array([0 for i in range(number_of_time_steps)])
+command_hygh_lift_devices = np.array([0 for i in range(number_of_time_steps)])
+command_landing_gear = np.array([0 for i in range(number_of_time_steps)])
 
 
 ### Gathering the user's inputs
@@ -97,7 +97,7 @@ integration_parameters.append(delta_t)
 integration_parameters.append(number_of_time_steps)
 
 
-pilot_inputs = [command_throttle_position, command_rudder_position, command_ailerons_position, command_elevators_position, command_air_brakes, command_hygh_lift_devices, command_landing_gear]
+pilot_inputs = np.array([command_throttle_position, command_rudder_position, command_ailerons_position, command_elevators_position, command_air_brakes, command_hygh_lift_devices, command_landing_gear])
 
 ### End of the TEST specification ###
 ##############################################################################
@@ -110,6 +110,7 @@ pilot_inputs = [command_throttle_position, command_rudder_position, command_aile
 
 def Flight_Simulator_fct(plane, initial_conditions, weather, integration_parameters, pilot_inputs):
     
+    
     ### Step 0 : collecting the user inputs
     # Plane
     plane_version = plane[0]  # Name of the version of the plane
@@ -117,14 +118,14 @@ def Flight_Simulator_fct(plane, initial_conditions, weather, integration_paramet
     # Initial conditions
     initial_position = initial_conditions[0]
     initial_orientation = initial_conditions[1]
-    initial_speed = initial_conditions[2]            
+    initial_speed = initial_conditions[2]
     initial_angular_speed = initial_conditions[3]
     payload = initial_conditions[4]
     initial_fuel_load = initial_conditions[5]
 
     # Weather 
     wind = weather[0]
-    
+
     # Integration parameters
     time_of_study = integration_parameters[0]
     delta_t = integration_parameters[1]
@@ -150,15 +151,15 @@ def Flight_Simulator_fct(plane, initial_conditions, weather, integration_paramet
     plane_intrinsic_data = plane_module.plane_data_dict
     os.chdir(main_path)
     # os.getcwd()
-    
-    
-    
+
+
+
     ### Step 0_ter : Creating the output vectors + initializing the values
     # State vector, which initial values are given by the user inputs
-    plane_position = [[]] * number_of_time_steps
-    plane_orientation = [[]] * number_of_time_steps
-    plane_speed = [[]] * number_of_time_steps                   
-    plane_angular_speed = [[]] * number_of_time_steps    
+    plane_position = np.zeros((number_of_time_steps,3))
+    plane_orientation = np.zeros((number_of_time_steps,3))
+    plane_speed = np.zeros((number_of_time_steps,3))
+    plane_angular_speed = np.zeros((number_of_time_steps,3))
     plane_fuel_load = [0] * number_of_time_steps
     plane_position[0] = initial_position
     plane_orientation[0] = initial_orientation
@@ -294,7 +295,8 @@ def Flight_Simulator_fct(plane, initial_conditions, weather, integration_paramet
                                                    plane_TAS_vector_before_update)
 
         plane_aerodynamic_coefficients[i] = current_aerodynamic_coeff
-        np.disp('aero_coeff=' + str(current_aerodynamic_coeff))
+        
+        #np.disp('aero_coeff=' + str(current_aerodynamic_coeff))
         
         
               
@@ -311,7 +313,9 @@ def Flight_Simulator_fct(plane, initial_conditions, weather, integration_paramet
                                                       plane_orientation_before_update,
                                                       atmospheric_parameters_before_update,
                                                       current_aerodynamic_coeff,
-                                                      plane_intrinsic_data)                                                     
+                                                      plane_intrinsic_data)
+
+        print ('forces= ',plane_current_forces)
         
         plane_current_moments = moments_calculation_fct(plane_mass_before_update,
                                                         plane_TAS_before_update,
@@ -319,6 +323,9 @@ def Flight_Simulator_fct(plane, initial_conditions, weather, integration_paramet
                                                         atmospheric_parameters_before_update,
                                                         current_aerodynamic_coeff,
                                                         plane_intrinsic_data)    
+        
+        print ('moments= ',plane_current_moments)
+        
         
         plane_current_load_factor_both = loadfactor_calculation_fct(plane_mass_before_update,
                                                                     plane_current_forces,
@@ -357,11 +364,12 @@ def Flight_Simulator_fct(plane, initial_conditions, weather, integration_paramet
                                           wind,
                                           plane_current_mass)
 
+        print (current_state_vector)
 
-        plane_position[i] = [current_state_vector[0], current_state_vector[1], current_state_vector[2]]
-        plane_orientation[i] = [current_state_vector[3], current_state_vector[4], current_state_vector[5]]
-        plane_speed[i] = [current_state_vector[6], current_state_vector[7], current_state_vector[8]]
-        plane_angular_speed[i] = [current_state_vector[9], current_state_vector[10], current_state_vector[11]]
+        plane_position[i] = np.array([current_state_vector[0], current_state_vector[1], current_state_vector[2]])
+        plane_orientation[i] = np.array([current_state_vector[3], current_state_vector[4], current_state_vector[5]])
+        plane_speed[i] = np.array([current_state_vector[6], current_state_vector[7], current_state_vector[8]])
+        plane_angular_speed[i] = np.array([current_state_vector[9], current_state_vector[10], current_state_vector[11]])
         
         plane_current_TAS_vector = [plane_speed[i][0]-wind[0], plane_speed[i][1]-wind[1], plane_speed[i][2]-wind[2]]
         plane_current_TAS =  np.sqrt((plane_speed[i][0]-wind[0])**2 + (plane_speed[i][1]-wind[1])**2 + (plane_speed[i][2]-wind[2])**2) 
@@ -397,7 +405,7 @@ def Flight_Simulator_fct(plane, initial_conditions, weather, integration_paramet
         i = i+1
 
 
-    ### End of the loop : gathering all the results in a dictionary      
+    ### End of the loop : gathering all the results in a dictionary    
     result = {}
     result['plane_position'] = plane_position
     result['plane_orientation'] = plane_orientation
@@ -418,7 +426,7 @@ def Flight_Simulator_fct(plane, initial_conditions, weather, integration_paramet
     result['plane_intrinsic_data'] = plane_intrinsic_data
     result['plane_atmospheric_parameters'] = plane_atmospheric_parameters
     result['plane_aerodynamic_coefficients'] = plane_aerodynamic_coefficients
-    
+
      
     ### Final step - display of the results
     # CHECK NOMENCLATURE WITH NICO
