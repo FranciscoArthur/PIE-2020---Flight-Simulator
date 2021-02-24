@@ -79,9 +79,9 @@ def moments_calculation_fct(plane_mass, plane_TAS, plane_orientation, atmospheri
 #Fuel consumption calculation
 def fuel_consumption_calculation_fct(current_throttle, plane_intrinsic_data):
     min_consum = plane_intrinsic_data['min_consumption_zero_throttle']
-    max_add_consum = plane_intrinsic_data['max_additional_consumption_full_throttle']
+    max_consum = plane_intrinsic_data['max_consumption_full_throttle']
     
-    ff = (min_consum + max_add_consum*current_throttle/10)/3600         # [kg/s]
+    ff = (min_consum + max_consum*current_throttle/10)/3600         # [kg/s]
     
     return ff
 

@@ -14,9 +14,9 @@ Source : JSBSim.
 import numpy as np
 
 # CONVERSIONS
-lbs2kg = 0.453592  # Pounds (lb) to kilograms (kg)
-ft2m = 0.3048  # Feet (ft) to meters (m)
-slug2kg = 14.5939  # Slug to kilograms (kg)
+lbs2kg = 0.453592            # Pounds (lb) to kilograms (kg)
+ft2m = 0.3048                # Feet (ft) to meters (m)
+slug2kg = 14.5939            # Slug to kilograms (kg)
 slugft2_2_kgm2 = 1.35581795  # Slug*feet^2 to kilograms*meters^2 (kg*m^2)
 
 
@@ -29,13 +29,13 @@ plane_data_dict = { # Inertia
                                  * slugft2_2_kgm2,                            # Aircraft inertia tensor [kg·m²]
  
                     # Thrust
-                    'static_thrust':240000,                                   # [N] 
-                    # 'min_static_thrust':,                                     # [N] 
-                    # 'max_static_thrust':240000,                                     # [N] 
+                    'static_thrust':240000,                                   # [N] Max static thrust
+                    # 'min_static_thrust':,                                   # [N] 
+                    # 'max_static_thrust':240000,                             # [N] 
                     
                     # Fuel consumption
                     'min_consumption_zero_throttle': 0,                       # [kg/h]
-                    'max_additional_consumption_full_throttle': 0,            # [kg/h] 
+                    'max_consumption_full_throttle': 12100,                   # [kg/h] 
                     
                     # Amplitudes
                     'de_max':20,                                              # delta_elevator_max  [deg]
@@ -49,38 +49,38 @@ plane_data_dict = { # Inertia
                     
                     # forces_moments_coefficients
         			# Lift
-				    'CL_0':0.21,
-    				'CL_a':4.4,                                             
-    				'CL_q':6.6,
-    				'CL_de':0.32,
+				    'CL_0':0.21,                   # Zero angle of attack lift
+    				'CL_a':4.4,                    # Effect of angle of attack                                          
+    				'CL_q':6.6,			           # Effect of pitch rate
+    				'CL_de':0.32,				   # Effect of elevator
     			    # Drag
-    				'CD_0':0.0164,
-    				'induced_drag_factor':0.054,
-    				'CD_de':0.43,
+    				'CD_0':0.0164,			       # Initial drag
+    				'induced_drag_factor':0.054,   # For the lift-drag polar
+    				'CD_de':0.43,  		    	   # Effect of elevator
     			    # Side_force
-    				'CY_0':0,
-    				'CY_beta':-0.9,
-    				'CY_p':0,
-    				'CY_r':0,
-    				'CY_dr':0.12,
+    				'CY_0':0, 				       # Initial side force coefficient
+    				'CY_beta':-0.9,                # Effect of slide angle of aircraft
+    				'CY_p':0, 				       # Effect of roll rate
+    				'CY_r':0,  				       # Effect of yaw rate
+    				'CY_dr':0.12, 				   # Effect of rudder
     			    # Pitch
-    				'Cm_0':0,
-    				'Cm_da':-1,
-    				'Cm_q':-20.5,
-    				'Cm_de':-1.3,
+    				'Cm_0':0,    				   # Initial pitching coefficient
+    				'Cm_da':-1,				       # Effect of aileron
+    				'Cm_q':-20.5, 				   # Effect of pitch rate
+    				'Cm_de':-1.3, 				   # Effect of elevator
     			    # Roll
-    				'Cl_0':0,
-    				'Cl_beta':-0.16,
-    				'Cl_p':-0.34,
-    				'Cl_r':0.13,
-    				'Cl_da':-0.013,
-    				'Cl_dr':0.008,
+    				'Cl_0':0, 				       # Initial roll coefficient
+    				'Cl_beta':-0.16, 			   # Effect of slide angle of aircraft
+    				'Cl_p':-0.34,				   # Effect of roll rate
+    				'Cl_r':0.13, 				   # Effect of yaw rate
+    				'Cl_da':-0.013,				   # Effect of aileron
+    				'Cl_dr':0.008,				   # Effect of rudder
     			    # Yaw
-    				'Cn_0':0,
-    				'Cn_beta':0.16,
-    				'Cn_p':-0.026,
-    				'Cn_r':-0.280,
-    				'Cn_da':-0.0018,
-    				'Cn_dr':-0.1,
+    				'Cn_0':0, 				       # Initial yaw coefficient
+    				'Cn_beta':0.16, 			   # Effect of slide angle of aircraft
+    				'Cn_p':-0.026, 				   # Effect of roll rate
+    				'Cn_r':-0.280, 				   # Effect of yaw rate
+    				'Cn_da':-0.0018, 			   # Effect of aileron
+    				'Cn_dr':-0.1, 			       # Effect of rudder
                     }
 			

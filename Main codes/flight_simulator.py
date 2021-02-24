@@ -132,7 +132,6 @@ def Flight_Simulator_fct(plane, initial_conditions, weather, integration_paramet
     number_of_time_steps = integration_parameters[2]
 
     # Pilot inputs - each command is a list of number_of_time_steps elements
-    ### NEED CHECHING WITH THOMAS AND CHRISTOPHE
     command_throttle_position = pilot_inputs[0]     # From 0 to 10
     command_rudder_position = pilot_inputs[1]       # From -10 to 10
     command_ailerons_position = pilot_inputs[2]     # From -10 to 10
@@ -227,6 +226,7 @@ def Flight_Simulator_fct(plane, initial_conditions, weather, integration_paramet
     i = 1
     
     while i < number_of_time_steps:
+    
         np.disp('i=' + str(i))
                 
         ### Step 1 : gathering all the values that will be needed for this i-th time step calculations
@@ -396,10 +396,10 @@ def Flight_Simulator_fct(plane, initial_conditions, weather, integration_paramet
         np.disp('TAS=' + str(plane_current_TAS))
 
 
-        # ### End of a time step : Check the flight failures (ex : negative altitude)
+        ### End of a time step : Check the flight failures (ex : negative altitude)
         # if (plane_position[i][2] < 0) and (current_landing_gear == 0) :
         #     raise ValueError ("The aircraft crashed - negative altitude")
-        
+
         # if plane_load_factor[i] > 3:    # arbitrary max load factor
         #     raise ValueError ("The aircraft crashed - unsustainable load factor")
         
