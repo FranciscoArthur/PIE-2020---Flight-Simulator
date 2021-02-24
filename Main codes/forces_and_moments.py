@@ -23,8 +23,9 @@ def forces_calculation_fct(plane_mass, plane_TAS, plane_orientation, atmospheric
     
     #state vector
     v = plane_TAS;
-    theta = plane_orientation[0];
-    phi = plane_orientation[1];
+    psi = plane_orientation[0];   # yaw angle
+    phi = plane_orientation[1];   # roll angle
+    theta = plane_orientation[2]; # pitch angle
         
     #Calculation
     drag = 0.5 * rho * S * cd * (v ** 2);
@@ -35,11 +36,23 @@ def forces_calculation_fct(plane_mass, plane_TAS, plane_orientation, atmospheric
 
     lift = 0.5 * rho * S * cz * (v ** 2);
     
-    f_x = thrust - drag #- weight * math.sin(theta); # weight is already considered in "flight_equations"
-
-    f_y = lat_force #+ weight * math.sin(phi) * np.sign(phi);
-
-    f_z = lift #- weight * math.cos(theta);
+    
+    ### Resulting force - in the airplane frame
+    # Test without weight - add it in the flight_equations
+    # weight is already considered in "flight_equations"
+    # f_x = thrust - drag # - weight * math.sin(theta); 
+    # f_y = lat_force # + weight * math.sin(phi) * np.sign(phi);
+    # f_z = lift # - weight * math.cos(theta);
+    
+    # Test with weight - Arthur style
+    # f_x = thrust - drag - weight * math.sin(theta);
+    # f_y = lat_force + weight * math.sin(phi) * math.cos(theta);
+    # f_z = lift - weight * math.cos(theta) * math.cos(phi);
+    
+    # Test with weight - Thomas style
+    f_x = thrust - drag - weight * math.sin(theta);
+    f_y = lat_force + weight * math.sin(phi) * np.sign(phi);
+    f_z = lift - weight * math.cos(theta);    
     
     return [f_x, f_y, f_z];
 

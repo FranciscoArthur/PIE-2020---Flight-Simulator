@@ -321,7 +321,7 @@ def Flight_Simulator_fct(plane, initial_conditions, weather, integration_paramet
                                                       current_aerodynamic_coeff,
                                                       plane_intrinsic_data)
 
-        print ('forces= ',plane_current_forces)
+        # print ('forces= ',plane_current_forces)
         
         plane_current_moments = moments_calculation_fct(plane_mass_before_update,
                                                         plane_TAS_before_update,
@@ -330,7 +330,7 @@ def Flight_Simulator_fct(plane, initial_conditions, weather, integration_paramet
                                                         current_aerodynamic_coeff,
                                                         plane_intrinsic_data)    
         
-        print ('moments= ',plane_current_moments)
+        # print ('moments= ',plane_current_moments)
         
         
         plane_current_load_factor_both = loadfactor_calculation_fct(plane_mass_before_update,

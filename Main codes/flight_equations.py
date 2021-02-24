@@ -50,11 +50,16 @@ def flight_equations(time, state_vector, forces, moments, parameters):
 
     gamma = j_x * j_z - j_xz ** 2
 
-    # Force Equation
-    u_dot = r * v - q * w - g_d * sin(theta) + f_x / m
-    v_dot = -r * u + p * w + g_d * sin(phi) * cos(theta) + f_y / m
-    w_dot = q * u - p * v + g_d * cos(phi) * cos(theta) + f_z / m
-
+    # # Force Equation - with weight
+    # u_dot = r * v - q * w - g_d * sin(theta) + f_x / m
+    # v_dot = -r * u + p * w + g_d * sin(phi) * cos(theta) + f_y / m
+    # w_dot = q * u - p * v + g_d * cos(phi) * cos(theta) + f_z / m
+    
+    # Test without the weight in those equations, but in the resulting force
+    u_dot = r * v - q * w + f_x / m
+    v_dot = -r * u + p * w + f_y / m
+    w_dot = q * u - p * v + f_z / m
+    
     # Kinematic Equations
     phi_dot = p + tan(theta) * (q * sin(phi) + r * cos(phi))
     theta_dot = q * cos(phi) - r * sin(phi)
