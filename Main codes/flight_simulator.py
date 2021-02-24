@@ -177,7 +177,7 @@ def Flight_Simulator_fct(plane, initial_conditions, weather, integration_paramet
     # Aerodynamic coefficients
     plane_aerodynamic_coefficients = [[0, 0, 0, 0, 0, 0, 0]] * number_of_time_steps
     
-    # True AirSpeed
+    # True relative AirSpeed - ground frame
     plane_TAS = [0] * number_of_time_steps
     plane_initial_TAS =  np.sqrt((initial_speed[0]-wind[0])**2 + (initial_speed[1]-wind[1])**2 + (initial_speed[2]-wind[2])**2)    # Check
     plane_TAS[0] = plane_initial_TAS
@@ -185,6 +185,32 @@ def Flight_Simulator_fct(plane, initial_conditions, weather, integration_paramet
     plane_TAS_vector = [[0, 0, 0]] * number_of_time_steps
     plane_initial_TAS_vector = [initial_speed[0]-wind[0], initial_speed[1]-wind[1], initial_speed[2]-wind[2]]
     plane_TAS_vector[0] = plane_initial_TAS_vector
+    
+    # Ground speed - scalar
+    initial_ground_velocity_scalar = np.sqrt(initial_speed[0]**2 + initial_speed[1]**2 + initial_speed[2]**2)    
+    initial_horizontal_ground_velocity_scalar = np.sqrt(initial_speed[0]**2 + initial_speed[1]**2)
+    plane_ground_velocity_scalar = [0] * number_of_time_steps
+    plane_horizontal_ground_velocity_scalar = [0] * number_of_time_steps
+    plane_ground_velocity_scalar[0] = initial_ground_velocity_scalar
+    plane_horizontal_ground_velocity_scalar[0] = initial_horizontal_ground_velocity_scalar
+    
+    
+    # Earth frame to relative wind frame angles [https://en.wikipedia.org/wiki/Flight_dynamics_(fixed-wing_aircraft)#Transformations_(Euler_angles)]
+    plane_gamma_angle = [0] * number_of_time_steps  # Flight path angle 
+    plane_sigma_angle = [0] * number_of_time_steps  # Heading angle
+    plane_mu_angle    = [0] * number_of_time_steps  # bank angle   
+    
+    initial_gamma_angle = np.arccos(np.sqrt(plane_initial_TAS_vector[0]**2 + plane_initial_TAS_vector[1]**2)/plane_initial_TAS) * np.sign(plane_initial_TAS_vector[2])
+    plane_gamma_angle[0] = initial_gamma_angle
+    
+    initial_sigma_angle = np.arccos(plane_initial_TAS_vector[0]/ np.sqrt(plane_initial_TAS_vector[0]**2 + plane_initial_TAS_vector[1]**2))
+    plane_sigma_angle[0] = initial_sigma_angle
+    
+    initial_mu_angle = 
+    
+    # Wind frame to body frame angles [https://en.wikipedia.org/wiki/Flight_dynamics_(fixed-wing_aircraft)#Transformations_(Euler_angles)] 
+    alpha_angle = [0] * number_of_time_steps  # Angle of attack
+    beta_angle  = [0] * number_of_time_steps  # Sideslip angle
     
     # Plane load factor - initial horizontal flight 
     plane_load_factor = [1] * number_of_time_steps
