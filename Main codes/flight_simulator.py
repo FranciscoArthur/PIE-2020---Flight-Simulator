@@ -51,53 +51,53 @@ import numpy as np
 
 ##############################################################################
 ### USER INPUTS - TEST ###
-plane = ['c172']                   # Other possibility : b747
+# plane = ['c172']                   # Other possibility : b747
 
-# Plane coordinates in ground frame
-initial_position = [0, 0, 100]     # [m]
-initial_orientation = [0, 0, 0]       
-initial_speed = [50, 0, 0]        # [m/s]      
-initial_angular_speed = [0, 0, 0]  
+# # Plane coordinates in ground frame
+# initial_position = [0, 0, 1800]     # [m]
+# initial_orientation = [0, 0, 0]       
+# initial_speed = [60, 0, 0]        # [m/s]      
+# initial_angular_speed = [0, 0, 0]  
 
-# Plane loading   
-payload = 100                     # [kg]
-initial_fuel_load = 100           # [kg]
+# # Plane loading   
+# payload = 100                     # [kg]
+# initial_fuel_load = 77           # [kg]
  
-# Weather conditions
-wind = [0, 0, 0]                   # wind expected to remain constant [m/s]
-weather = [wind]                   # Next : add humidity/rain ?
+# # Weather conditions
+# wind = [0, 0, 0]                   # wind expected to remain constant [m/s]
+# weather = [wind]                   # Next : add humidity/rain ?
 
-# Integration parameters
-time_of_study = 1
-delta_t = 0.1
-number_of_time_steps = int(time_of_study/delta_t) + 1
+# # Integration parameters
+# time_of_study = 1
+# delta_t = 0.01
+# number_of_time_steps = int(time_of_study/delta_t) + 1
 
-# Pilot commands
-command_throttle_position = np.array([0 for i in range(number_of_time_steps)])
-command_rudder_position = np.array([0 for i in range(number_of_time_steps)])
-command_ailerons_position = np.array([0 for i in range(number_of_time_steps)])
-command_elevators_position = np.array([0 for i in range(number_of_time_steps)])
-command_air_brakes = np.array([0 for i in range(number_of_time_steps)])
-command_hygh_lift_devices = np.array([0 for i in range(number_of_time_steps)])
-command_landing_gear = np.array([0 for i in range(number_of_time_steps)])
-
-
-### Gathering the user's inputs
-initial_conditions=[]
-initial_conditions.append(initial_position)
-initial_conditions.append(initial_orientation)
-initial_conditions.append(initial_speed)
-initial_conditions.append(initial_angular_speed)
-initial_conditions.append(payload)
-initial_conditions.append(initial_fuel_load)
-
-integration_parameters =[]
-integration_parameters.append(time_of_study)
-integration_parameters.append(delta_t)
-integration_parameters.append(number_of_time_steps)
+# # Pilot commands
+# command_throttle_position = np.array([0 for i in range(number_of_time_steps)])
+# command_rudder_position = np.array([0 for i in range(number_of_time_steps)])
+# command_ailerons_position = np.array([0 for i in range(number_of_time_steps)])
+# command_elevators_position = np.array([0 for i in range(number_of_time_steps)])
+# command_air_brakes = np.array([0 for i in range(number_of_time_steps)])
+# command_hygh_lift_devices = np.array([0 for i in range(number_of_time_steps)])
+# command_landing_gear = np.array([0 for i in range(number_of_time_steps)])
 
 
-pilot_inputs = np.array([command_throttle_position, command_rudder_position, command_ailerons_position, command_elevators_position, command_air_brakes, command_hygh_lift_devices, command_landing_gear])
+# ### Gathering the user's inputs
+# initial_conditions=[]
+# initial_conditions.append(initial_position)
+# initial_conditions.append(initial_orientation)
+# initial_conditions.append(initial_speed)
+# initial_conditions.append(initial_angular_speed)
+# initial_conditions.append(payload)
+# initial_conditions.append(initial_fuel_load)
+
+# integration_parameters =[]
+# integration_parameters.append(time_of_study)
+# integration_parameters.append(delta_t)
+# integration_parameters.append(number_of_time_steps)
+
+
+# pilot_inputs = np.array([command_throttle_position, command_rudder_position, command_ailerons_position, command_elevators_position, command_air_brakes, command_hygh_lift_devices, command_landing_gear])
 
 ### End of the TEST specification ###
 ##############################################################################
@@ -212,8 +212,14 @@ def Flight_Simulator_fct(plane, initial_conditions, weather, integration_paramet
     
     
     
-    # Test conditions max payload and fuel load
+    # Test conditions - initial flight failures
+    if (plane_initial_mass > plane_intrinsic_data['MTOW']):
+        raise ValueError ("The aircraft crashed - total weight > Max TakeOff Weight")
     
+    if (initial_fuel_load > plane_intrinsic_data['MFL']):    # arbitrary max load factor
+        raise ValueError ("The aircraft crashed - fuel load > max fuel load")
+    
+    # Other errors ?    
     
     
     

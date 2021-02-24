@@ -39,10 +39,6 @@ def plane_data_fct(plane_position, plane_orientation,
     c_bar2v = plane_intrinsic_data['chord'] / (2 * v_air_mod)
 
     # Define control parameters angle
-    # q = plane_angular_speed[0]               # pitch angle
-    # p = plane_angular_speed[1]               # roll angle
-    # r = plane_angular_speed[2]               # yaw angle
-
     q = plane_angular_speed[2]               # pitch angle
     p = plane_angular_speed[1]               # roll angle
     r = plane_angular_speed[0]               # yaw angle    
