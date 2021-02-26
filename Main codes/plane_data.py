@@ -3,7 +3,8 @@ import numpy as np
 
 def plane_data_fct(plane_position, plane_orientation,
                plane_speed, plane_angular_speed,atmospheric_parameters,plane_intrinsic_data,
-               wind, pilot_data, plane_TAS_before_update, plane_TAS_vector_before_update):
+               wind, pilot_data, plane_TAS_before_update, plane_TAS_vector_before_update,
+               alpha, beta):
     """
         Inputs: -plane_position: vector 3*1 [x, y, z]'
                 -plane_orientation: vector 3*1 
@@ -26,22 +27,18 @@ def plane_data_fct(plane_position, plane_orientation,
 
     # Speed of the airplane in the air
     v_air_mod = plane_TAS_before_update
-    v_air_vec = plane_TAS_vector_before_update
 
-    # alpha
-    alpha = np.arctan(v_air_vec[2] / abs(v_air_vec[0]))
-
-    # beta
-    beta = np.arcsin(v_air_vec[1] / v_air_mod)
+    # alpha = np.arctan(v_air_vec[2] / abs(v_air_vec[0]))  # FAUX CAR REPERE TERRESTRE
+    # beta = np.arcsin(v_air_vec[1] / v_air_mod)           # FAUX CAR REPERE TERRESTRE
 
     # Define coefficients of multiplication for contribution of rotations
     b2v = plane_intrinsic_data['span'] / (2 * v_air_mod)
     c_bar2v = plane_intrinsic_data['chord'] / (2 * v_air_mod)
 
     # Define control parameters angle
-    q = plane_angular_speed[2]               # pitch angle
-    p = plane_angular_speed[1]               # roll angle
-    r = plane_angular_speed[0]               # yaw angle    
+    q = plane_angular_speed[2]               # pitch rate angular speed
+    p = plane_angular_speed[1]               # roll rate angular speed
+    r = plane_angular_speed[0]               # yaw rate angular speed     
     
     de = pilot_data[3] / 20 * plane_intrinsic_data['de_max'] * d2r
     da = pilot_data[2] / 20 * plane_intrinsic_data['da_max'] * d2r
@@ -61,16 +58,18 @@ def plane_data_fct(plane_position, plane_orientation,
     # Moment characteristics
 
     # Pitching moment
-    # cm = plane_intrinsic_data['Cm_0'] + plane_intrinsic_data['Cm_da'] * da + plane_intrinsic_data['Cm_q'] * c_bar2v * q + plane_intrinsic_data['Cm_de'] * de
     cm = 0
     cl = 0
     cn = 0
+    
+    # cm = plane_intrinsic_data['Cm_0'] + plane_intrinsic_data['Cm_da'] * da + plane_intrinsic_data['Cm_q'] * c_bar2v * q + plane_intrinsic_data['Cm_de'] * de
 
-    # Rolling moment
+
+    # # Rolling moment
     # cl = plane_intrinsic_data['Cl_0'] + plane_intrinsic_data['Cl_da'] * da + plane_intrinsic_data['Cl_beta'] * beta + (
     #         plane_intrinsic_data['Cl_r'] * r + plane_intrinsic_data['Cl_p'] * p) * b2v * plane_intrinsic_data['Cl_dr'] * dr
 
-    # Yawing moment
+    # # Yawing moment
     # cn = plane_intrinsic_data['Cn_0'] + plane_intrinsic_data['Cn_beta'] * beta + (plane_intrinsic_data['Cn_p'] * p + plane_intrinsic_data['Cn_r'] * r) * b2v + \
     #      plane_intrinsic_data['Cn_da'] * da + plane_intrinsic_data['Cn_dr'] * dr
 

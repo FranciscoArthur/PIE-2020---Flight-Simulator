@@ -10,7 +10,7 @@ import numpy as np
 from numpy import sin, cos
 
 
-def check_theta_phi_psi_range(theta, phi, psi):
+def check_theta_phi_psi_range_fct(theta, phi, psi):
     """Check theta, phi, psi values are inside the defined range. This
     comprobation can also detect if the value of the angle is in degrees in
     some cases.
@@ -28,7 +28,7 @@ def check_theta_phi_psi_range(theta, phi, psi):
         raise ValueError('Psi value is not inside correct range')
 
 
-def body2hor(body_coords, theta, phi, psi):
+def body2hor_fct(body_coords, theta, phi, psi):
     """Transforms the vector coordinates in body frame of reference to local
     horizon frame of reference.
 
@@ -74,7 +74,7 @@ def body2hor(body_coords, theta, phi, psi):
         2012
     """
 
-    # check_theta_phi_psi_range(theta, phi, psi)
+    check_theta_phi_psi_range_fct(theta, phi, psi)
 
     # Transformation matrix from body to local horizon
     Lhb = np.array([
@@ -94,7 +94,7 @@ def body2hor(body_coords, theta, phi, psi):
     return hor_coords
 
 
-def hor2body(hor_coords, theta, phi, psi):
+def hor2body_fct(hor_coords, theta, phi, psi):
     """Transforms the vector coordinates in local horizon frame of reference
     to body frame of reference.
 
@@ -140,7 +140,7 @@ def hor2body(hor_coords, theta, phi, psi):
         2012
     """
 
-    # check_theta_phi_psi_range(theta, phi, psi)
+    check_theta_phi_psi_range_fct(theta, phi, psi)
 
     # Transformation matrix local horizon to body
     Lbh = np.array([
@@ -160,7 +160,7 @@ def hor2body(hor_coords, theta, phi, psi):
     return body_coords
 
 
-def check_gamma_mu_chi_range(gamma, mu, chi):
+def check_gamma_mu_chi_range_fct(gamma, mu, chi):
     """Check gamma, mu, chi values are inside the defined range. This
     verification can also detect if the value of the angle is in degrees in
     some cases.
@@ -178,7 +178,7 @@ def check_gamma_mu_chi_range(gamma, mu, chi):
         raise ValueError('Chi value is not inside correct range')
 
 
-def wind2hor(wind_coords, gamma, mu, chi):
+def wind2hor_fct(wind_coords, gamma, mu, chi):
     """Transforms the vector coordinates in wind frame of reference to local
     horizon frame of reference.
 
@@ -223,7 +223,7 @@ def wind2hor(wind_coords, gamma, mu, chi):
 
     """
 
-    check_gamma_mu_chi_range(gamma, mu, chi)
+    check_gamma_mu_chi_range_fct(gamma, mu, chi)
 
     # Transformation matrix from wind to local horizon
     Lhw = np.array([
@@ -243,7 +243,7 @@ def wind2hor(wind_coords, gamma, mu, chi):
     return hor_coords
 
 
-def hor2wind(hor_coords, gamma, mu, chi):
+def hor2wind_fct(hor_coords, gamma, mu, chi):
     """Transforms the vector coordinates in local horizon frame of reference
     to wind frame of reference.
 
@@ -287,7 +287,7 @@ def hor2wind(hor_coords, gamma, mu, chi):
 
     """
 
-    check_gamma_mu_chi_range(gamma, mu, chi)
+    check_gamma_mu_chi_range_fct(gamma, mu, chi)
 
     # Transformation matrix from local horizon to wind
     Lwh = np.array([
@@ -307,7 +307,7 @@ def hor2wind(hor_coords, gamma, mu, chi):
     return wind_coords
 
 
-def check_alpha_beta_range(alpha, beta):
+def check_alpha_beta_range_fct(alpha, beta):
     """Check alpha, beta values are inside the defined range. This
     verification can also detect if the value of the angle is in degrees in
     some cases.
@@ -322,7 +322,7 @@ def check_alpha_beta_range(alpha, beta):
         raise ValueError('Beta value is not inside correct range')
 
 
-def body2wind(body_coords, alpha, beta):
+def body2wind_fct(body_coords, alpha, beta):
     """Transforms the vector coordinates in body frame of reference to
     wind frame of reference.
 
@@ -365,7 +365,7 @@ def body2wind(body_coords, alpha, beta):
 
     """
 
-    check_alpha_beta_range(alpha, beta)
+    check_alpha_beta_range_fct(alpha, beta)
 
     # Transformation matrix from body to wind
     Lwb = np.array([
@@ -385,7 +385,7 @@ def body2wind(body_coords, alpha, beta):
     return wind_coords
 
 
-def wind2body(wind_coords, alpha, beta):
+def wind2body_fct(wind_coords, alpha, beta):
     """Transforms the vector coordinates in wind frame of reference to
     body frame of reference.
 
@@ -428,7 +428,7 @@ def wind2body(wind_coords, alpha, beta):
 
     """
 
-    check_alpha_beta_range(alpha, beta)
+    check_alpha_beta_range_fct(alpha, beta)
 
     # Transformation matrix from body to wind
     lbw = np.array([

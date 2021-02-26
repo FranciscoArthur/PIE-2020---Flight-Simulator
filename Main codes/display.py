@@ -55,7 +55,7 @@ def display_fct(result):
     x[:,10] = result['plane_orientation'][:,1]   # Pitch angle of body WRT Earth, thetar, rad
     x[:,11] = result['plane_orientation'][:,2]   # Yaw angle of body WRT Earth, psir, rad
     
-    print(x)
+    # print(x)
 
     r2d = 180 / np.pi
 

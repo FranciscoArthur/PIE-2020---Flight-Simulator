@@ -17,13 +17,13 @@ plane = ['c172']
 ### Plane coordinates - in ground frame
 # Position = [North_position, East_position, Altitude]
 # Orientation = [Yaw angle, Roll angle, Pitch angle]
-# Speed = [Velocity at x-axis, Velocity at y-axis, Velocity at z-axis ]
+# Speed = [Velocity at x-axis, Velocity at y-axis, Velocity at z-axis]
 # Angular_Speed = [Yaw rate, Roll rate, Pitch rate]
 
 initial_position = [0, 0, 1800]     # [m]
-initial_orientation = [0, 0, 0]
+initial_orientation = [0, 0, 5]     # [deg]
 initial_speed = [60, 0, 0]          # [m/s]
-initial_angular_speed = [0, 0, 0]
+initial_angular_speed = [0, 0, 0]   # [deg/s]
 
 # Plane loading 
 payload = 100                       # [kg]
@@ -36,7 +36,7 @@ wind = [0, 0, 0]
 weather = [wind]                   # Next : add humidity/rain ?
 
 ### Integration parameters
-time_of_study = 1.05                  # [s]
+time_of_study = 10.0                  # [s]
 delta_t = 0.01                      # [s]
 number_of_time_steps = int(time_of_study/delta_t) + 1    # DO NOT MODIFY
 
@@ -45,7 +45,7 @@ number_of_time_steps = int(time_of_study/delta_t) + 1    # DO NOT MODIFY
 command_throttle_position = np.array([10 for i in range(number_of_time_steps)])    # From 0 to 10
 command_rudder_position = np.array([0 for i in range(number_of_time_steps)])      # From -10 to 10
 command_ailerons_position = np.array([0 for i in range(number_of_time_steps)])    # From -10 to 10
-command_elevators_position = np.array([-1 for i in range(number_of_time_steps)])   # From -10 to 10
+command_elevators_position = np.array([0 for i in range(number_of_time_steps)])   # From -10 to 10
 command_air_brakes = np.array([0 for i in range(number_of_time_steps)])           # 0 or 1
 command_hygh_lift_devices = np.array([0 for i in range(number_of_time_steps)])    # 0 or 1
 command_landing_gear = np.array([0 for i in range(number_of_time_steps)])         # 0 or 1
@@ -78,7 +78,7 @@ integration_parameters.append(delta_t)
 integration_parameters.append(number_of_time_steps)
 
 pilot_inputs = [command_throttle_position, command_rudder_position, command_ailerons_position, command_elevators_position, command_air_brakes, command_hygh_lift_devices, command_landing_gear]
-print(pilot_inputs)
+# print(pilot_inputs)
 
 
 ### Call the main function Flight_Simulator_fct in order to compute the results and display them
