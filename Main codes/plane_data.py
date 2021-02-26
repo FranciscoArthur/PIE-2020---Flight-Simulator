@@ -55,27 +55,25 @@ def plane_data_fct(plane_position, plane_orientation,
     # Side force coefficient
     cy = plane_intrinsic_data['CY_0'] + plane_intrinsic_data['CY_beta'] * beta + (plane_intrinsic_data['CY_p'] * p + plane_intrinsic_data['CY_r'] * r) * b2v + plane_intrinsic_data['CY_dr'] * dr
 
+
+
+
     # Moment characteristics
-
     # Pitching moment
-    cm = 0
-    cl = 0
-    cn = 0
-    
-    # cm = plane_intrinsic_data['Cm_0'] + plane_intrinsic_data['Cm_da'] * da + plane_intrinsic_data['Cm_q'] * c_bar2v * q + plane_intrinsic_data['Cm_de'] * de
+    cm = plane_intrinsic_data['Cm_0'] + plane_intrinsic_data['Cm_da'] * da + plane_intrinsic_data['Cm_q'] * c_bar2v * q + plane_intrinsic_data['Cm_de'] * de
 
 
-    # # Rolling moment
-    # cl = plane_intrinsic_data['Cl_0'] + plane_intrinsic_data['Cl_da'] * da + plane_intrinsic_data['Cl_beta'] * beta + (
-    #         plane_intrinsic_data['Cl_r'] * r + plane_intrinsic_data['Cl_p'] * p) * b2v * plane_intrinsic_data['Cl_dr'] * dr
+    # Rolling moment
+    cl = plane_intrinsic_data['Cl_0'] + plane_intrinsic_data['Cl_da'] * da + plane_intrinsic_data['Cl_beta'] * beta + (
+            plane_intrinsic_data['Cl_r'] * r + plane_intrinsic_data['Cl_p'] * p) * b2v * plane_intrinsic_data['Cl_dr'] * dr
 
-    # # Yawing moment
-    # cn = plane_intrinsic_data['Cn_0'] + plane_intrinsic_data['Cn_beta'] * beta + (plane_intrinsic_data['Cn_p'] * p + plane_intrinsic_data['Cn_r'] * r) * b2v + \
-    #      plane_intrinsic_data['Cn_da'] * da + plane_intrinsic_data['Cn_dr'] * dr
+    # Yawing moment
+    cn = plane_intrinsic_data['Cn_0'] + plane_intrinsic_data['Cn_beta'] * beta + (plane_intrinsic_data['Cn_p'] * p + plane_intrinsic_data['Cn_r'] * r) * b2v + \
+          plane_intrinsic_data['Cn_da'] * da + plane_intrinsic_data['Cn_dr'] * dr
 
 
     #Thrust
     air_density=atmospheric_parameters[4]
     thrust=dthrust*plane_intrinsic_data['static_thrust']*(air_density/1.225)#*(1-np.exp((plane_position[2]-18000)/2000))    
-
+    
     return [cL, cd, cy, cl, cm, cn, thrust]

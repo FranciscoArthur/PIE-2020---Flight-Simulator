@@ -330,9 +330,22 @@ def Flight_Simulator_fct(plane, initial_conditions, weather, integration_paramet
         
         plane_alpha_angle[i] = alpha_angle_before_update
         plane_beta_angle[i] = beta_angle_before_update
+        np.disp('alpha = ' + str(alpha_angle_before_update * 180 / np.pi) + ' deg')
+        # np.disp('beta = ' + str(beta_angle_before_update * 180 / np.pi) + ' deg')
+        np.disp('theta = ' + str(theta_angle_before_update * 180 / np.pi) + ' deg')
+        # np.disp('phi = ' + str(phi_angle_before_update * 180 / np.pi) + ' deg')
+        np.disp('psi = ' + str(psi_angle_before_update * 180 / np.pi) + ' deg')
+        
+        
+        # Check - errors
+        from coordinates_transformation import check_theta_phi_psi_range_fct, check_alpha_beta_range_fct
+        check_theta_phi_psi_range_fct(theta_angle_before_update, phi_angle_before_update, psi_angle_before_update)
+        check_alpha_beta_range_fct(alpha_angle_before_update, beta_angle_before_update)
+        
+        
         
 
-        
+
         ### Step 2 - calculation of the aerodynamic coefficients at the current position
         """
     atmospheric_parameters_before_update :

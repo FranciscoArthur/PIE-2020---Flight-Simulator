@@ -27,7 +27,7 @@ plane_data_dict = { # Inertia
                     'inertia' : np.diag([948, 1346, 1967]) * slugft2_2_kgm2,  # Aircraft inertia tensor [kg·m²]
  
                     # Thrust
-                    'static_thrust':1000,       # [N] Max static thrust
+                    'static_thrust':2150,       # [N] Max static thrust   # Source : Static Thrust Measurement for Propeller-driven Light Aircraft, Mingtai
                     # 'min_static_thrust':,     # [N] 
                     # 'max_static_thrust':1000, # [N] 
                     

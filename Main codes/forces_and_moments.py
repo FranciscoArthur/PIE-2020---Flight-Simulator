@@ -23,9 +23,9 @@ def forces_calculation_fct(plane_mass, plane_TAS, plane_orientation, atmospheric
     
     #state vector
     v = plane_TAS;
-    psi = plane_orientation[0];   # yaw angle
-    phi = plane_orientation[1];   # roll angle
-    theta = plane_orientation[2]; # pitch angle
+    psi = plane_orientation[0];   # yaw angle [rad]
+    phi = plane_orientation[1];   # roll angle [rad]
+    theta = plane_orientation[2]; # pitch angle [rad]
         
     #Calculation
     drag = 0.5 * rho * S * cd * (v ** 2);
@@ -50,11 +50,11 @@ def forces_calculation_fct(plane_mass, plane_TAS, plane_orientation, atmospheric
     # f_z = lift - weight * math.cos(theta) * math.cos(phi);
     
     # Test with weight - Thomas style
-    f_x = thrust - drag - weight * math.sin(theta);
-    f_y = lat_force + weight * math.sin(phi) * np.sign(phi);
-    f_z = lift - weight * math.cos(theta);    
+    f_x_plane = thrust - drag - weight * math.sin(theta);
+    f_y_plane = lat_force + weight * math.sin(phi) * np.sign(phi);
+    f_z_plane = lift - weight * math.cos(theta);    
     
-    return [f_x, f_y, f_z];
+    return [f_x_plane, f_y_plane, f_z_plane];
 
 
 #Moments calculation
@@ -107,26 +107,20 @@ def loadfactor_calculation_fct(plane_mass, plane_current_forces, atmospheric_par
     g = atmospheric_parameters_before_update[6];
     
     #plane orientation
-    theta = plane_orientation[0];
-    phi = plane_orientation[1];
-    psi = plane_orientation[2];
+    psi = plane_orientation[0];   # yaw angle [rad]
+    phi = plane_orientation[1];   # roll angle [rad]
+    theta = plane_orientation[2]; # pitch angle [rad]
+
+    # Force - conversion to terrestrial referential
+    from coordinates_transformation import body2hor_fct
+    F_ext = body2hor_fct(plane_current_forces, theta, phi, psi)    # Change of frame - from body frame to flat heart frame
     
-    #Forces
-    f_x_a = plane_current_forces[0];
-    f_y_a = plane_current_forces[1];
-    f_z_a = plane_current_forces[2];
     weight = [0, 0, -m*g];
-    
-    #Conversion to terrestrial referential
-    f_x_ext = f_x_a * math.cos(theta) * math.cos(psi) + f_y_a * math.sin(psi) + f_z_a * math.sin(theta);
-    f_y_ext = f_x_a * math.sin(psi) + f_y_a * math.cos(psi) * math.cos(phi) + f_z_a * math.sin(phi);
-    f_z_ext = f_x_a * math.sin(theta) + f_y_a * math.sin(phi) + f_z_a * math.cos(theta) * math.cos(phi);
-    F_ext = [f_x_ext, f_y_ext, f_z_ext];
     
     #calculation
     n = [0, 0, 0];
     for i in range(3):
-        n[i] = (weight[i] - F_ext[i]) / (-weight[2]);
+        n[i] = (F_ext[i] - weight[i]) / (weight[2]);
     
     load_factor = math.sqrt(n[0]**2 + n[1]**2 + n[2]**2);
     

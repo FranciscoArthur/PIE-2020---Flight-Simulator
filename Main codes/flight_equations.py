@@ -55,7 +55,7 @@ def flight_equations(time, state_vector, forces, moments, parameters):
     # v_dot = -r * u + p * w + g_d * sin(phi) * cos(theta) + f_y / m
     # w_dot = q * u - p * v + g_d * cos(phi) * cos(theta) + f_z / m
     
-    # Test without the weight in those equations, but in the resulting force
+    # Test without the weight in those equations, but weight added in the resulting force
     u_dot = r * v - q * w + f_x / m
     v_dot = -r * u + p * w + f_y / m
     w_dot = q * u - p * v + f_z / m

@@ -36,21 +36,27 @@ wind = [0, 0, 0]
 weather = [wind]                   # Next : add humidity/rain ?
 
 ### Integration parameters
-time_of_study = 10.0                  # [s]
+time_of_study = 1.0                  # [s]
 delta_t = 0.01                      # [s]
 number_of_time_steps = int(time_of_study/delta_t) + 1    # DO NOT MODIFY
 
 ### Pilot commands, time-dependant
 # Each command is a list of number_of_time_steps elements
+
+# Test elevators commands
+command_elevators_position = ([-1, -1, 0, -1, 0, -1, 0, -1, 0, -1, 0, -1, 0] * (int(number_of_time_steps/13) + 12))[:number_of_time_steps]
+# command_elevators_position = np.array([-1 for i in range(number_of_time_steps)])   # From -10 to 10
+# command_elevators_position = np.array([0 for i in range(number_of_time_steps)])   # From -10 to 10
+
 command_throttle_position = np.array([10 for i in range(number_of_time_steps)])    # From 0 to 10
-command_rudder_position = np.array([0 for i in range(number_of_time_steps)])      # From -10 to 10
+
+command_rudder_position = np.array([1 for i in range(number_of_time_steps)])      # From -10 to 10
+
 command_ailerons_position = np.array([0 for i in range(number_of_time_steps)])    # From -10 to 10
-command_elevators_position = np.array([0 for i in range(number_of_time_steps)])   # From -10 to 10
+
 command_air_brakes = np.array([0 for i in range(number_of_time_steps)])           # 0 or 1
 command_hygh_lift_devices = np.array([0 for i in range(number_of_time_steps)])    # 0 or 1
 command_landing_gear = np.array([0 for i in range(number_of_time_steps)])         # 0 or 1
-
-
 
 
 
