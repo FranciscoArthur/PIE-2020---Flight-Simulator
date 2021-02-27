@@ -12,6 +12,8 @@ import numpy as np
 ### Considered plane
 plane = ['c172']       
 
+
+
 ### Initial conditions : position, speed, orientation, angular speed, payload, fuelload
 
 ### Plane coordinates - in ground frame
@@ -21,9 +23,10 @@ plane = ['c172']
 # Angular_Speed = [Yaw rate, Roll rate, Pitch rate]
 
 initial_position = [0, 0, 1800]     # [m]
-initial_orientation = [0, 0, 5]     # [deg]
+initial_orientation = [0, 0, 0]     # [deg]
 initial_speed = [60, 0, 0]          # [m/s]
 initial_angular_speed = [0, 0, 0]   # [deg/s]
+
 
 # Plane loading 
 payload = 100                       # [kg]
@@ -31,28 +34,35 @@ initial_fuel_load = 77              # [kg]
 
 
 ### Weather conditions
-# Wind expected to remain constant - represented by the wind ground speed vector
-wind = [0, 0, 0]         
+wind = [0, 0, 0]                   # Constant wind vector - ground frame [m/s]
 weather = [wind]                   # Next : add humidity/rain ?
+
 
 ### Integration parameters
 time_of_study = 1.0                  # [s]
 delta_t = 0.01                      # [s]
 number_of_time_steps = int(time_of_study/delta_t) + 1    # DO NOT MODIFY
 
-### Pilot commands, time-dependant
-# Each command is a list of number_of_time_steps elements
 
-# Test elevators commands
-command_elevators_position = ([-1, -1, 0, -1, 0, -1, 0, -1, 0, -1, 0, -1, 0] * (int(number_of_time_steps/13) + 12))[:number_of_time_steps]
+### Pilot commands, time-dependant - each command is a list of number_of_time_steps elements
+
+# Elevators commands
+# command_elevators_position = ([-1, -1, 0, -1, 0, -1, 0, -1, 0, -1, 0, -1, 0, -1, 0, -1, 0, -1, 0, -1, 0] * (int(number_of_time_steps/21) + 20))[:number_of_time_steps]
+# command_elevators_position = ([-1, 0, -1, 0, -1, 0, -1, 0, -1, 0, -1, 0, -1, 0, -1, 0, -1, 0, -1, 0] * (int(number_of_time_steps/20) + 19))[:number_of_time_steps]
+command_elevators_position = ([-1, 0, 0,  0, -1, 0, 0,  0, -1, 0, 0,  0, -1, 0, 0,  0, -1, 0, 0, -1, 0, 0, 0, -1] * (int(number_of_time_steps/24) + 23))[:number_of_time_steps]
 # command_elevators_position = np.array([-1 for i in range(number_of_time_steps)])   # From -10 to 10
 # command_elevators_position = np.array([0 for i in range(number_of_time_steps)])   # From -10 to 10
 
-command_throttle_position = np.array([10 for i in range(number_of_time_steps)])    # From 0 to 10
+# Rudder commands
+command_rudder_position = np.array([0 for i in range(number_of_time_steps)])      # From -10 to 10
+# command_rudder_position[10] = 1
+# command_rudder_position[11] = -5
 
-command_rudder_position = np.array([1 for i in range(number_of_time_steps)])      # From -10 to 10
-
+# Ailerons commands
 command_ailerons_position = np.array([0 for i in range(number_of_time_steps)])    # From -10 to 10
+
+# Throttle commands
+command_throttle_position = np.array([10 for i in range(number_of_time_steps)])    # From 0 to 10
 
 command_air_brakes = np.array([0 for i in range(number_of_time_steps)])           # 0 or 1
 command_hygh_lift_devices = np.array([0 for i in range(number_of_time_steps)])    # 0 or 1

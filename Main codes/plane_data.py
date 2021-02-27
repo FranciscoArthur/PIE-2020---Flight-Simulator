@@ -40,9 +40,9 @@ def plane_data_fct(plane_position, plane_orientation,
     p = plane_angular_speed[1]               # roll rate angular speed
     r = plane_angular_speed[0]               # yaw rate angular speed     
     
-    de = pilot_data[3] / 20 * plane_intrinsic_data['de_max'] * d2r
-    da = pilot_data[2] / 20 * plane_intrinsic_data['da_max'] * d2r
-    dr = pilot_data[1] / 20 * plane_intrinsic_data['dr_max'] * d2r
+    de = pilot_data[3] / 10 * plane_intrinsic_data['de_max'] * d2r
+    da = pilot_data[2] / 10 * plane_intrinsic_data['da_max'] * d2r
+    dr = pilot_data[1] / 10 * plane_intrinsic_data['dr_max'] * d2r
     dthrust=pilot_data[0]/10
 
 

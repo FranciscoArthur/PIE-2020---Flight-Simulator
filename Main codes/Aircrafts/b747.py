@@ -27,6 +27,7 @@ plane_data_dict = { # Inertia
                     'inertia' : (np.diag([18200000, 33100000, 49700000]) + 
                                  [[0, 0, 970000],[0, 0, 0], [970000, 0, 0]])
                                  * slugft2_2_kgm2,                            # Aircraft inertia tensor [kg·m²]
+                    'max_load_factor': 2.5*1.5,                               # Aircraft max load factor https://aviation.stackexchange.com/questions/46634/what-is-the-maximum-g-load-a-747-can-withstand-during-an-emergency-course-revers
  
                     # Thrust
                     'static_thrust':240000,                                   # [N] Max static thrust

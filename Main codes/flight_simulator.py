@@ -35,8 +35,7 @@ import numpy as np
 # zw axis - perpendicular to the xw axis, in the plane of symmetry of the aircraft, positive above the aircraft
 # yw axis - perpendicular to the xw,zw-plane, positive determined by the right hand rule (generally, positive to the left)
 
-# To transforms the vector coordinates in a frame of reference to an toher frame, use the script coordinates_transform.py
-
+# To transforms a vector coordinates in a frame of reference to an other frame, use the script coordinates_transform.py
 
 
 ### Plane coordinates - in ground frame
@@ -113,11 +112,11 @@ def Flight_Simulator_fct(plane, initial_conditions, weather, integration_paramet
     
     ### Step 0 : collecting the user inputs
     # Plane
-    plane_version = plane[0]  # Name of the version of the plane
+    plane_version = plane[0]                                        # Name of the version of the plane
     
     # Integration parameters
-    time_of_study = integration_parameters[0]        
-    delta_t = integration_parameters[1]
+    time_of_study = integration_parameters[0]                       # [s]
+    delta_t = integration_parameters[1]                             # [s]
     number_of_time_steps = integration_parameters[2]
     
     # State vector - creation
@@ -126,21 +125,21 @@ def Flight_Simulator_fct(plane, initial_conditions, weather, integration_paramet
     plane_speed = np.zeros((number_of_time_steps,3))                # Ground speed - Ground frame
     plane_angular_speed = np.zeros((number_of_time_steps,3))        # Plane angular speed - Ground frame
     plane_fuel_load = [0] * number_of_time_steps
+    plane_mass = [0] * number_of_time_steps
     
     
     # Initial conditions
-    initial_position = np.asarray(initial_conditions[0])                        # [m]
-    initial_orientation_deg = np.asarray(initial_conditions[1])                # [deg]
+    initial_position = np.asarray(initial_conditions[0])            # [m]
+    initial_orientation_deg = np.asarray(initial_conditions[1])     # [deg]
     initial_orientation = initial_orientation_deg * np.pi / 180     # [rad]
-    initial_speed = np.asarray(initial_conditions[2])                          # [m]
-    initial_angular_speed_deg = np.asarray(initial_conditions[3])               # [deg/s]
+    initial_speed = np.asarray(initial_conditions[2])               # [m]
+    initial_angular_speed_deg = np.asarray(initial_conditions[3])   # [deg/s]
     initial_angular_speed = initial_angular_speed_deg * np.pi / 180 # [rad/s]
     payload = initial_conditions[4]                                 # [kg]
     initial_fuel_load = initial_conditions[5]                       # [kg]
 
     # Weather 
     wind = weather[0]
-
 
 
     # Pilot inputs - each command is a list of number_of_time_steps elements
@@ -151,6 +150,7 @@ def Flight_Simulator_fct(plane, initial_conditions, weather, integration_paramet
     command_air_brakes = pilot_inputs[4]            # 0 or 1
     command_hygh_lift_devices = pilot_inputs[5]     # 0 or 1
     command_landing_gear = pilot_inputs[6]          # 0 or 1
+
 
 
     ### Step 0_bis : Collecting the static plane data as a function of the plane version
@@ -173,7 +173,6 @@ def Flight_Simulator_fct(plane, initial_conditions, weather, integration_paramet
     plane_angular_speed[0] = initial_angular_speed    
     plane_fuel_load[0] = initial_fuel_load    
     
-    plane_mass = [0] * number_of_time_steps
     plane_initial_mass = payload + initial_fuel_load + plane_intrinsic_data['empty_mass']
     plane_mass[0] = plane_initial_mass
     
@@ -195,20 +194,20 @@ def Flight_Simulator_fct(plane, initial_conditions, weather, integration_paramet
     plane_initial_TAS_vector = [initial_speed[0]-wind[0], initial_speed[1]-wind[1], initial_speed[2]-wind[2]]
     plane_TAS_vector[0] = plane_initial_TAS_vector
     
-    # State vector of the plane in the ground frame
+    # Euler angles - ground frame
     initial_psi_angle = initial_orientation[0];   # yaw angle    [rad]
     initial_phi_angle = initial_orientation[1];   # roll angle   [rad]
     initial_theta_angle = initial_orientation[2]; # pitch angle  [rad] 
     
-    # Earth frame to relative wind frame angles [https://en.wikipedia.org/wiki/Flight_dynamics_(fixed-wing_aircraft)#Transformations_(Euler_angles)]
-    plane_gamma_angle = [0] * number_of_time_steps  # Flight path angle 
-    plane_sigma_angle = [0] * number_of_time_steps  # Heading angle
-    # plane_mu_angle    = [0] * number_of_time_steps  # bank angle   
+    # Wind frame angles [https://en.wikipedia.org/wiki/Flight_dynamics_(fixed-wing_aircraft)#Transformations_(Euler_angles)]
+    plane_gamma_angle = [0] * number_of_time_steps    # Flight path angle 
+    plane_sigma_angle = [0] * number_of_time_steps    # Heading angle
+    # plane_mu_angle    = [0] * number_of_time_steps    # bank angle   
     
     initial_gamma_angle = np.arccos(np.sqrt(plane_initial_TAS_vector[0]**2 + plane_initial_TAS_vector[1]**2)/plane_initial_TAS) * np.sign(plane_initial_TAS_vector[2])
     plane_gamma_angle[0] = initial_gamma_angle
     
-    if plane_initial_TAS_vector[1]>=0:  # sigma between 0 and pi
+    if plane_initial_TAS_vector[1]>=0:           # sigma between 0 and pi
         initial_sigma_angle = np.arccos(plane_initial_TAS_vector[0]/ np.sqrt(plane_initial_TAS_vector[0]**2 + plane_initial_TAS_vector[1]**2)) 
     else:                                        # sigma between pi and 2*pi
         initial_sigma_angle = 2 * np.pi - np.arccos(plane_initial_TAS_vector[0]/ np.sqrt(plane_initial_TAS_vector[0]**2 + plane_initial_TAS_vector[1]**2)) # [rad] - between 0 and 2*pi excuded
@@ -219,13 +218,17 @@ def Flight_Simulator_fct(plane, initial_conditions, weather, integration_paramet
     
     
     
-    # Wind frame to body frame angles [https://en.wikipedia.org/wiki/Flight_dynamics_(fixed-wing_aircraft)#Transformations_(Euler_angles)] 
+    # Body frame angles [https://en.wikipedia.org/wiki/Flight_dynamics_(fixed-wing_aircraft)#Transformations_(Euler_angles)] 
     plane_alpha_angle = [0] * number_of_time_steps  # Angle of attack
     plane_beta_angle  = [0] * number_of_time_steps  # Sideslip angle
     
     initial_alpha_angle = initial_theta_angle - initial_gamma_angle  # positive if the air is arriving below the plane 
     initial_beta_angle = initial_sigma_angle - initial_psi_angle     # Positive if the air is arriving from the right side of the plane
-    
+    if initial_beta_angle > np.pi :
+        initial_beta_angle -=2*np.pi                                 # beta between -pi and pi
+    if initial_beta_angle < -np.pi:
+        initial_beta_angle +=2*np.pi
+            
     plane_alpha_angle[0] = initial_alpha_angle
     plane_beta_angle[0] = initial_beta_angle
     
@@ -235,7 +238,7 @@ def Flight_Simulator_fct(plane, initial_conditions, weather, integration_paramet
     plane_load_factor_vector = [[0, 0, 0]] * number_of_time_steps
     
     # Atmospheric parameters at the initial altitude
-    initial_altitude = int(initial_position[2])    # Check sign and orientation
+    initial_altitude = int(initial_position[2])  
     initial_atmospheric_parameters = atmospheric_parameters_fct(initial_altitude)
     plane_atmospheric_parameters = np.zeros((number_of_time_steps, 10))
     plane_atmospheric_parameters[0] = initial_atmospheric_parameters
@@ -261,8 +264,7 @@ def Flight_Simulator_fct(plane, initial_conditions, weather, integration_paramet
     
     if (initial_fuel_load > plane_intrinsic_data['MFL']):    # arbitrary max load factor
         raise ValueError ("The aircraft crashed - fuel load > max fuel load")
-    
-    # Other errors ?    
+    # Add other errors ?    
     
     
     
@@ -271,12 +273,14 @@ def Flight_Simulator_fct(plane, initial_conditions, weather, integration_paramet
     
     while i < number_of_time_steps:
     
+        np.disp(' ')
+        np.disp(' ')
         np.disp('i=' + str(i))
                 
         ### Step 1 : gathering all the values that will be needed for this i-th time step calculations
+        
         # Real time calculation of the selected time step 
-        current_time = i * delta_t
-        time[i] = current_time
+        time[i] = i * delta_t
         
         # Pilot controls at the previous time step - the pilot commands are expected to take action at the next time step
         current_throttle_position = command_throttle_position[i-1]    
@@ -305,41 +309,49 @@ def Flight_Simulator_fct(plane, initial_conditions, weather, integration_paramet
         
         
         ### Plane angles in the different frames
-        # State vector of the plane in the ground frame
-        psi_angle_before_update = plane_orientation_before_update[0];   # yaw angle
-        phi_angle_before_update = plane_orientation_before_update[1];   # roll angle
-        theta_angle_before_update = plane_orientation_before_update[2]; # pitch angle    
+        # Euler angles - ground frame
+        psi_angle_before_update = plane_orientation_before_update[0];   # yaw angle [rad]
+        phi_angle_before_update = plane_orientation_before_update[1];   # roll angle [rad]
+        theta_angle_before_update = plane_orientation_before_update[2]; # pitch angle [rad] 
         
-        # Earth frame to relative wind frame angles [https://en.wikipedia.org/wiki/Flight_dynamics_(fixed-wing_aircraft)#Transformations_(Euler_angles)]
+        # Wind frame angles [https://en.wikipedia.org/wiki/Flight_dynamics_(fixed-wing_aircraft)#Transformations_(Euler_angles)]
         gamma_angle_before_update = np.arccos(np.sqrt(plane_TAS_vector_before_update[0]**2 + plane_TAS_vector_before_update[1]**2)/plane_TAS_before_update) * np.sign(plane_TAS_vector_before_update[2])
         plane_gamma_angle[i] = gamma_angle_before_update
         
-        if plane_TAS_vector_before_update[1]>=0:  # sigma between 0 and pi
+        if plane_TAS_vector_before_update[1]>=0:     # sigma between 0 and pi
             sigma_angle_before_update = np.arccos(plane_TAS_vector_before_update[0]/ np.sqrt(plane_TAS_vector_before_update[0]**2 + plane_TAS_vector_before_update[1]**2)) 
         else:                                        # sigma between pi and 2*pi
             sigma_angle_before_update = 2 * np.pi - np.arccos(plane_TAS_vector_before_update[0]/ np.sqrt(plane_TAS_vector_before_update[0]**2 + plane_TAS_vector_before_update[1]**2)) 
         plane_sigma_angle[i] = sigma_angle_before_update
         
         # mu_angle_before_update = 
+        # plane_mu_angle[i] = mu_angle_before_update  
         
         
         
-        # Wind frame to body frame angles [https://en.wikipedia.org/wiki/Flight_dynamics_(fixed-wing_aircraft)#Transformations_(Euler_angles)] 
+        # Body frame angles [https://en.wikipedia.org/wiki/Flight_dynamics_(fixed-wing_aircraft)#Transformations_(Euler_angles)] 
         alpha_angle_before_update = theta_angle_before_update - gamma_angle_before_update  # positive if the air is arriving below the plane 
         beta_angle_before_update = sigma_angle_before_update - psi_angle_before_update     # Positive if the air is arriving from the right side of the plane
         
+        if beta_angle_before_update > np.pi :
+            beta_angle_before_update -=2*np.pi
+        if beta_angle_before_update < -np.pi:
+            beta_angle_before_update +=2*np.pi
+        
         plane_alpha_angle[i] = alpha_angle_before_update
         plane_beta_angle[i] = beta_angle_before_update
+        
         np.disp('alpha = ' + str(alpha_angle_before_update * 180 / np.pi) + ' deg')
-        # np.disp('beta = ' + str(beta_angle_before_update * 180 / np.pi) + ' deg')
+        np.disp('beta = ' + str(beta_angle_before_update * 180 / np.pi) + ' deg')
         np.disp('theta = ' + str(theta_angle_before_update * 180 / np.pi) + ' deg')
+        np.disp('gamma = ' + str(gamma_angle_before_update * 180 / np.pi) + ' deg')
         # np.disp('phi = ' + str(phi_angle_before_update * 180 / np.pi) + ' deg')
-        np.disp('psi = ' + str(psi_angle_before_update * 180 / np.pi) + ' deg')
+        # np.disp('psi = ' + str(psi_angle_before_update * 180 / np.pi) + ' deg')
+        # np.disp('sigma = ' + str(sigma_angle_before_update * 180 / np.pi) + ' deg')
         
         
-        # Check - errors
+        # Check - errors in body frame angles
         from coordinates_transformation import check_theta_phi_psi_range_fct, check_alpha_beta_range_fct
-        check_theta_phi_psi_range_fct(theta_angle_before_update, phi_angle_before_update, psi_angle_before_update)
         check_alpha_beta_range_fct(alpha_angle_before_update, beta_angle_before_update)
         
         
@@ -388,8 +400,8 @@ def Flight_Simulator_fct(plane, initial_conditions, weather, integration_paramet
                                                    beta_angle_before_update)
 
         plane_aerodynamic_coefficients[i] = current_aerodynamic_coeff
-        
-        #np.disp('aero_coeff=' + str(current_aerodynamic_coeff))
+        np.disp(' ')        
+        np.disp('aero_coeff=' + str(current_aerodynamic_coeff))
         
         
               
@@ -407,23 +419,26 @@ def Flight_Simulator_fct(plane, initial_conditions, weather, integration_paramet
                                                       atmospheric_parameters_before_update,
                                                       current_aerodynamic_coeff,
                                                       plane_intrinsic_data)
-
-        # print ('forces= ',plane_current_forces)
+        np.disp(' ')
+        print ('resulting_force = ',plane_current_forces)
+        
         
         plane_current_moments = moments_calculation_fct(plane_mass_before_update,
                                                         plane_TAS_before_update,
                                                         plane_orientation_before_update,
                                                         atmospheric_parameters_before_update,
                                                         current_aerodynamic_coeff,
-                                                        plane_intrinsic_data)    
-        
-        # print ('moments= ',plane_current_moments)
+                                                        plane_intrinsic_data)   
+        np.disp(' ')
+        print ('moments = ',plane_current_moments)
         
         
         plane_current_load_factor_both = loadfactor_calculation_fct(plane_mass_before_update,
                                                                     plane_current_forces,
                                                                     atmospheric_parameters_before_update,
                                                                     plane_orientation_before_update)
+        # print ('Load factor = ', plane_current_load_factor_both)
+        
         
         plane_current_fuel_consumption = fuel_consumption_calculation_fct(current_pilot_controls[0], plane_intrinsic_data)
                 
@@ -459,10 +474,43 @@ def Flight_Simulator_fct(plane, initial_conditions, weather, integration_paramet
 
         # print (current_state_vector)
 
-        plane_position[i] = np.array([current_state_vector[0], current_state_vector[1], current_state_vector[2]])
-        plane_orientation[i] = np.array([current_state_vector[3], current_state_vector[4], current_state_vector[5]])
+        
+        # Check angles in the right range
+        plane_current_theta = current_state_vector[5]
+        plane_current_theta_deg = plane_current_theta * 180/np.pi
+        print ('current_theta = ',plane_current_theta_deg, 'deg')
+        if np.abs(plane_current_theta)>np.pi/2:
+            if np.sign(plane_current_theta) == 1:
+               if np.abs(plane_current_theta)< 1.5 * np.pi:
+                   plane_current_theta = np.pi - plane_current_theta
+               else :
+                   plane_current_theta = plane_current_theta - 2*np.pi
+            else:
+               if np.abs(plane_current_theta)< 1.5 * np.pi:
+                   plane_current_theta = - np.pi - plane_current_theta
+               else :
+                   plane_current_theta = plane_current_theta + 2*np.pi  
+    
+        
+        plane_current_phi = current_state_vector[4]
+        plane_current_phi_deg = plane_current_phi * 180 / np.pi
+        print ('current_phi = ',plane_current_phi_deg, 'deg')
+        if np.abs(plane_current_phi)>np.pi:
+            plane_current_phi = (plane_current_phi + np.pi)%(2*np.pi) - np.pi
+        
+            
+        
+        plane_current_psi = current_state_vector[3]%(2*np.pi)      # psi between 0 and 2*pi rad
+        check_theta_phi_psi_range_fct(plane_current_theta, plane_current_phi, plane_current_psi)
+        
+        plane_position[i] = np.array([current_state_vector[0], current_state_vector[1], current_state_vector[2]]) 
+        # print('plane position =', plane_position[i])
+        plane_orientation[i] = np.array([plane_current_psi, plane_current_phi, plane_current_theta])
+        print('plane orientation =', plane_orientation[i])
         plane_speed[i] = np.array([current_state_vector[6], current_state_vector[7], current_state_vector[8]])
+        print('plane speed =', plane_speed[i])
         plane_angular_speed[i] = np.array([current_state_vector[9], current_state_vector[10], current_state_vector[11]])
+        print('plane angular speed =', plane_angular_speed[i])
         
         plane_current_TAS_vector = [plane_speed[i][0]-wind[0], plane_speed[i][1]-wind[1], plane_speed[i][2]-wind[2]]
         plane_current_TAS =  np.sqrt((plane_speed[i][0]-wind[0])**2 + (plane_speed[i][1]-wind[1])**2 + (plane_speed[i][2]-wind[2])**2) 
@@ -484,13 +532,13 @@ def Flight_Simulator_fct(plane, initial_conditions, weather, integration_paramet
 
 
         ### End of a time step : Check the flight failures (ex : negative altitude)
-        # if (plane_position[i][2] < 0) and (current_landing_gear == 0) :
-        #     raise ValueError ("The aircraft crashed - negative altitude")
+        if (plane_position[i][2] < 0) and (current_landing_gear == 0) :
+            raise ValueError ("The aircraft crashed - negative altitude")
 
-        # if plane_load_factor[i] > 3:    # arbitrary max load factor
-        #     raise ValueError ("The aircraft crashed - unsustainable load factor")
+        if np.abs(plane_load_factor[i]) > plane_intrinsic_data['max_load_factor']:  
+            raise ValueError ("The aircraft crashed - unsustainable load factor")
         
-        # # Other errors ?
+        # Other errors ?
         
         
         
