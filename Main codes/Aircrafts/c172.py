@@ -48,14 +48,14 @@ plane_data_dict = { # Inertia
                     
                     # forces_moments_coefficients
         			# Lift
-				    'CL_0':0.31,			    # Zero angle of attack lift
+				'CL_0':0.31,			    # Zero angle of attack lift
     				'CL_a':5.143,               # Effect of angle of attack
     				'CL_q':3.9,				    # Effect of pitch rate
     				'CL_de':0.43,				# Effect of elevator
     			    # Drag
     				'CD_0':0.031,				# Initial drag
     				'induced_drag_factor':0.054,# For the lift-drag polar
-    				'CD_de':0.43,				# Effect of elevator
+    				'CD_de':0,				# Effect of elevator
     			    # Side_force
     				'CY_0':0, 				    # Initial side force coefficient
     				'CY_beta':-0.31, 			# Effect of slide angle of aircraft
@@ -64,7 +64,7 @@ plane_data_dict = { # Inertia
     				'CY_dr':0.187, 				# Effect of rudder
     			    # Pitch
     				'Cm_0':-0.015, 				# Initial pitching coefficient
-    				'Cm_da':-0.89,				# Effect of aileron
+    				'Cm_a':-0.89,				# Effect of angle of attack
     				'Cm_q':-12.4, 				# Effect of pitch rate
     				'Cm_de':-1.28, 				# Effect of elevator
     			    # Roll
