@@ -1,59 +1,45 @@
 import math; 
 import numpy as np;
 
+
 #Forces calculation
-def forces_calculation_fct(plane_mass, plane_TAS, plane_orientation, atmospheric_parameters_before_update, plane_data, plane_intrinsic_data):
+def forces_calculation_fct(plane_mass, plane_TAS,plane_TAS_vector, plane_orientation, atmospheric_parameters_before_update, plane_data, plane_intrinsic_data,hor2bodymatrix):
     
     #collection of aerodynamic coefficients
-    cz = plane_data[0];
-    cd = plane_data[1];
-    cy = plane_data[2];
-    cl = plane_data[3];
-    cm = plane_data[4];
-    cn = plane_data[5];
+    CL = plane_data[0];
+    CD = plane_data[1];
+    CY = plane_data[2];
     thrust = plane_data[6];
     
     #atmosphere data
     rho = atmospheric_parameters_before_update[4];
-    g = atmospheric_parameters_before_update[6];
+    g = np.array([0,0,atmospheric_parameters_before_update[6]]);
     
+    #gravity in body frame
+    gb=hor2bodymatrix.dot(g)
     #plane geometry              
     S = plane_intrinsic_data['Sw'];   # S = wing surface
     m = plane_mass;
+
+    # Dynamic pressure and surface
+    qbarS = 0.5*rho*plane_TAS**2*S
     
     #state vector
-    v = plane_TAS;
     psi = plane_orientation[0];   # yaw angle [rad]
     phi = plane_orientation[1];   # roll angle [rad]
     theta = plane_orientation[2]; # pitch angle [rad]
-        
-    #Calculation
-    drag = 0.5 * rho * S * cd * (v ** 2);
 
-    lat_force = 0.5 * rho * S * cy * (v ** 2);
+    #Angle of attack
+    alpha=np.arctan(plane_TAS_vector[2]/plane_TAS_vector[0])
 
-    weight = m * g;
+    #Coefficients on body X and Z coefficient
+    CX=-CD*np.cos(alpha)+CL*np.sin(alpha)
+    CZ=-CD*np.sin(alpha)-CL*np.cos(alpha)
 
-    lift = 0.5 * rho * S * cz * (v ** 2);
-    
-    
-    ### Resulting force - in the airplane frame
-    # Test without weight - add it in the flight_equations
-    # weight is already considered in "flight_equations"
-    # f_x_plane = thrust - drag # - weight * math.sin(theta); 
-    # f_y_plane = lat_force # + weight * math.sin(phi) * np.sign(phi);
-    # f_z_plane = lift # - weight * math.cos(theta);
-    
-    # Test with weight - Arthur style
-    f_x_plane = thrust - drag - weight * math.sin(theta);
-    f_y_plane = lat_force + weight * math.sin(phi) * math.cos(theta);
-    f_z_plane = lift - weight * math.cos(theta) * math.cos(phi);
-    
-    # Test with weight - Thomas style
-    # f_x_plane = thrust - drag - weight * math.sin(theta);
-    # f_y_plane = lat_force + weight * math.sin(phi) * np.sign(phi);
-    # f_z_plane = lift - weight * math.cos(theta);    
-    
+    #state accelerations in plane referential
+    f_x_plane = (CX*qbarS+thrust)+m*gb[0]
+    f_y_plane = CY*qbarS+m*gb[1]
+    f_z_plane = CZ*qbarS +m*gb[2]
     return [f_x_plane, f_y_plane, f_z_plane];
 
 
@@ -84,7 +70,7 @@ def moments_calculation_fct(plane_mass, plane_TAS, plane_orientation, atmospheri
 
     pitch_m = 0.5 * rho * S * c * cm * (v ** 2);
 
-    yaw_m = 0.5 * rho * S * c * cn * (v ** 2);
+    yaw_m = 0.5 * rho * S * b * cn * (v ** 2);
     
     return [yaw_m, roll_m, pitch_m];
 
@@ -125,5 +111,12 @@ def loadfactor_calculation_fct(plane_mass, plane_current_forces, atmospheric_par
     load_factor = math.sqrt(n[0]**2 + n[1]**2 + n[2]**2);
     
     return [n, load_factor];
-    
-    
+
+
+
+
+
+
+
+
+
