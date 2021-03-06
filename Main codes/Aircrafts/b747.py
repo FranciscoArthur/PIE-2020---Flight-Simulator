@@ -66,7 +66,7 @@ plane_data_dict = { # Inertia
     				'CY_dr':0.12, 				   # Effect of rudder
     			    # Pitch
     				'Cm_0':0,    				   # Initial pitching coefficient
-    				'Cm_da':-1,				       # Effect of aileron
+    				'Cm_a':-1,				       # Effect of angle of attack
     				'Cm_q':-20.5, 				   # Effect of pitch rate
     				'Cm_de':-1.3, 				   # Effect of elevator
     			    # Roll
