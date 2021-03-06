@@ -66,16 +66,14 @@ def flight_equations(time, state_vector, forces, moments, parameters):
     psi_dot = (q * sin(phi) + r * cos(phi)) / cos(theta)
 
     # Moment Equations
-    p_dot = j_xz * (j_x - j_y + j_z) * p * q - (j_z * (j_z - j_y) + j_xz ** 2) * q * r + j_z * roll + j_xz * yaw / gamma
+    p_dot = (j_xz * (j_x - j_y + j_z) * p * q - (j_z * (j_z - j_y) + j_xz ** 2) * q * r + j_z * roll + j_xz * yaw )/ gamma
     q_dot = ((j_z - j_x) * p * r - j_xz * (p ** 2 - r ** 2) + pitch) / j_y
-    r_dot = ((j_x - j_y) * j_x + j_xz ** 2) * p * q - j_xz * (j_x - j_y + j_z) * q * r + j_xz * roll + j_x * yaw / gamma
+    r_dot = (((j_x - j_y) * j_x + j_xz ** 2) * p * q - j_xz * (j_x - j_y + j_z) * q * r + j_xz * roll + j_x * yaw )/ gamma
 
     # Navigation Equations
     xe_dot = u * cos(theta) * cos(psi) + v * (-cos(phi) * sin(psi) + sin(phi) * sin(theta) * cos(psi)) + w * (sin(phi) * sin(psi) + cos(phi) * sin(theta) * cos(psi))
     ye_dot = u * cos(theta) * sin(psi) + v * (cos(phi) * cos(psi) + sin(phi) * sin(theta) * sin(phi)) + w * (-sin(phi) * cos(psi) + cos(phi) * sin(theta) * sin(psi))
-    ze_dot = u * sin(theta) - v * sin(phi) * cos(theta) - w * cos(phi) * cos(theta)
-
+    ze_dot = -u * sin(theta) + v * sin(phi) * cos(theta) + w * cos(phi) * cos(theta)
     # Derived state vector
     x_dot = np.array([xe_dot, ye_dot, ze_dot, psi_dot, phi_dot, theta_dot, u_dot, v_dot, w_dot, r_dot, p_dot, q_dot])
-
     return x_dot
