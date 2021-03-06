@@ -156,7 +156,7 @@ def Flight_Simulator_fct(plane, initial_conditions, weather, integration_paramet
 
     ### Step 0_bis : Collecting the static plane data as a function of the plane version
     main_path = os.getcwd()
-    plane_path = main_path + '/' + 'Aircrafts'
+    plane_path = main_path + '\\' + 'Aircrafts'
     os.chdir(plane_path)
     os.getcwd()
     plane_module = importlib.import_module(plane_version)
