@@ -54,7 +54,7 @@ def display_fct(result):
     x[:,2] = result['plane_speed'][:,2]             # Body-axis z inertial velocity, wb, m/s
     x[:,3] = result['plane_position'][:,0]          # North position of center of mass WRT Earth, xe, m
     x[:,4] = result['plane_position'][:,1]          # East position of center of mass WRT Earth, ye, m
-    x[:,5] = result['plane_position'][:,2]          # Negative of c.m. altitude WRT Earth, ze = -h, m
+    x[:,5] = -result['plane_position'][:,2]          # Negative of c.m. altitude WRT Earth, ze = -h, m
     x[:,6] = result['plane_angular_speed'][:,0]     # Body-axis roll rate, pr, rad/s
     x[:,7] = result['plane_angular_speed'][:,1]     # Body-axis pitch rate, qr, rad/s
     x[:,8] = result['plane_angular_speed'][:,2]     # Body-axis yaw rate, rr,rad/s
