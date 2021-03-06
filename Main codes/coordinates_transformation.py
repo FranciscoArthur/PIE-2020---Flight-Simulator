@@ -159,6 +159,38 @@ def hor2body_fct(hor_coords, theta, phi, psi):
 
     return body_coords
 
+def hor2bodymatrix_fct(theta, phi, psi):
+    """return the matrix to transform horizontal coordinates to body coordinates .
+
+    Parameters
+    ----------
+    theta : float
+        Pitch (or elevation) angle (rad).
+    phi : float
+        Bank angle (rad).
+    psi : float
+        Yaw (or azimuth) angle (rad)
+
+    Returns
+    -------
+    hor2body matrix : array(3,3)
+    """
+
+    # Transformation matrix local horizon to body
+    hor2bodymatrix = np.array([
+        [cos(theta) * cos(psi),
+         cos(theta) * sin(psi),
+         - sin(theta)],
+        [sin(phi) * sin(theta) * cos(psi) - cos(phi) * sin(psi),
+         sin(phi) * sin(theta) * sin(psi) + cos(phi) * cos(psi),
+         sin(phi) * cos(theta)],
+        [cos(phi) * sin(theta) * cos(psi) + sin(phi) * sin(psi),
+         cos(phi) * sin(theta) * sin(psi) - sin(phi) * cos(psi),
+         cos(phi) * cos(theta)]
+    ])
+
+    return hor2bodymatrix
+
 
 def check_gamma_mu_chi_range_fct(gamma, mu, chi):
     """Check gamma, mu, chi values are inside the defined range. This
