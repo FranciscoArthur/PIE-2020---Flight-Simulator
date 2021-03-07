@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
 from mpl_toolkits import mplot3d
+import xlsxwriter
 
 
 def display_fct(result):
@@ -55,12 +56,12 @@ def display_fct(result):
     x[:,3] = result['plane_position'][:,0]          # North position of center of mass WRT Earth, xe, m
     x[:,4] = result['plane_position'][:,1]          # East position of center of mass WRT Earth, ye, m
     x[:,5] = -result['plane_position'][:,2]          # Negative of c.m. altitude WRT Earth, ze = -h, m
-    x[:,6] = result['plane_angular_speed'][:,0]     # Body-axis roll rate, pr, rad/s
-    x[:,7] = result['plane_angular_speed'][:,1]     # Body-axis pitch rate, qr, rad/s
-    x[:,8] = result['plane_angular_speed'][:,2]     # Body-axis yaw rate, rr,rad/s
-    x[:,9] = result['plane_orientation'][:,0]       # Roll angle of body WRT Earth, phir, rad
-    x[:,10] = result['plane_orientation'][:,1]      # Pitch angle of body WRT Earth, thetar, rad
-    x[:,11] = result['plane_orientation'][:,2]      # Yaw angle of body WRT Earth, psir, rad
+    x[:,6] = result['plane_angular_speed'][:,0]     # Body-axis yaw rate, rr, rad/s
+    x[:,7] = result['plane_angular_speed'][:,1]     # Body-axis roll rate, pr, rad/s
+    x[:,8] = result['plane_angular_speed'][:,2]     # Body-axis pitch rate, qr,rad/s
+    x[:,9] = result['plane_orientation'][:,0]       # Yaw angle of body WRT Earth, rad
+    x[:,10] = result['plane_orientation'][:,1]      # Roll angle of body WRT Earth, rad
+    x[:,11] = result['plane_orientation'][:,2]      # Pitch angle of body WRT Earth, rad
     x[:,12] = result['plane_resulting_force'][:,0]
     x[:,13] = result['plane_resulting_force'][:,1]
     x[:,14] = result['plane_resulting_force'][:,2]
@@ -140,7 +141,7 @@ def display_fct(result):
         plt.subplot(3, 2, 3)
         plt.plot(t, x[:,5])
         plt.xlabel('Time, s'), plt.ylabel('Altitude (z), m'), plt.grid(True)
-        plt.title('Altitude, -z')
+        plt.title('Altitude, z')
         
         plt.subplot(3, 2, 4)
         plt.plot((np.sqrt(x[:,3] * x[:,3] + x[:,4] * x[:,4])), x[:,5])
@@ -306,13 +307,13 @@ def display_fct(result):
         f10 = plt.figure()
         plt.subplot(1, 3, 1)
         plt.plot(t, x[:,15])
-        plt.xlabel('Time, s'), plt.ylabel('Resulting moment in x [N.m]'), plt.grid(True)
+        plt.xlabel('Time, s'), plt.ylabel('Yaw moment [N.m]'), plt.grid(True)
         plt.subplot(1, 3, 2)
         plt.plot(t, x[:,16])
-        plt.xlabel('Time, s'), plt.ylabel('Resulting moment in y [N.m]'), plt.grid(True)
+        plt.xlabel('Time, s'), plt.ylabel('Roll moment [N.m]'), plt.grid(True)
         plt.subplot(1, 3, 3)
         plt.plot(t, x[:,17])
-        plt.xlabel('Time, s'), plt.ylabel('Resulting moment in z [N.m]'), plt.grid(True)
+        plt.xlabel('Time, s'), plt.ylabel('Pitch moment [N.m]'), plt.grid(True)
         
     
     
@@ -337,3 +338,55 @@ def display_fct(result):
         plt.subplot(3, 3, 6)
         plt.plot(t, x[:,23])
         plt.xlabel('Time, s'), plt.ylabel('cn'), plt.grid(True)
+        
+        
+    # Exporting results to a text file
+        
+        
+    
+    # Exporting results to a text file
+    
+    # Create file and worksheet    
+    outWorkbook = xlsxwriter.Workbook("Results.xlsx")
+    outSheet = outWorkbook.add_worksheet()
+    
+    # Write data to file
+    
+    header = ['Time','Vx','Vy','Vy','North_pos','East_pos','Altitude','Yaw_rate','Roll_rate','Pitch_rate','Yaw_angle','Roll_angle','Pitch_angle','F_x','F_y','F_z','Yaw_moment','Roll_moment','Pitch_moment','CL','CD','Cy','Cl','Cm','Cn','Thrust']
+    
+    
+    for i in range(len(header)):
+        outSheet.write(0,i, header[i])
+        
+    for i in range(len(t)):
+        outSheet.write(i+1,0, t[i])
+             
+    for i in range(len(t)):
+        for j in range(len(x[0,:])):
+            outSheet.write(i+1,j+1,x[i,j])
+                             
+            
+    # Control variables
+            
+    header_control = ['Throttle','Rudder','Aileron','Elevator','Air breaks','High lift','Landing gear']    
+        
+    for i in range(len(header_control)):
+        outSheet.write(0,i+len(header), header_control[i])
+        
+        
+    for i in range(len(t)):
+        for j in range(len(u[:,0])):
+            outSheet.write(i+1,j+len(header),u[j,i])
+            
+    outWorkbook.close()
+        
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
