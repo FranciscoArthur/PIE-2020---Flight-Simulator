@@ -49,19 +49,22 @@ number_of_time_steps = int(time_of_study/delta_t) + 1    # DO NOT MODIFY
 # Elevators commands
 # command_elevators_position = ([-1, -1, 0, -1, 0, -1, 0, -1, 0, -1, 0, -1, 0, -1, 0, -1, 0, -1, 0, -1, 0] * (int(number_of_time_steps/21) + 20))[:number_of_time_steps]
 # command_elevators_position = ([-1, 0, -1, 0, -1, 0, -1, 0, -1, 0, -1, 0, -1, 0, -1, 0, -1, 0, -1, 0] * (int(number_of_time_steps/20) + 19))[:number_of_time_steps]
-#command_elevators_position = ([-1, 0, 0,  0, -1, 0, 0,  0, -1, 0, 0,  0, -1, 0, 0,  0, -1, 0, 0, -1, 0, 0, 0, -1] * (int(number_of_time_steps/24) + 23))[:number_of_time_steps]
+# command_elevators_position = ([-1, 0, 0,  0, 0, 0,  0, -1, 0, 0,  0, 0, 0,  0, -1] * (int(number_of_time_steps/15) + 14))[:number_of_time_steps]
 # command_elevators_position = np.array([-1 for i in range(number_of_time_steps)])   # From -10 to 10
 command_elevators_position = np.array([0 for i in range(number_of_time_steps)])   # From -10 to 10
 
 # Rudder commands
 command_rudder_position = np.array([0 for i in range(number_of_time_steps)])      # From -10 to 10
-#command_rudder_position[10] = 1
-#command_rudder_position[20] = -1
+# command_rudder_position[10] = 1
+# command_rudder_position[20] = -1
+# command_rudder_position[21] = -1
 
 # Ailerons commands
 command_ailerons_position = np.array([0 for i in range(number_of_time_steps)])    # From -10 to 10
 command_ailerons_position[1000:1300]=1
-
+# command_ailerons_position[10] = 1
+# command_ailerons_position[11] = -1
+# command_ailerons_position[12] = -1
 
 # Throttle commands
 command_throttle_position = np.array([8 for i in range(number_of_time_steps)])    # From 0 to 10

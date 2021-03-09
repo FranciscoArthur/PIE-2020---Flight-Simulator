@@ -541,6 +541,7 @@ def Flight_Simulator_fct(plane, initial_conditions, weather, integration_paramet
             raise ValueError ("The aircraft crashed - unsustainable load factor")
         
         # Other errors ?
+        # Add décrochage !
         
         
         
