@@ -124,9 +124,9 @@ def Flight_Simulator_fct(plane, initial_conditions, weather, integration_paramet
     plane_orientation = np.zeros((number_of_time_steps,3))          # Plane orientation - Ground frame
     plane_speed = np.zeros((number_of_time_steps,3))                # Ground speed - Ground frame
     plane_angular_speed = np.zeros((number_of_time_steps,3))        # Plane angular speed - Ground frame
-    plane_fuel_load = [0] * number_of_time_steps
-    plane_mass = [0] * number_of_time_steps
-    plane_mach=[0]*number_of_time_steps
+    plane_fuel_load = [0.] * number_of_time_steps
+    plane_mass = [0.] * number_of_time_steps
+    plane_mach=[0.]*number_of_time_steps
     
     
    # Initial conditions
@@ -190,18 +190,18 @@ def Flight_Simulator_fct(plane, initial_conditions, weather, integration_paramet
     plane_mass[0] = plane_initial_mass
     
     # Resulting force and moment, null at the initial time step.
-    plane_resulting_force = np.asarray([[0, 0, 0]] * number_of_time_steps)
-    plane_resulting_moment = np.asarray([[0, 0, 0]] * number_of_time_steps)
+    plane_resulting_force = np.asarray([[0., 0., 0.]] * number_of_time_steps)
+    plane_resulting_moment = np.asarray([[0., 0., 0.]] * number_of_time_steps)
     
     # Aerodynamic coefficients
-    plane_aerodynamic_coefficients = np.asarray([[0, 0, 0, 0, 0, 0, 0]] * number_of_time_steps)
+    plane_aerodynamic_coefficients = np.asarray([[0., 0., 0., 0., 0., 0., 0.]] * number_of_time_steps)
 
     # True relative AirSpeed - ground frame
-    plane_TAS = [0] * number_of_time_steps
+    plane_TAS = [0.] * number_of_time_steps
     plane_initial_TAS =  np.sqrt((initial_speed[0]-wind[0])**2 + (initial_speed[1]-wind[1])**2 + (initial_speed[2]-wind[2])**2)    # Check
     plane_TAS[0] = plane_initial_TAS
     
-    plane_TAS_vector = [[0, 0, 0]] * number_of_time_steps
+    plane_TAS_vector = [[0., 0., 0.]] * number_of_time_steps
     plane_initial_TAS_vector = [initial_speed[0]-wind[0], initial_speed[1]-wind[1], initial_speed[2]-wind[2]]
     plane_TAS_vector[0] = plane_initial_TAS_vector
 
@@ -213,8 +213,8 @@ def Flight_Simulator_fct(plane, initial_conditions, weather, integration_paramet
     initial_theta_angle = initial_orientation[2]; # pitch angle  [rad] 
     
     # Wind frame angles [https://en.wikipedia.org/wiki/Flight_dynamics_(fixed-wing_aircraft)#Transformations_(Euler_angles)]
-    plane_gamma_angle = [0] * number_of_time_steps    # Flight path angle 
-    plane_sigma_angle = [0] * number_of_time_steps    # Heading angle
+    plane_gamma_angle = [0.] * number_of_time_steps    # Flight path angle 
+    plane_sigma_angle = [0.] * number_of_time_steps    # Heading angle
     # plane_mu_angle    = [0] * number_of_time_steps    # bank angle   
 
     if plane_initial_TAS_vector[1]>=0:           # sigma between 0 and pi
@@ -229,24 +229,24 @@ def Flight_Simulator_fct(plane, initial_conditions, weather, integration_paramet
     plane_gamma_angle[0] = initial_gamma_angle
     
     # Body frame angles [https://en.wikipedia.org/wiki/Flight_dynamics_(fixed-wing_aircraft)#Transformations_(Euler_angles)] 
-    plane_alpha_angle = [0] * number_of_time_steps  # Angle of attack
-    plane_beta_angle  = [0] * number_of_time_steps  # Sideslip angle
+    plane_alpha_angle = [0.] * number_of_time_steps  # Angle of attack
+    plane_beta_angle  = [0.] * number_of_time_steps  # Sideslip angle
              
     plane_alpha_angle[0] = np.arctan(plane_initial_TAS_vector[2]/abs(plane_initial_TAS_vector[0]))
     plane_beta_angle[0] = np.arcsin(plane_initial_TAS_vector/plane_initial_TAS) 
 
     
     # Plane load factor - initial horizontal flight 
-    plane_load_factor = [1] * number_of_time_steps
-    plane_load_factor_vector = [[0, 0, 0]] * number_of_time_steps
+    plane_load_factor = [1.] * number_of_time_steps
+    plane_load_factor_vector = [[0., 0., 0.]] * number_of_time_steps
     
 
     # Initial dynamic pressure calculation
-    plane_qinf = [0] * number_of_time_steps
+    plane_qinf = [0.] * number_of_time_steps
     plane_qinf[0] = 0.5*initial_air_density*(plane_initial_TAS**2)
     
     # Time evolution
-    time = [0] * number_of_time_steps
+    time = [0.] * number_of_time_steps
     
     
     
