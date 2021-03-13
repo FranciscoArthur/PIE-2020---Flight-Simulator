@@ -47,7 +47,7 @@ def display_fct(result):
 
     # Definition of the state vector
 
-    x = np.zeros((len(t),25))
+    x = np.zeros((len(t),29))
     
 
     x[:,0] = result['plane_speed'][:,0]             # Body-axis x inertial velocity, ub, m/s 
@@ -75,6 +75,10 @@ def display_fct(result):
     x[:,22] = result['plane_aerodynamic_coefficients'][:,4] #cm
     x[:,23] = result['plane_aerodynamic_coefficients'][:,5] #cn
     x[:,24] = result['plane_aerodynamic_coefficients'][:,6] #Thrust
+    x[:,25] = result['plane_alpha_angle']
+    x[:,26] = result['plane_beta_angle']
+    x[:,27] = result['plane_sigma_angle']
+    x[:,28] = result['plane_gamma_angle']
     
     
     
@@ -87,7 +91,7 @@ def display_fct(result):
     # Selection des figures souhaitées
     # If the a unity value is given the graph is displayed
     
-    GRAPH_Velocities =       0
+    GRAPH_Velocities =       1
     GRAPH_Positions =        1
     GRAPH_rotation_rates =   1
     GRAPH_angles =           1
@@ -98,6 +102,7 @@ def display_fct(result):
     GRAPH_Forces =           1
     GRAPH_Moments =          1
     GRAPH_Coeffs =           1
+    GRAPH_AeroAngles =       1
     
     #-----------------------------------------------------------------------------
     
@@ -340,6 +345,23 @@ def display_fct(result):
         plt.xlabel('Time, s'), plt.ylabel('cn'), plt.grid(True)
         
         
+        
+    if GRAPH_AeroAngles == 1:
+        
+        f10 = plt.figure()
+        plt.subplot(2, 2, 1)
+        plt.plot(t, x[:,25]*r2d)
+        plt.xlabel('Time, s'), plt.ylabel('Alpha'), plt.grid(True)
+        plt.subplot(2, 2, 2)
+        plt.plot(t, x[:,26]*r2d)
+        plt.xlabel('Time, s'), plt.ylabel('Beta'), plt.grid(True)
+        plt.subplot(2, 2, 3)
+        plt.plot(t, x[:,27]*r2d)
+        plt.xlabel('Time, s'), plt.ylabel('Sigma'), plt.grid(True)
+        plt.subplot(2, 2, 4)
+        plt.plot(t, x[:,28]*r2d)
+        plt.xlabel('Time, s'), plt.ylabel('Gamma'), plt.grid(True)
+        
     # Exporting results to a text file
         
         
@@ -352,7 +374,7 @@ def display_fct(result):
     
     # Write data to file
     
-    header = ['Time','Vx','Vy','Vy','North_pos','East_pos','Altitude','Yaw_rate','Roll_rate','Pitch_rate','Yaw_angle','Roll_angle','Pitch_angle','F_x','F_y','F_z','Yaw_moment','Roll_moment','Pitch_moment','CL','CD','Cy','Cl','Cm','Cn','Thrust']
+    header = ['Time','Vx','Vy','Vy','North_pos','East_pos','Altitude','Yaw_rate','Roll_rate','Pitch_rate','Yaw_angle','Roll_angle','Pitch_angle','F_x','F_y','F_z','Yaw_moment','Roll_moment','Pitch_moment','CL','CD','Cy','Cl','Cm','Cn','Thrust','Alpha','Beta','Sigma','Gamma']
     
     
     for i in range(len(header)):
