@@ -233,7 +233,7 @@ def Flight_Simulator_fct(plane, initial_conditions, weather, integration_paramet
     plane_beta_angle  = [0.] * number_of_time_steps  # Sideslip angle
              
     plane_alpha_angle[0] = np.arctan(plane_initial_TAS_vector[2]/abs(plane_initial_TAS_vector[0]))
-    plane_beta_angle[0] = np.arcsin(plane_initial_TAS_vector/plane_initial_TAS) 
+    plane_beta_angle[0] = np.arcsin(plane_initial_TAS_vector[1]/plane_initial_TAS) 
 
     
     # Plane load factor - initial horizontal flight 
