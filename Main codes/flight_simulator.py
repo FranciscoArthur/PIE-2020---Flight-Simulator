@@ -324,7 +324,13 @@ def Flight_Simulator_fct(plane, initial_conditions, weather, integration_paramet
         
         # Body frame angles [https://en.wikipedia.org/wiki/Flight_dynamics_(fixed-wing_aircraft)#Transformations_(Euler_angles)] 
         alpha_angle_before_update = np.arctan(plane_TAS_vector_before_update[2]/abs(plane_TAS_vector_before_update[0]))
+        plane_alpha_angle[i] = alpha_angle_before_update
+        
+        
         beta_angle_before_update = np.arcsin(plane_TAS_vector_before_update[1]/plane_TAS_before_update)   
+        plane_beta_angle[i] = beta_angle_before_update
+        
+        
         if DEBUG:
             np.disp('alpha = ' + str(alpha_angle_before_update * 180 / np.pi) + ' deg')
             np.disp('beta = ' + str(beta_angle_before_update * 180 / np.pi) + ' deg')
