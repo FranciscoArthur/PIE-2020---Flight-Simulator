@@ -93,16 +93,16 @@ def display_fct(result):
     
     GRAPH_Velocities =       1
     GRAPH_Positions =        1
-    GRAPH_rotation_rates =   1
+    GRAPH_rotation_rates =   0
     GRAPH_angles =           1
-    GRAPH_controls =         1
+    GRAPH_controls =         0
     GRAPH_TASandMach =       1
-    GRAPH_Mass =             1
+    GRAPH_Mass =             0
     GRAPH_LoadFactor =       1
-    GRAPH_Forces =           1
-    GRAPH_Moments =          1
-    GRAPH_Coeffs =           1
-    GRAPH_AeroAngles =       1
+    GRAPH_Forces =           0
+    GRAPH_Moments =          0
+    GRAPH_Coeffs =           0
+    GRAPH_AeroAngles =       0
     
     #-----------------------------------------------------------------------------
     

@@ -23,8 +23,8 @@ plane = ['c172']
 # Angular_Speed = [Yaw rate, Roll rate, Pitch rate]
 
 initial_position = [0, 0, 1800]     # [m]
-initial_orientation = [0, 0, 0]     # [deg]
-initial_speed = [60, 0, 0]          # [m/s]
+initial_orientation = [0, 0, -0.8]     # [deg]
+initial_speed = [70.3, 0, 0]          # [m/s]
 initial_angular_speed = [0, 0, 0]   # [deg/s]
 
 
@@ -34,12 +34,12 @@ initial_fuel_load = 77              # [kg]
 
 
 ### Weather conditions
-wind = [0, 0, 0]                   # Constant wind vector - ground frame [m/s]
-weather = [wind]                   # Next : add humidity/rain ?
+wind = [0, 0, 0]                    # Constant wind vector - ground frame [m/s]
+weather = [wind]                    # Next : add humidity/rain ?
 
 
 ### Integration parameters
-time_of_study = 100                  # [s]
+time_of_study = 1000                  # [s]
 delta_t = 0.01                      # [s]
 number_of_time_steps = int(time_of_study/delta_t) + 1    # DO NOT MODIFY
 
@@ -61,7 +61,7 @@ command_rudder_position = np.array([0 for i in range(number_of_time_steps)])    
 
 # Ailerons commands
 command_ailerons_position = np.array([0 for i in range(number_of_time_steps)])    # From -10 to 10
-command_ailerons_position[1000:1300]=1
+# command_ailerons_position[1000:1300]=1
 # command_ailerons_position[10] = 1
 # command_ailerons_position[11] = -1
 # command_ailerons_position[12] = -1
