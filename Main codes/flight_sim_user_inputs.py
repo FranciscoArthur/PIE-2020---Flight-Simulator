@@ -39,7 +39,7 @@ weather = [wind]                    # Next : add humidity/rain ?
 
 
 ### Integration parameters
-time_of_study = 1000                  # [s]
+time_of_study = 500                # [s]
 delta_t = 0.01                      # [s]
 number_of_time_steps = int(time_of_study/delta_t) + 1    # DO NOT MODIFY
 
@@ -51,23 +51,23 @@ number_of_time_steps = int(time_of_study/delta_t) + 1    # DO NOT MODIFY
 # command_elevators_position = ([-1, 0, -1, 0, -1, 0, -1, 0, -1, 0, -1, 0, -1, 0, -1, 0, -1, 0, -1, 0] * (int(number_of_time_steps/20) + 19))[:number_of_time_steps]
 # command_elevators_position = ([-1, 0, 0,  0, 0, 0,  0, -1, 0, 0,  0, 0, 0,  0, -1] * (int(number_of_time_steps/15) + 14))[:number_of_time_steps]
 # command_elevators_position = np.array([-1 for i in range(number_of_time_steps)])   # From -10 to 10
-command_elevators_position = np.array([0 for i in range(number_of_time_steps)])   # From -10 to 10
+command_elevators_position = np.array([0. for i in range(number_of_time_steps)])   # From -10 to 10
 
 # Rudder commands
-command_rudder_position = np.array([0 for i in range(number_of_time_steps)])      # From -10 to 10
+command_rudder_position = np.array([0. for i in range(number_of_time_steps)])      # From -10 to 10
 # command_rudder_position[10] = 1
 # command_rudder_position[20] = -1
 # command_rudder_position[21] = -1
 
 # Ailerons commands
-command_ailerons_position = np.array([0 for i in range(number_of_time_steps)])    # From -10 to 10
+command_ailerons_position = np.array([0. for i in range(number_of_time_steps)])    # From -10 to 10
 # command_ailerons_position[1000:1300]=1
 # command_ailerons_position[10] = 1
 # command_ailerons_position[11] = -1
 # command_ailerons_position[12] = -1
 
 # Throttle commands
-command_throttle_position = np.array([8 for i in range(number_of_time_steps)])    # From 0 to 10
+command_throttle_position = np.array([7. for i in range(number_of_time_steps)])    # From 0 to 10
 
 command_air_brakes = np.array([0 for i in range(number_of_time_steps)])           # 0 or 1
 command_hygh_lift_devices = np.array([0 for i in range(number_of_time_steps)])    # 0 or 1
@@ -75,6 +75,12 @@ command_landing_gear = np.array([0 for i in range(number_of_time_steps)])       
 
 
 
+# Optional control order
+# Define a targeted altitude or leave 'False' for uncontrolled flight
+# If a targeted altitude is defined, it must be equal to the initial altitude defined above
+
+#Target_altitude = False
+Target_altitude = 1800
 
 
 
@@ -107,4 +113,4 @@ pilot_inputs = [command_throttle_position, command_rudder_position, command_aile
 
 
 ### Call the main function Flight_Simulator_fct in order to compute the results and display them
-result = Flight_Simulator_fct(plane, initial_conditions, weather, integration_parameters, pilot_inputs)
+result = Flight_Simulator_fct(plane, initial_conditions, weather, integration_parameters, pilot_inputs, Target_altitude)

@@ -107,7 +107,7 @@ DEBUG=False
 
 
 
-def Flight_Simulator_fct(plane, initial_conditions, weather, integration_parameters, pilot_inputs):
+def Flight_Simulator_fct(plane, initial_conditions, weather, integration_parameters, pilot_inputs, Target_altitude):
     
     
     ### Step 0 : collecting the user inputs
@@ -138,6 +138,23 @@ def Flight_Simulator_fct(plane, initial_conditions, weather, integration_paramet
     initial_angular_speed = initial_angular_speed_deg * np.pi / 180 # [rad/s]
     payload = initial_conditions[4]                                 # [kg]
     initial_fuel_load = initial_conditions[5]                       # [kg]
+    
+#---------------------------------------------------------------------------------------------
+   # CONTROL PARAMETERS
+    integ = 0
+    errRate = 0
+    oldError = 0
+
+    K1 = 0.05 #coeff qui joue sur l'erreur instantanée, a modifier
+    K2 = 0.1 #coeff qui joue sur les oscillations, a modifier
+    K3 = 0.01 #coeff qui joue sur la réponse long terme, a modifier
+
+    init = True
+
+    
+#---------------------------------------------------------------------------------------------    
+    
+    
 
     # Weather 
     wind = weather[0]
@@ -279,8 +296,64 @@ def Flight_Simulator_fct(plane, initial_conditions, weather, integration_paramet
         # Pilot controls at the previous time step - the pilot commands are expected to take action at the next time step
         current_throttle_position = command_throttle_position[i-1]    
         current_rudder_position = command_rudder_position[i-1]     
-        current_ailerons_position = command_ailerons_position[i-1]     
-        current_elevators_position = command_elevators_position[i-1]    
+        current_ailerons_position = command_ailerons_position[i-1]
+
+       
+#---------------------------------------------------------------------------------------------        
+        # COTNROL ON ELEVATOR
+
+        
+        if not Target_altitude:
+            
+            current_elevators_position = command_elevators_position[i-1] 
+            
+            
+        else:
+            # CONTROL 
+            if init:
+                current_elevators_position = command_elevators_position[i-1]
+                integ = 0
+                #integ = command_elevators_position[i-1] / K3
+                init = False
+                
+            else:
+                error = current_state_vector[2] - (-Target_altitude)
+                errRate = (error - oldError) / delta_t
+                oldError = error
+                integ = integ + error * delta_t
+                current_elevators_position = -(K1 * error + K2 * errRate + K3 * integ)
+                pilot_inputs[3][i-1] = current_elevators_position
+                # print()
+                # print('Time', time[i])
+                # print('Altitud acutal: ', current_state_vector[2])
+                # print('Error', error)
+                # print('Error rate', errRate)
+                # print('Integ', integ)
+                
+                if current_elevators_position > 10:
+                    current_elevators_position = 10
+                    print('WARNING: ELEVATOR LIMIT REACHED')
+                
+                # print ('Elevators command: ' , current_elevators_position)
+        
+        
+           
+        
+#---------------------------------------------------------------------------------------------        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    
         current_air_brakes = command_air_brakes[i-1]            
         current_hygh_lift_devices = command_hygh_lift_devices[i-1]    
         current_landing_gear = command_landing_gear[i-1]           
