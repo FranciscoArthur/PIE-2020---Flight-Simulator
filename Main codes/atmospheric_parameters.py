@@ -1,7 +1,6 @@
+# -*- coding: utf-8 -*-
 """
-Created on Wed Nov 25 12:03:06 2020
-
-@author: Clément Gardies
+@authors: PIE n°7 group - ISAE Supaero - 2020/2021
 
 Description :
 Compute atmospheric properties for heights ranging from -5 km to 80 km.

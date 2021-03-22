@@ -1,3 +1,13 @@
+# -*- coding: utf-8 -*-
+"""
+@authors: PIE n°7 group - ISAE Supaero - 2020/2021
+
+Description : This script intends to provide the necessary function to display 
+the results through the time evolution of the different parameters, and to save
+the results in an excel file
+
+"""
+
 import matplotlib.pyplot as plt
 import numpy as np
 from mpl_toolkits import mplot3d
@@ -5,13 +15,11 @@ import xlsxwriter
 
 
 def display_fct(result):
-    """Plotting function that generates four graphs for the results variables history.
+    """Plotting function that generates graphs for the results variables history.
 
 
     Input:
-
         Dictionnary of the form:
-
             result = {}
             result['plane_position'] = plane_position
             result['plane_orientation'] = plane_orientation
@@ -36,19 +44,37 @@ def display_fct(result):
             result['plane_sigma_angle']=plane_sigma_angle
             result['plane_alpha_angle']=plane_alpha_angle
             result['plane_beta_angle']=plane_beta_angle
-
-
-
         """
 
-    t = result['time']
+    #-----------------------------------------------------------------------------
+    # Selection of the desired plots
+    # If the '1' value is given the graph is displayed
+    
+    GRAPH_Velocities =       1
+    GRAPH_Positions =        1
+    GRAPH_rotation_rates =   0
+    GRAPH_angles =           1
+    GRAPH_controls =         0
+    GRAPH_TASandMach =       1
+    GRAPH_Mass =             0
+    GRAPH_LoadFactor =       1
+    GRAPH_Forces =           0
+    GRAPH_Moments =          0
+    GRAPH_Coeffs =           0
+    GRAPH_AeroAngles =       1
+    
+    #-----------------------------------------------------------------------------
+    
 
-    #      PLOT STATE HISTORY
+        
+    r2d = 180 / np.pi
+
+    # Time coordinates
+    t = result['time']                              
+
 
     # Definition of the state vector
-
     x = np.zeros((len(t),29))
-    
 
     x[:,0] = result['plane_speed'][:,0]             # Body-axis x inertial velocity, ub, m/s 
     x[:,1] = result['plane_speed'][:,1]             # Body-axis y inertial velocity, vb, m/s
@@ -79,37 +105,10 @@ def display_fct(result):
     x[:,26] = result['plane_beta_angle']
     x[:,27] = result['plane_sigma_angle']
     x[:,28] = result['plane_gamma_angle']
-    
-    
-    
-    
-    # print(x)
 
-    r2d = 180 / np.pi
-    
-    #-----------------------------------------------------------------------------
-    # Selection des figures souhaitées
-    # If the a unity value is given the graph is displayed
-    
-    GRAPH_Velocities =       1
-    GRAPH_Positions =        1
-    GRAPH_rotation_rates =   0
-    GRAPH_angles =           1
-    GRAPH_controls =         0
-    GRAPH_TASandMach =       1
-    GRAPH_Mass =             0
-    GRAPH_LoadFactor =       1
-    GRAPH_Forces =           0
-    GRAPH_Moments =          0
-    GRAPH_Coeffs =           0
-    GRAPH_AeroAngles =       1
-    
-    #-----------------------------------------------------------------------------
-    
-    
-    
     
 
+    ### Plots : state vector
     if GRAPH_Velocities == 1:
         f1 = plt.figure()
         plt.subplot(2, 2, 1)
@@ -209,7 +208,9 @@ def display_fct(result):
         plt.title('Euler Angles')
         plt.legend(['Yaw angle, psi', 'Roll angle, phi', 'Pitch angle, theta'])
 
-    #      PLOT CONTROL HISTORY
+
+
+    ### PLOT CONTROL HISTORY
 
     # Definition of the control vector
 
@@ -221,10 +222,7 @@ def display_fct(result):
     u[3] = result['pilot_commands'][3]  # Elevator, dEr, rad, positive: trailing edge down
     u[4] = result['pilot_commands'][4]  # Air Breaks
     u[5] = result['pilot_commands'][5]  # High Lift
-    u[6] = result['pilot_commands'][6]  # Landing Gear
-
-    
-    
+    u[6] = result['pilot_commands'][6]  # Landing Gear  
     
     
     if GRAPH_controls ==1:
@@ -243,7 +241,8 @@ def display_fct(result):
     
 
 
-    #       PLOT SPEED HISTORY
+
+    # PLOT SPEED HISTORY
 
     # Definition of speed variables
 
@@ -263,7 +262,9 @@ def display_fct(result):
         plt.plot(t, mach)
         plt.xlabel('Time, s'), plt.ylabel('Mach'), plt.grid(True)
 
-    #       PLOT MASS HISTORY
+
+
+    # PLOT MASS HISTORY
 
     mass = result['plane_mass']  # Plane mass
 
@@ -273,7 +274,9 @@ def display_fct(result):
         plt.plot(t, mass)
         plt.xlabel('Time, s'), plt.ylabel('Plane Mass'), plt.grid(True)
 
-    #       PLOT LOAD FACTOR HISTORY
+
+
+    # PLOT LOAD FACTOR + FORCES + MOMENTS HISTORY
 
     nz = result['plane_load_factor']  # Plane load factor
 
@@ -282,10 +285,6 @@ def display_fct(result):
         f8 = plt.figure()
         plt.plot(t, nz)
         plt.xlabel('Time, s'), plt.ylabel('Load Factor'), plt.grid(True)
-        
-        
-        
-        
         
         
     if GRAPH_Forces == 1:
@@ -304,8 +303,6 @@ def display_fct(result):
         plt.plot(t, x[:,24])
         plt.xlabel('Time, s'), plt.ylabel('Thrust [N]'), plt.grid(True)
         
-        
-    
     
     if GRAPH_Moments == 1:
         
@@ -320,7 +317,6 @@ def display_fct(result):
         plt.plot(t, x[:,17])
         plt.xlabel('Time, s'), plt.ylabel('Pitch moment [N.m]'), plt.grid(True)
         
-    
     
     if GRAPH_Coeffs == 1:
         
@@ -345,7 +341,6 @@ def display_fct(result):
         plt.xlabel('Time, s'), plt.ylabel('cn'), plt.grid(True)
         
         
-        
     if GRAPH_AeroAngles == 1:
         
         f10 = plt.figure()
@@ -362,20 +357,19 @@ def display_fct(result):
         plt.plot(t, x[:,28]*r2d)
         plt.xlabel('Time, s'), plt.ylabel('Gamma'), plt.grid(True)
         
-    # Exporting results to a text file
+        
+        
         
         
     
-    # Exporting results to a text file
+    ### Exporting results to a text file
     
     # Create file and worksheet    
     outWorkbook = xlsxwriter.Workbook("Results.xlsx")
     outSheet = outWorkbook.add_worksheet()
     
-    # Write data to file
-    
+    # Write data results to file
     header = ['Time','Vx','Vy','Vy','North_pos','East_pos','Altitude','Yaw_rate','Roll_rate','Pitch_rate','Yaw_angle','Roll_angle','Pitch_angle','F_x','F_y','F_z','Yaw_moment','Roll_moment','Pitch_moment','CL','CD','Cy','Cl','Cm','Cn','Thrust','Alpha','Beta','Sigma','Gamma']
-    
     
     for i in range(len(header)):
         outSheet.write(0,i, header[i])
@@ -388,13 +382,12 @@ def display_fct(result):
             outSheet.write(i+1,j+1,x[i,j])
                              
             
-    # Control variables
             
+    # Control variables     
     header_control = ['Throttle','Rudder','Aileron','Elevator','Air breaks','High lift','Landing gear']    
         
     for i in range(len(header_control)):
         outSheet.write(0,i+len(header), header_control[i])
-        
         
     for i in range(len(t)):
         for j in range(len(u[:,0])):

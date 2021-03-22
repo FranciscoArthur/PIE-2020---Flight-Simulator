@@ -1,3 +1,13 @@
+# -*- coding: utf-8 -*-
+"""
+@authors: PIE n°7 group - ISAE Supaero - 2020/2021
+
+Description : This script intends to provide the necessary functions to calculate 
+the current resulting force and moment, the load factor and the fuel consumption.  
+
+"""
+
+
 import math; 
 import numpy as np;
 
@@ -5,38 +15,38 @@ import numpy as np;
 #Forces calculation
 def forces_calculation_fct(plane_mass, plane_TAS,plane_TAS_vector, plane_orientation, atmospheric_parameters_before_update, plane_data, plane_intrinsic_data,hor2bodymatrix):
     
-    #collection of aerodynamic coefficients
+    # Collection of aerodynamic coefficients
     CL = plane_data[0];
     CD = plane_data[1];
     CY = plane_data[2];
     thrust = plane_data[6];
     
-    #atmosphere data
+    # Atmosphere data
     rho = atmospheric_parameters_before_update[4];
     g = np.array([0,0,atmospheric_parameters_before_update[6]]);
     
-    #gravity in body frame
+    # Gravity in body frame
     gb=hor2bodymatrix.dot(g)
-    #plane geometry              
+    # Plane geometry              
     S = plane_intrinsic_data['Sw'];   # S = wing surface
     m = plane_mass;
 
     # Dynamic pressure and surface
     qbarS = 0.5*rho*plane_TAS**2*S
     
-    #state vector
+    # State vector
     psi = plane_orientation[0];   # yaw angle [rad]
     phi = plane_orientation[1];   # roll angle [rad]
     theta = plane_orientation[2]; # pitch angle [rad]
 
-    #Angle of attack
+    # Angle of attack
     alpha=np.arctan(plane_TAS_vector[2]/plane_TAS_vector[0])
 
-    #Coefficients on body X and Z coefficient
+    # Coefficients on body X and Z coefficient
     CX=-CD*np.cos(alpha)+CL*np.sin(alpha)
     CZ=-CD*np.sin(alpha)-CL*np.cos(alpha)
 
-    #state accelerations in plane referential
+    # State accelerations in plane referential
     f_x_plane = (CX*qbarS+thrust)+m*gb[0]
     f_y_plane = CY*qbarS+m*gb[1]
     f_z_plane = CZ*qbarS +m*gb[2]
@@ -46,30 +56,26 @@ def forces_calculation_fct(plane_mass, plane_TAS,plane_TAS_vector, plane_orienta
 #Moments calculation
 def moments_calculation_fct(plane_mass, plane_TAS, plane_orientation, atmospheric_parameters_before_update, plane_data, plane_intrinsic_data):
     
-    #collection of aerodynamic coefficients
+    # Collection of aerodynamic coefficients
     cl = plane_data[3];
     cm = plane_data[4];
     cn = plane_data[5];
     
-    #atmosphere data
+    # Atmosphere data
     rho = atmospheric_parameters_before_update[4];
     
-    #plane geometry
-              
+    # Plane geometry
     S = plane_intrinsic_data['Sw'];   # S = wing surface
     b = plane_intrinsic_data['span'];  # b = wingspan
     c = plane_intrinsic_data['chord'];  # c = mean aerodynamic chord
     m = plane_mass;
     
-    #state vector
+    # State vector
     v = plane_TAS;
         
-    #Calculation
-    
+    # Calculation
     roll_m =  0.5 * rho * S * b * cl * (v ** 2);
-
     pitch_m = 0.5 * rho * S * c * cm * (v ** 2);
-
     yaw_m = 0.5 * rho * S * b * cn * (v ** 2);
     
     return [yaw_m, roll_m, pitch_m];
@@ -88,11 +94,11 @@ def fuel_consumption_calculation_fct(current_throttle, plane_intrinsic_data):
 #Load factor calculation
 def loadfactor_calculation_fct(plane_mass, plane_current_forces, atmospheric_parameters_before_update, plane_orientation):
     
-    #environment data
+    # Environment data
     m = plane_mass;
     g = atmospheric_parameters_before_update[6];
     
-    #plane orientation
+    # Plane orientation
     psi = plane_orientation[0];   # yaw angle [rad]
     phi = plane_orientation[1];   # roll angle [rad]
     theta = plane_orientation[2]; # pitch angle [rad]
@@ -103,7 +109,7 @@ def loadfactor_calculation_fct(plane_mass, plane_current_forces, atmospheric_par
     
     weight = [0, 0, -m*g];
     
-    #calculation
+    # Calculation
     n = [0, 0, 0];
     for i in range(3):
         n[i] = (F_ext[i] - weight[i]) / (weight[2]);
