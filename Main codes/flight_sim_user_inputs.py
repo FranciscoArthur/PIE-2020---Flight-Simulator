@@ -43,7 +43,7 @@ weather = [wind]                    # Next : add humidity/rain ?
 
 
 ### Integration parameters
-time_of_study = 1000                # [s]
+time_of_study = 10                # [s]
 delta_t = 0.01                      # [s]
 number_of_time_steps = int(time_of_study/delta_t) + 1    # DO NOT MODIFY
 
@@ -71,6 +71,7 @@ command_ailerons_position = np.array([0. for i in range(number_of_time_steps)])
 # Throttle commands - time-dependant - relative value from 0 to 10
 command_throttle_position = np.array([8. for i in range(number_of_time_steps)])  
 
+# Other commands - time-dependant - 0 or 1 (1 means activated)
 command_air_brakes = np.array([0 for i in range(number_of_time_steps)])        
 command_hygh_lift_devices = np.array([0 for i in range(number_of_time_steps)])  
 command_landing_gear = np.array([0 for i in range(number_of_time_steps)])      
