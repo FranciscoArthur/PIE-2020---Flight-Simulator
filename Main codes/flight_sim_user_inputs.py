@@ -1,22 +1,26 @@
 # -*- coding: utf-8 -*-
 """
-Created on Wed Dec  2 12:03:00 2020
+@authors: PIE n°7 group - ISAE Supaero - 2020/2021
 
-@author: Clément Gardies
-
-FS_user_inputs
+Description :
+The following script provides to the simulator user the interface where is 
+selected the different simulation inputs.
+Actually the simulator is a time-resolved code where the time-dependant 
+parameters are selected by the user before the simulation, compared to a 
+live simulator.
 """
+
 from flight_simulator import Flight_Simulator_fct
 import numpy as np
 
 ### Considered plane
-plane = ['c172']       
+plane = ['c172']                    # 'c172' = Cessna172 - 'b747' = Boeing747       
 
 
 
-### Initial conditions : position, speed, orientation, angular speed, payload, fuelload
+### Initial conditions : position, speed, orientation, angular speed, payload, fuel load
 
-### Plane coordinates - in ground frame
+### Initial plane coordinates - in ground frame
 # Position = [North_position, East_position, Altitude]
 # Orientation = [Yaw angle, Roll angle, Pitch angle]
 # Speed = [Velocity at x-axis, Velocity at y-axis, Velocity at z-axis]
@@ -39,35 +43,34 @@ weather = [wind]                    # Next : add humidity/rain ?
 
 
 ### Integration parameters
-time_of_study = 500                # [s]
+time_of_study = 100                # [s]
 delta_t = 0.01                      # [s]
 number_of_time_steps = int(time_of_study/delta_t) + 1    # DO NOT MODIFY
 
 
+
 ### Pilot commands, time-dependant - each command is a list of number_of_time_steps elements
 
-# Elevators commands
-# command_elevators_position = ([-1, -1, 0, -1, 0, -1, 0, -1, 0, -1, 0, -1, 0, -1, 0, -1, 0, -1, 0, -1, 0] * (int(number_of_time_steps/21) + 20))[:number_of_time_steps]
-# command_elevators_position = ([-1, 0, -1, 0, -1, 0, -1, 0, -1, 0, -1, 0, -1, 0, -1, 0, -1, 0, -1, 0] * (int(number_of_time_steps/20) + 19))[:number_of_time_steps]
-# command_elevators_position = ([-1, 0, 0,  0, 0, 0,  0, -1, 0, 0,  0, 0, 0,  0, -1] * (int(number_of_time_steps/15) + 14))[:number_of_time_steps]
-# command_elevators_position = np.array([-1 for i in range(number_of_time_steps)])   # From -10 to 10
-command_elevators_position = np.array([0. for i in range(number_of_time_steps)])   # From -10 to 10
+# Elevators commands - time-dependant - relative value from -10 to 10 
+command_elevators_position = np.array([0. for i in range(number_of_time_steps)])  
+# for i in range (int(number_of_time_steps/100)):
+#     command_elevators_position[100*i] = 1. 
+# command_elevators_position = np.array([-1. for i in range(number_of_time_steps)])  
 
-# Rudder commands
-command_rudder_position = np.array([0. for i in range(number_of_time_steps)])      # From -10 to 10
-# command_rudder_position[10] = 1
-# command_rudder_position[20] = -1
-# command_rudder_position[21] = -1
+# Rudder commands - time-dependant - relative value from -10 to 10
+command_rudder_position = np.array([0. for i in range(number_of_time_steps)])
+# for i in range (10):
+#     command_rudder_position[100000 + i] = 1.
+# command_rudder_position[10000] = 1.
 
-# Ailerons commands
-command_ailerons_position = np.array([0. for i in range(number_of_time_steps)])    # From -10 to 10
-# command_ailerons_position[1000:1300]=1
+# Ailerons commands - time-dependant - relative value from -10 to 10
+command_ailerons_position = np.array([0. for i in range(number_of_time_steps)])  
 # command_ailerons_position[10] = 1
 # command_ailerons_position[11] = -1
 # command_ailerons_position[12] = -1
 
-# Throttle commands
-command_throttle_position = np.array([7. for i in range(number_of_time_steps)])    # From 0 to 10
+# Throttle commands - time-dependant - relative value from 0 to 10
+command_throttle_position = np.array([8. for i in range(number_of_time_steps)])  
 
 command_air_brakes = np.array([0 for i in range(number_of_time_steps)])           # 0 or 1
 command_hygh_lift_devices = np.array([0 for i in range(number_of_time_steps)])    # 0 or 1
@@ -75,12 +78,12 @@ command_landing_gear = np.array([0 for i in range(number_of_time_steps)])       
 
 
 
-# Optional control order
+### Automatic pilot order - optional
 # Define a targeted altitude or leave 'False' for uncontrolled flight
-# If a targeted altitude is defined, it must be equal to the initial altitude defined above
+# If a targeted altitude is defined, it must be equal to the initial altitude defined above : initial_position[2]
 
-#Target_altitude = False
-Target_altitude = 1800
+Target_altitude = False
+# Target_altitude = initial_position[2]
 
 
 
