@@ -1,114 +1,86 @@
+# -*- coding: utf-8 -*-
+"""
+@authors: PIE n°7 group - ISAE Supaero - 2020/2021
+
+Description :
+The following script provides the different calculation steps of our
+flight simulator code.
+Actually the simulator is a time-resolved code where the time-dependant 
+parameters are calculated step by step without intervention from the user.
+"""
+
+
+""" 
+COORDINATES - VECTORS
+
+# Ground frame - direct 
+Origin - arbitrary, fixed relative to the surface of the ocean
+xE axis - positive in the direction of North
+yE axis - positive in the direction of East
+zE axis - positive towards the center of the Earth
+The earth is assumed to be flat
+
+
+# Plane frame - direct
+Origin - airplane center of gravity
+xb axis - positive out the nose of the aircraft in the plane of symmetry of the aircraft
+zb axis - perpendicular to the xb axis, in the plane of symmetry of the aircraft, positive below the aircraft
+yb axis - perpendicular to the xb,zb-plane, positive determined by the right-hand rule (generally, positive out the right wing)
+
+
+# Aero frame - direct
+Origin - airplane center of gravity
+xw axis - positive in the direction of the velocity vector of the aircraft relative to the air
+zw axis - perpendicular to the xw axis, in the plane of symmetry of the aircraft, positive below the aircraft
+yw axis - perpendicular to the xw,zw-plane, positive determined by the right hand rule (generally, positive to the right)
+
+To transforms a vector coordinates in a frame of reference to an other frame, the script 'coordinates_transform.py' can be used.
+
+
+# Plane coordinates - in ground frame
+Position = [North_position, East_position, -altitude]
+Orientation = [Yaw angle, Roll angle, Pitch angle]
+Speed = [Velocity at x-axis, Velocity at y-axis, Velocity at z-axis ]
+Angular_Speed = [Yaw rate, Roll rate, Pitch rate]
+"""
+
+
 from atmospheric_parameters import atmospheric_parameters_fct
 import os
 import importlib
 import numpy as np
 
 
-### Define the working directory
-# import os
-# main_path = 'C:\\Users\\Clément Gardies\\Desktop\\Projet 4A\\Avancée projet\\code_v1_gardies'
-# os.chdir(main_path)
-
-
-### Test : import atmospheric parameters 
-# print(atmospheric_parameters_fct(10000))
-
-
-### Ground frame - direct 
-# Origin - arbitrary, fixed relative to the surface of the ocean
-# xE axis - positive in the direction of North
-# yE axis - positive in the direction of West
-# zE axis - positive towards the sky (opposite to the center of the Earth)
-# The earth is assumed to be flat
-
-
-### Plane frame - direct
-# Origin - airplane center of gravity
-# xb axis - positive out the nose of the aircraft in the plane of symmetry of the aircraft
-# zb axis - perpendicular to the xb axis, in the plane of symmetry of the aircraft, positive above the aircraft
-# yb axis - perpendicular to the xb,zb-plane, positive determined by the right-hand rule (generally, positive out the left wing)
-
-
-### Aero frame - direct
-# Origin - airplane center of gravity
-# xw axis - positive in the direction of the velocity vector of the aircraft relative to the air
-# zw axis - perpendicular to the xw axis, in the plane of symmetry of the aircraft, positive above the aircraft
-# yw axis - perpendicular to the xw,zw-plane, positive determined by the right hand rule (generally, positive to the left)
-
-# To transforms a vector coordinates in a frame of reference to an other frame, use the script coordinates_transform.py
-
-
-### Plane coordinates - in ground frame
-# Position = [North_position, East_position, Altitude]
-# Orientation = [Yaw angle, Roll angle, Pitch angle]
-# Speed = [Velocity at x-axis, Velocity at y-axis, Velocity at z-axis ]
-# Angular_Speed = [Yaw rate, Roll rate, Pitch rate]
-
-
-
-
-
-##############################################################################
-### USER INPUTS - TEST ###
-# plane = ['c172']                   # Other possibility : b747
-
-# # Plane coordinates in ground frame
-# initial_position = [0, 0, 1800]     # [m]
-# initial_orientation = [0, 0, 0]       
-# initial_speed = [60, 0, 0]        # [m/s]      
-# initial_angular_speed = [0, 0, 0]  
-
-# # Plane loading   
-# payload = 100                     # [kg]
-# initial_fuel_load = 77           # [kg]
- 
-# # Weather conditions
-# wind = [0, 0, 0]                   # wind expected to remain constant [m/s]
-# weather = [wind]                   # Next : add humidity/rain ?
-
-# # Integration parameters
-# time_of_study = 1
-# delta_t = 0.01
-# number_of_time_steps = int(time_of_study/delta_t) + 1
-
-# # Pilot commands
-# command_throttle_position = np.array([0 for i in range(number_of_time_steps)])
-# command_rudder_position = np.array([0 for i in range(number_of_time_steps)])
-# command_ailerons_position = np.array([0 for i in range(number_of_time_steps)])
-# command_elevators_position = np.array([0 for i in range(number_of_time_steps)])
-# command_air_brakes = np.array([0 for i in range(number_of_time_steps)])
-# command_hygh_lift_devices = np.array([0 for i in range(number_of_time_steps)])
-# command_landing_gear = np.array([0 for i in range(number_of_time_steps)])
-
-
-# ### Gathering the user's inputs
-# initial_conditions=[]
-# initial_conditions.append(initial_position)
-# initial_conditions.append(initial_orientation)
-# initial_conditions.append(initial_speed)
-# initial_conditions.append(initial_angular_speed)
-# initial_conditions.append(payload)
-# initial_conditions.append(initial_fuel_load)
-
-# integration_parameters =[]
-# integration_parameters.append(time_of_study)
-# integration_parameters.append(delta_t)
-# integration_parameters.append(number_of_time_steps)
-
-
-# pilot_inputs = np.array([command_throttle_position, command_rudder_position, command_ailerons_position, command_elevators_position, command_air_brakes, command_hygh_lift_devices, command_landing_gear])
-
-### End of the TEST specification ###
-##############################################################################
- 
-
-
-DEBUG=False
+DEBUG=False                                                         # Use if debug is at stake
 
 
 
 def Flight_Simulator_fct(plane, initial_conditions, weather, integration_parameters, pilot_inputs, Target_altitude):
-    
+    """
+    This 'Flight_Simulator_fct' function is called by the Python script 'flight_sim_suer_inputs.py'
+    where the different simulation parameters are selected by the user.
+    Then, the function will calculate and gather the results regarding the time-dependant resuts.
+
+    Parameters
+    ----------
+    plane : TYPE
+        DESCRIPTION.
+    initial_conditions : TYPE
+        DESCRIPTION.
+    weather : TYPE
+        DESCRIPTION.
+    integration_parameters : TYPE
+        DESCRIPTION.
+    pilot_inputs : TYPE
+        DESCRIPTION.
+    Target_altitude : TYPE
+        DESCRIPTION.
+
+    Returns
+    -------
+    None.
+
+    """
     
     ### Step 0 : collecting the user inputs
     # Plane

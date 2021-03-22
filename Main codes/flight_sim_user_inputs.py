@@ -43,7 +43,7 @@ weather = [wind]                    # Next : add humidity/rain ?
 
 
 ### Integration parameters
-time_of_study = 100                # [s]
+time_of_study = 1000                # [s]
 delta_t = 0.01                      # [s]
 number_of_time_steps = int(time_of_study/delta_t) + 1    # DO NOT MODIFY
 
@@ -55,7 +55,6 @@ number_of_time_steps = int(time_of_study/delta_t) + 1    # DO NOT MODIFY
 command_elevators_position = np.array([0. for i in range(number_of_time_steps)])  
 # for i in range (int(number_of_time_steps/100)):
 #     command_elevators_position[100*i] = 1. 
-# command_elevators_position = np.array([-1. for i in range(number_of_time_steps)])  
 
 # Rudder commands - time-dependant - relative value from -10 to 10
 command_rudder_position = np.array([0. for i in range(number_of_time_steps)])
@@ -72,9 +71,9 @@ command_ailerons_position = np.array([0. for i in range(number_of_time_steps)])
 # Throttle commands - time-dependant - relative value from 0 to 10
 command_throttle_position = np.array([8. for i in range(number_of_time_steps)])  
 
-command_air_brakes = np.array([0 for i in range(number_of_time_steps)])           # 0 or 1
-command_hygh_lift_devices = np.array([0 for i in range(number_of_time_steps)])    # 0 or 1
-command_landing_gear = np.array([0 for i in range(number_of_time_steps)])         # 0 or 1
+command_air_brakes = np.array([0 for i in range(number_of_time_steps)])        
+command_hygh_lift_devices = np.array([0 for i in range(number_of_time_steps)])  
+command_landing_gear = np.array([0 for i in range(number_of_time_steps)])      
 
 
 
@@ -94,8 +93,8 @@ Target_altitude = False
 ###############################################################################
 # DO NOT MODIFY WHAT IS BELOW
 
-#Positive to minus altitude
-initial_position[2]*=-1
+# Positive to minus altitude - the code works with a vertical axis positive towards the ground
+initial_position[2]*=-1             
 
 ### Gathering the user's inputs
 initial_conditions=[]
