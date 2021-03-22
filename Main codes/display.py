@@ -54,7 +54,7 @@ def display_fct(result):
     GRAPH_Positions =        1
     GRAPH_rotation_rates =   0
     GRAPH_angles =           1
-    GRAPH_controls =         0
+    GRAPH_controls =         1
     GRAPH_TASandMach =       1
     GRAPH_Mass =             0
     GRAPH_LoadFactor =       1

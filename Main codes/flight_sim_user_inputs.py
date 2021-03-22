@@ -43,20 +43,23 @@ weather = [wind]                    # Next : add humidity/rain ?
 
 
 ### Integration parameters
-time_of_study = 100                # [s]
-delta_t = 0.01                      # [s]
+time_of_study = 1000                # [s]
+delta_t = 0.001                      # [s]
 number_of_time_steps = int(time_of_study/delta_t) + 1    # DO NOT MODIFY
+
 
 
 
 ### Pilot commands, time-dependant - each command is a list of number_of_time_steps elements
 
 # Elevators commands - time-dependant - relative value from -10 to 10 
-command_elevators_position = np.array([0. for i in range(number_of_time_steps)])  
+# command_elevators_position = np.array([0. for i in range(number_of_time_steps)])  
+command_elevators_position = np.array([-1. for i in range(number_of_time_steps)])  
 # for i in range (int(number_of_time_steps/100)):
 #     command_elevators_position[100*i] = 1. 
 # for i in range (1000):
 #     command_elevators_position[5000+i] = -1.
+
 
 # Rudder commands - time-dependant - relative value from -10 to 10
 command_rudder_position = np.array([0. for i in range(number_of_time_steps)])
@@ -64,14 +67,17 @@ command_rudder_position = np.array([0. for i in range(number_of_time_steps)])
 #     command_rudder_position[100000 + i] = 1.
 # command_rudder_position[10000] = 1.
 
+
 # Ailerons commands - time-dependant - relative value from -10 to 10
 command_ailerons_position = np.array([0. for i in range(number_of_time_steps)])  
-# command_ailerons_position[10] = 1
-# command_ailerons_position[11] = -1
-# command_ailerons_position[12] = -1
+# command_ailerons_position[10] = 1.
+# command_ailerons_position[11] = -1.
+# command_ailerons_position[12] = -1.
+
 
 # Throttle commands - time-dependant - relative value from 0 to 10
 command_throttle_position = np.array([8. for i in range(number_of_time_steps)])  
+
 
 # Other commands - time-dependant - 0 or 1 (1 means activated)
 command_air_brakes = np.array([0 for i in range(number_of_time_steps)])        
@@ -85,7 +91,7 @@ command_landing_gear = np.array([0 for i in range(number_of_time_steps)])
 # If a targeted altitude is defined, it must be equal to the initial altitude defined above : initial_position[2]
 
 Target_altitude = False
-# Target_altitude = initial_position[2]
+#Target_altitude = initial_position[2]
 
 
 
