@@ -102,7 +102,7 @@ def display_fct(result):
     GRAPH_Forces =           0
     GRAPH_Moments =          0
     GRAPH_Coeffs =           0
-    GRAPH_AeroAngles =       0
+    GRAPH_AeroAngles =       1
     
     #-----------------------------------------------------------------------------
     

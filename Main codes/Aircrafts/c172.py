@@ -26,7 +26,8 @@ plane_data_dict = { # Inertia
                     'MFL': 163,                                               # Aircraft max kerosene capacity [kg]                     
                     'inertia' : np.diag([948, 1346, 1967]) * slugft2_2_kgm2,  # Aircraft inertia tensor [kg·m²]
                     'max_load_factor': 3.8,                                   # Aircraft max load factor http://www.aeroelectric.com/Reference_Docs/Cessna/cessna-misc/C172_Performance-Figures__from_RSV_Cessna_Training_Manual.pdf
- 
+                    'max_alpha_before_stall':16,                              # Aircraft stall angle https://forums.x-plane.org/index.php?/forums/topic/44867-07-basic-stalling/
+
                     # Thrust
                     'static_thrust':2150,       # [N] Max static thrust   # Source : Static Thrust Measurement for Propeller-driven Light Aircraft, Mingtai
                     # 'min_static_thrust':,     # [N] 

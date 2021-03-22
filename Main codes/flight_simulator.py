@@ -427,19 +427,17 @@ def Flight_Simulator_fct(plane, initial_conditions, weather, integration_paramet
             np.disp(' ')        
             np.disp('aero_coeff=' + str(current_aerodynamic_coeff))
         
+    
         
+    
 ##############################################################################              
         ### Step 3 - calculation of forces and moments    
-        from forces_and_moments import forces_calculation_fct
-        from forces_and_moments import moments_calculation_fct
-        from forces_and_moments import fuel_consumption_calculation_fct
-        from forces_and_moments import loadfactor_calculation_fct
+        from forces_and_moments import forces_calculation_fct, moments_calculation_fct, fuel_consumption_calculation_fct, loadfactor_calculation_fct
 
-        #Import referential change horizontal to body (state vector is in horizontal frame but it is easier to get change rate in body frame)
+        # Import referential change horizontal to body (state vector is in horizontal frame but it is easier to get change rate in body frame)
         from coordinates_transformation import hor2bodymatrix_fct
         hor2bodymatrix=hor2bodymatrix_fct(theta_angle_before_update,phi_angle_before_update,psi_angle_before_update)
         
-        # Check if there is still some fuel 
         plane_current_forces = forces_calculation_fct(plane_mass_before_update,
                                                       plane_TAS_before_update,
                                                       plane_TAS_vector_before_update,
@@ -487,31 +485,31 @@ def Flight_Simulator_fct(plane, initial_conditions, weather, integration_paramet
         
         
         
-        
-        ### Step 4 - calculation of the Derivated Plane Vector + solving the current state vector with Sover
-        # CHECK NOMENCLATURE WITH ARTHUR
-        
+##############################################################################        
+        ### Step 4 - calculation of the Derivated Plane Vector + solving the current state vector with Sover        
         from solver import rk4
         current_state_vector = rk4(plane_position_before_update, 
-                                          plane_orientation_before_update, 
-                                          plane_speed_before_update, 
-                                          plane_angular_speed_before_update, 
-                                          plane_intrinsic_data, 
-                                          delta_t, 
-                                          atmospheric_parameters_before_update, 
-                                          plane_current_forces, 
-                                          plane_current_moments,
-                                          wind,
-                                          plane_current_mass)
+                                   plane_orientation_before_update, 
+                                   plane_speed_before_update, 
+                                   plane_angular_speed_before_update, 
+                                   plane_intrinsic_data, 
+                                   delta_t, 
+                                   atmospheric_parameters_before_update, 
+                                   plane_current_forces, 
+                                   plane_current_moments,
+                                   wind,
+                                   plane_current_mass)
         
-        #print (current_state_vector)
-        #print('\n')
+        if DEBUG:
+            print (current_state_vector)
+
         
         # Check angles in the right range
         plane_current_theta = current_state_vector[5]
         plane_current_theta_deg = plane_current_theta * 180/np.pi
         if DEBUG:
             print ('current_theta = ',plane_current_theta_deg, 'deg')
+            
         if np.abs(plane_current_theta)>np.pi/2:
             if np.sign(plane_current_theta) == 1:
                if np.abs(plane_current_theta)< 1.5 * np.pi:
@@ -537,8 +535,12 @@ def Flight_Simulator_fct(plane, initial_conditions, weather, integration_paramet
         plane_current_psi = current_state_vector[3]%(2*np.pi)      # psi between 0 and 2*pi rad
         check_theta_phi_psi_range_fct(plane_current_theta, plane_current_phi, plane_current_psi)
         
+        
+        
+        # Collecting the results for the new state vector
         plane_position[i] = np.array([current_state_vector[0], current_state_vector[1], current_state_vector[2]]) 
-        # print('plane position =', plane_position[i])
+        if DEBUG:
+            print('plane position =', plane_position[i])
         plane_orientation[i] = np.array([plane_current_psi, plane_current_phi, plane_current_theta])
         if DEBUG:
             print('plane orientation =', plane_orientation[i])
@@ -551,13 +553,12 @@ def Flight_Simulator_fct(plane, initial_conditions, weather, integration_paramet
         
         plane_current_TAS_vector = [plane_speed[i][0]+wind[0], plane_speed[i][1]+wind[1], plane_speed[i][2]+wind[2]]
         plane_current_TAS =  np.sqrt((plane_speed[i][0]+wind[0])**2 + (plane_speed[i][1]+wind[1])**2 + (plane_speed[i][2]+wind[2])**2) 
-        new_altitude = plane_position[i][2]
+        new_altitude = - plane_position[i][2]
         if DEBUG:
             np.disp('new_altitude=' + str(new_altitude))
         new_altitude_int = int(new_altitude)
-        # np.disp('new_altitude_int=' + str(new_altitude_int))        
         
-        current_atmospheric_parameters = atmospheric_parameters_fct(-new_altitude_int)
+        current_atmospheric_parameters = atmospheric_parameters_fct(new_altitude_int)
         plane_atmospheric_parameters[i] = current_atmospheric_parameters
         current_air_density = current_atmospheric_parameters[4]
         current_sound_velocity = current_atmospheric_parameters[5]
@@ -570,15 +571,23 @@ def Flight_Simulator_fct(plane, initial_conditions, weather, integration_paramet
             np.disp('TAS=' + str(plane_current_TAS))
 
 
-        ### End of a time step : Check the flight failures (ex : negative altitude)
+        current_alpha_angle = np.arctan(plane_current_TAS_vector[2]/abs(plane_current_TAS_vector[0]))
+        current_alpha_angle_deg = np.rad2deg(current_alpha_angle)
+        if DEBUG:
+            np.disp('alpha=' + str(current_alpha_angle_deg))
+
+
+
+##############################################################################
+        ### End of a time step : Check the flight failures
         if (plane_position[i][2] > 0) and (current_landing_gear == 0) :
             raise ValueError ("The aircraft crashed - negative altitude")
 
         if np.abs(plane_load_factor[i]) > plane_intrinsic_data['max_load_factor']:  
             raise ValueError ("The aircraft crashed - unsustainable load factor")
-        
-        # Other errors ?
-        # Add décrochage !
+
+        if current_alpha_angle_deg > plane_intrinsic_data['max_alpha_before_stall']:  
+            raise ValueError ("The aircraft crashed - the aircraft stalled")
         
         
         
@@ -586,6 +595,9 @@ def Flight_Simulator_fct(plane, initial_conditions, weather, integration_paramet
         i = i+1
 
 
+
+##############################################################################
+##############################################################################
     ### End of the loop : gathering all the results in a dictionary    
     result = {}
     result['plane_position'] = plane_position
@@ -615,11 +627,9 @@ def Flight_Simulator_fct(plane, initial_conditions, weather, integration_paramet
 
      
     ### Final step - display of the results
-    # CHECK NOMENCLATURE WITH NICO
     from display import display_fct
     display_fct(result)
 
-    # return plane_intrinsic_data
     return result
 
 

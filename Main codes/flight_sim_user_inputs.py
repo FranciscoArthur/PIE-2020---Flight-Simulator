@@ -43,7 +43,7 @@ weather = [wind]                    # Next : add humidity/rain ?
 
 
 ### Integration parameters
-time_of_study = 10                # [s]
+time_of_study = 100                # [s]
 delta_t = 0.01                      # [s]
 number_of_time_steps = int(time_of_study/delta_t) + 1    # DO NOT MODIFY
 
@@ -55,6 +55,8 @@ number_of_time_steps = int(time_of_study/delta_t) + 1    # DO NOT MODIFY
 command_elevators_position = np.array([0. for i in range(number_of_time_steps)])  
 # for i in range (int(number_of_time_steps/100)):
 #     command_elevators_position[100*i] = 1. 
+# for i in range (1000):
+#     command_elevators_position[5000+i] = -1.
 
 # Rudder commands - time-dependant - relative value from -10 to 10
 command_rudder_position = np.array([0. for i in range(number_of_time_steps)])
