@@ -1,7 +1,10 @@
 # -*- coding: utf-8 -*-
 """
-Created on Tue Feb  2 17:37:32 2021
+@authors: PIE n°7 group - ISAE Supaero - 2020/2021
 
+Description : This script intends to provide the necessary intrinsic parameters
+of the Boeing 747-100 plane.
+        
 ----------
 Boeing 747-100
 ----------

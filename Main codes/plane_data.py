@@ -6,6 +6,7 @@ Description : This script intends to provide the current aerodynamic coefficient
 of the plane, which depends on the current state vector of the plane, the pilot
 commands, and some intrinsic parameters of the plane. 
 
+Source : JSBSim
 """
 
 import numpy as np

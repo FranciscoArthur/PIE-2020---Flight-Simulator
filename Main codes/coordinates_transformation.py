@@ -1,9 +1,11 @@
+# -*- coding: utf-8 -*-
 """
-Source :
-Python Flight Mechanics Engine (PyFME).
+Description : This script intends to provide the necessary functions to change
+a vector coordinates from a frame of reference to a new frame.
 
-Frames of Reference orientation functions
------------------------------------------
+Source :
+    Python Flight Mechanics Engine (PyFME).
+
 """
 
 import numpy as np

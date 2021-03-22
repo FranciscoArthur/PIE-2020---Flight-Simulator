@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
 """
-Created on Tue Feb  2 17:37:32 2021
+@authors: PIE n°7 group - ISAE Supaero - 2020/2021
+
+Description : This script intends to provide the necessary intrinsic parameters
+of the Cessna 172 plane.
 
 ----------
 Cessna 172
@@ -49,14 +52,14 @@ plane_data_dict = { # Inertia
                     
                     # forces_moments_coefficients
         			# Lift
-				'CL_0':0.31,			    # Zero angle of attack lift
+				    'CL_0':0.31,			    # Zero angle of attack lift
     				'CL_a':5.143,               # Effect of angle of attack
     				'CL_q':3.9,				    # Effect of pitch rate
     				'CL_de':0.43,				# Effect of elevator
     			    # Drag
     				'CD_0':0.031,				# Initial drag
     				'induced_drag_factor':0.054,# For the lift-drag polar
-    				'CD_de':0,				# Effect of elevator
+    				'CD_de':0,				    # Effect of elevator
     			    # Side_force
     				'CY_0':0, 				    # Initial side force coefficient
     				'CY_beta':-0.31, 			# Effect of slide angle of aircraft
