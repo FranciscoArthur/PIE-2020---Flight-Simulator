@@ -74,7 +74,7 @@ def display_fct(result):
 
 
     # Definition of the state vector
-    x = np.zeros((len(t),29))
+    x = np.zeros((len(t),30))
 
     x[:,0] = result['plane_speed'][:,0]             # Body-axis x inertial velocity, ub, m/s 
     x[:,1] = result['plane_speed'][:,1]             # Body-axis y inertial velocity, vb, m/s
@@ -105,7 +105,7 @@ def display_fct(result):
     x[:,26] = result['plane_beta_angle']
     x[:,27] = result['plane_sigma_angle']
     x[:,28] = result['plane_gamma_angle']
-
+    x[:,29] = result['plane_mass']  # Plane mass
     
 
     ### Plots : state vector
@@ -266,12 +266,9 @@ def display_fct(result):
 
     # PLOT MASS HISTORY
 
-    mass = result['plane_mass']  # Plane mass
-
-
     if GRAPH_Mass ==1:
         f7 = plt.figure()
-        plt.plot(t, mass)
+        plt.plot(t, x[:,29])
         plt.xlabel('Time, s'), plt.ylabel('Plane Mass'), plt.grid(True)
 
 
@@ -369,7 +366,7 @@ def display_fct(result):
     outSheet = outWorkbook.add_worksheet()
     
     # Write data results to file
-    header = ['Time','Vx','Vy','Vy','North_pos','East_pos','Altitude','Yaw_rate','Roll_rate','Pitch_rate','Yaw_angle','Roll_angle','Pitch_angle','F_x','F_y','F_z','Yaw_moment','Roll_moment','Pitch_moment','CL','CD','Cy','Cl','Cm','Cn','Thrust','Alpha','Beta','Sigma','Gamma']
+    header = ['Time','Vx','Vy','Vy','North_pos','East_pos','Altitude','Yaw_rate','Roll_rate','Pitch_rate','Yaw_angle','Roll_angle','Pitch_angle','F_x','F_y','F_z','Yaw_moment','Roll_moment','Pitch_moment','CL','CD','Cy','Cl','Cm','Cn','Thrust','Alpha','Beta','Sigma','Gamma','Mass']
     
     for i in range(len(header)):
         outSheet.write(0,i, header[i])
